@@ -3,6 +3,7 @@ package org.usfirst.frc.team1989.robot;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public class NewMecDriveCmd implements cmd{
 	//attributes
@@ -12,7 +13,7 @@ public class NewMecDriveCmd implements cmd{
 	CANTalon1989 driveBackRight;
 	MecanumDrive mcDrive;
 	JsScaled driveStick;
-	
+	Gyro gyro;
 	
 	
 	
