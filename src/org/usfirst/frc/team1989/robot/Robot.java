@@ -29,10 +29,16 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	JsScaled uStick = new JsScaled(1);
 	NewMecDriveCmd mDrive = new NewMecDriveCmd(frontLeft,backLeft,frontRight,backRight,driveStick);
 	ADXRS450_Gyro gyro = new ADXRS450_Gyro();
-	Ultrasonic rangeFinder = new Ultrasonic(0,1);
+	Ultrasonic r1 = new Ultrasonic(0,1);
+	Ultrasonic r2 = new Ultrasonic(0,2);
+	Ultrasonic r3 = new Ultrasonic(0,3);
 	Double angle;
 	Double inches;
 	writemessage write= new writemessage();
+	
+	// Used for vertical Motion method
+	boolean motionActive;
+	double startDistance;
 	
 	//CameraControl cam = new CameraControl()
 	/**
@@ -47,7 +53,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		
 		SharedStuff.cmdlist.add(mDrive);
 		SharedStuff.cmdlist.add(write);
-		rangeFinder.setAutomaticMode(true);
+		r1.setAutomaticMode(true);
 	}
 	
 	//Ben Ben is a dumb dumb
@@ -89,13 +95,87 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		}
 		
 		angle = gyro.getAngle();
-		inches = rangeFinder.getRangeInches();
+		inches = r1.getRangeInches();
 		
 		write.setmessage(0,angle.toString());
 		write.setmessage(1, inches.toString());
 		write.updatedash();
 	}
 
+	/*
+	 * Disable all RangeFinders
+	 */
+	public void killRangeFinders() {
+		r1.setEnabled(false);
+		r2.setEnabled(false);
+		r3.setEnabled(false);
+	}
+	
+	/*
+	 * Disable all Drive Motors
+	 */
+	public void killDriveMotors() {
+		frontLeft.set(0);
+		backLeft.set(0);
+		frontRight.set(0);
+		backRight.set(0);
+	}
+	/*
+	 * verticalMotionActive defined at top.
+	 */
+	public void moveVertical(double distance, double speed, Ultrasonic rangeFinder) {
+		killRangeFinders();
+		rangeFinder.setEnabled(true);
+		
+		if(motionActive == false) {
+			startDistance = rangeFinder.getRangeInches();
+			motionActive = true;
+		}
+		
+		double currentDistance = rangeFinder.getRangeInches();
+		if(currentDistance - startDistance < distance) {
+			frontLeft.set(-speed);
+			backLeft.set(-speed);
+			frontRight.set(speed);
+			backRight.set(speed);
+		} else {
+			killDriveMotors();
+			rangeFinder.setEnabled(false);
+			motionActive = false;
+		}
+	}
+	
+	public void moveHorizontal(double distance, double speed, Ultrasonic rangeFinder) {
+		killRangeFinders();
+		rangeFinder.setEnabled(true);
+		
+		if(motionActive == false) {
+			startDistance = rangeFinder.getRangeInches();
+			motionActive = true;
+		}
+		
+		double currentDistance = rangeFinder.getRangeInches();
+		if(currentDistance - startDistance < distance) {
+			frontLeft.set(-speed);
+			backLeft.set(speed);
+			frontRight.set(speed);
+			backRight.set(-speed);
+		} else {
+			killDriveMotors();
+			rangeFinder.setEnabled(false);
+			motionActive = false;
+		}
+	}
+	
+	public void turnAround(double angle) {
+		
+	}
+	
+	public void testInit() {
+		motionActive = false;
+		startDistance = 0;
+	}
+	
 	/**
 	 * This function is called periodically during test mode.
 	 */
@@ -104,6 +184,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).teleopPeriodic();
 		}
+		
 		
 		
 		
