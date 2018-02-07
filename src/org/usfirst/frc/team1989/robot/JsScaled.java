@@ -75,6 +75,11 @@ public class JsScaled extends Joystick {
     public void setpTwist(double twist) {
     	pTwist = twist;
     }
+    
+    
+    public void killVStick() {
+    	pY = pX = pTwist = 0.0;
+    }
 
     // Scales Analog Joystick value in exponentially
     public double scale(double v) {

@@ -28,7 +28,9 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	// Used for vertical Motion method
 	boolean motionActive;
 	double startDistance;
-	
+	boolean actionFlag = false;
+	double integral = 0;
+	double error = 0;
 	//CameraControl cam = new CameraControl()
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -60,12 +62,101 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	 */
 	@Override
 	public void autonomousInit() {
-		timer.stop();
-		timer.reset();
-		timer.start();
+		
 		
 	}
 
+	
+	
+	/*Autonomous Methods
+	 * all of these methods are used by checking an action which is turned on by the different functions
+	 * when the function starts the flag is checked which doesn't uncheck until the end of the function
+	
+	*/
+	int state = 0;
+	
+	
+	
+	
+	
+	public void autoCartesianTime(double time,double speedX, double speedY ) {
+		if(state == 0) {
+			actionFlag = true;
+			timer.stop();
+			timer.reset();
+			timer.start();
+			state = 1;
+		}else if(state ==1) {
+			if(timer.get() < time) {
+				Components.driveStick.setpY(speedY);
+				Components.driveStick.setpX(speedX);
+				integral += Components.gyro.getAngle()*0.02;
+				Components.driveStick.setpTwist(-Components.gyro.getAngle()*mDrive.kP+integral*mDrive.kI);
+			}else {
+				state =2;
+			} 
+		}else if(state ==2) {				
+			Components.driveStick.killVStick();
+			timer.stop();
+			timer.reset();
+			state = 0;
+			actionFlag = false;
+			integral = 0;
+		}
+	}
+	
+	
+	
+	public void autoCartesianRange(double inches,  double speedX,double speedY, Ultrasonic rf) {
+			if (state == 0) {
+				actionFlag = false;
+				Components.killRangeFinders();
+				rf.setEnabled(true);
+				state = 1;
+				
+			} else if(state == 1) {
+				if(rf.getRangeInches()< inches) {
+					Components.driveStick.setpY(speedY);
+					Components.driveStick.setpX(speedX);
+					 integral += Components.gyro.getAngle()*0.02;
+					Components.driveStick.setpTwist(-Components.gyro.getAngle()*mDrive.kP+integral*mDrive.kI);
+				}else {
+					state =2;
+				}
+			}else if(state ==2) {
+				Components.driveStick.killVStick();
+				Components.killRangeFinders();
+				state = 0;
+				actionFlag = false;
+				integral = 0;
+			}
+	}
+
+	public void turnToAngle(double angle) {
+		if (state == 0 ) {
+			actionFlag = true;
+			state =1;
+		}else if(state ==1) {
+			if (Math.abs(Components.gyro.getAngle()) < Math.abs(angle) ) {
+				error = angle - Components.gyro.getAngle();
+				integral += error * 0.02;
+				Components.driveStick.setpTwist(error*mDrive.kP+integral*mDrive.kI);
+			} else {
+				state = 2;
+			}
+		} else if(state ==2) {
+			error = 0;
+			integral = 0;
+			Components.driveStick.killVStick();
+			state = 0;
+			actionFlag = false;
+		}
+	}
+	
+	
+	
+	
+	
 	/**
 	 * This function is called periodically during autonomous.
 	 */
@@ -100,11 +191,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	/*
 	 * Disable all RangeFinders
 	 */
-	public void killRangeFinders() {
-	//	r1.setEnabled(false);
-	//	r2.setEnabled(false);
-	//	r3.setEnabled(false);
-	}
+
 	
 	/*
 	 * Disable all Drive Motors
@@ -121,7 +208,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	public void moveVertical(double distance, double speed, Ultrasonic rangeFinder) {
 				
 		if(motionActive == false) {
-			killRangeFinders();
+			Components.killRangeFinders();
 			rangeFinder.setEnabled(true);
 			startDistance = rangeFinder.getRangeInches();
 			motionActive = true;
@@ -143,7 +230,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	public void moveHorizontal(double distance, double speed, Ultrasonic rangeFinder) {
 		
 		if(motionActive == false) {
-			killRangeFinders();
+			Components.killRangeFinders();
 			rangeFinder.setEnabled(true);
 			startDistance = rangeFinder.getRangeInches();
 			motionActive = true;

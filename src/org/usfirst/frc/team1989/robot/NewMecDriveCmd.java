@@ -39,8 +39,6 @@ public class NewMecDriveCmd implements cmd{
 	
 	
 
-	
-
 	//constructor for regular CANTalon1989
 	public NewMecDriveCmd(CANTalon1989 driveFrontLeft, CANTalon1989 driveBackLeft, CANTalon1989 driveFrontRight, CANTalon1989 driveBackRight,
 			JsScaled driveStick, ADXRS450_Gyro gyro, boolean isPID) {
