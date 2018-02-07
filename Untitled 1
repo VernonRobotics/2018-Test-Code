@@ -1,0 +1,21 @@
+Forward Command:
+	Multiple forward commands
+	Parameters: Distance (double), Speed (double, -1 -> 1), 
+	Range Finder (Rangefinder, three (back and two sides))
+	Two Commands -> Vertical and Horizontal
+
+Range Finders and Other Things:
+	R1-back
+	R2-right
+	R3-left
+	
+	Gyro- G1 (middle)
+	
+	Motors:
+		M1- Front Left
+		M2- Back Left
+		M3- Front Right
+		M4- Back Right
+		
+Turning Around
+	Parameters: Angle (double)

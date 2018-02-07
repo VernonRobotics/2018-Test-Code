@@ -7,35 +7,24 @@
 
 package org.usfirst.frc.team1989.robot;
 
-//Front Left:8 
-//Front Right:7
-//Back Left:3
-//Back Right: 5
+//Front Left:6
+//Front Right:3
+//Back Left:7
+//Back Right: 9
 
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
  public class Robot extends IterativeRobot {
-
-	CANTalon1989 frontLeft = new CANTalon1989(8);
-	CANTalon1989 backLeft = new CANTalon1989(7);
-	CANTalon1989 frontRight = new CANTalon1989(3);
-	CANTalon1989 backRight = new CANTalon1989(5);
-	Servo servo = new Servo(0);
-	JsScaled driveStick = new JsScaled(0);
-	JsScaled uStick = new JsScaled(1);
-	NewMecDriveCmd mDrive = new NewMecDriveCmd(frontLeft,backLeft,frontRight,backRight,driveStick);
-	ADXRS450_Gyro gyro = new ADXRS450_Gyro();
-	Ultrasonic r1 = new Ultrasonic(0,1);
-	Ultrasonic r2 = new Ultrasonic(0,2);
-	Ultrasonic r3 = new Ultrasonic(0,3);
+	Timer timer = new Timer();
 	Double angle;
 	Double inches;
 	writemessage write= new writemessage();
-	
+	static NewMecDriveCmd mDrive = new NewMecDriveCmd(Components.frontLeft,Components.frontRight,Components.backLeft,Components.backRight,Components.driveStick,Components.gyro, false);
 	// Used for vertical Motion method
 	boolean motionActive;
 	double startDistance;
@@ -47,16 +36,16 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	 */
 	@Override
 	public void robotInit() {
-		frontLeft.setInverted(true);
-		frontRight.setInverted(true);
-		backLeft.setInverted(true);
+		Components.frontLeft.setInverted(true);
+		Components.frontRight.setInverted(true);
+		Components.backLeft.setInverted(true);
 		
 		SharedStuff.cmdlist.add(mDrive);
 		SharedStuff.cmdlist.add(write);
-		r1.setAutomaticMode(true);
+		//r1.setAutomaticMode(true);
 	}
 	
-	//Ben Ben is a dumb dumb
+	
 
 	/**
 	 * This autonomous (along with the chooser code above) shows how to select
@@ -71,7 +60,10 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	 */
 	@Override
 	public void autonomousInit() {
-	
+		timer.stop();
+		timer.reset();
+		timer.start();
+		
 	}
 
 	/**
@@ -83,6 +75,9 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).autonomousPeriodic();
 		}
+		
+		
+		
 	}
 
 	/**
@@ -94,11 +89,11 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 			SharedStuff.cmdlist.get(i).teleopPeriodic();
 		}
 		
-		angle = gyro.getAngle();
-		inches = r1.getRangeInches();
+		angle = Components.gyro.getAngle();
+		//inches = r1.getRangeInches();
 		
 		write.setmessage(0,angle.toString());
-		write.setmessage(1, inches.toString());
+	//	write.setmessage(1, inches.toString());
 		write.updatedash();
 	}
 
@@ -106,38 +101,38 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	 * Disable all RangeFinders
 	 */
 	public void killRangeFinders() {
-		r1.setEnabled(false);
-		r2.setEnabled(false);
-		r3.setEnabled(false);
+	//	r1.setEnabled(false);
+	//	r2.setEnabled(false);
+	//	r3.setEnabled(false);
 	}
 	
 	/*
 	 * Disable all Drive Motors
 	 */
 	public void killDriveMotors() {
-		frontLeft.set(0);
-		backLeft.set(0);
-		frontRight.set(0);
-		backRight.set(0);
+		Components.frontLeft.set(0);
+		Components.backLeft.set(0);
+		Components.frontRight.set(0);
+		Components.backRight.set(0);
 	}
 	/*
 	 * verticalMotionActive defined at top.
 	 */
 	public void moveVertical(double distance, double speed, Ultrasonic rangeFinder) {
-		killRangeFinders();
-		rangeFinder.setEnabled(true);
-		
+				
 		if(motionActive == false) {
+			killRangeFinders();
+			rangeFinder.setEnabled(true);
 			startDistance = rangeFinder.getRangeInches();
 			motionActive = true;
 		}
 		
 		double currentDistance = rangeFinder.getRangeInches();
 		if(currentDistance - startDistance < distance) {
-			frontLeft.set(-speed);
-			backLeft.set(-speed);
-			frontRight.set(speed);
-			backRight.set(speed);
+			Components.frontLeft.set(-speed);
+			Components.backLeft.set(-speed);
+			Components.frontRight.set(speed);
+			Components.backRight.set(speed);
 		} else {
 			killDriveMotors();
 			rangeFinder.setEnabled(false);
@@ -146,20 +141,20 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	}
 	
 	public void moveHorizontal(double distance, double speed, Ultrasonic rangeFinder) {
-		killRangeFinders();
-		rangeFinder.setEnabled(true);
 		
 		if(motionActive == false) {
+			killRangeFinders();
+			rangeFinder.setEnabled(true);
 			startDistance = rangeFinder.getRangeInches();
 			motionActive = true;
 		}
 		
 		double currentDistance = rangeFinder.getRangeInches();
 		if(currentDistance - startDistance < distance) {
-			frontLeft.set(-speed);
-			backLeft.set(speed);
-			frontRight.set(speed);
-			backRight.set(-speed);
+			Components.frontLeft.set(-speed);
+			Components.backLeft.set(speed);
+			Components.frontRight.set(speed);
+			Components.backRight.set(-speed);
 		} else {
 			killDriveMotors();
 			rangeFinder.setEnabled(false);
@@ -189,9 +184,39 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		
 		
 		
+	}
+	public void motorOutputTest() {
+		
+		Double fl = Components.frontLeft.getOutputCurrent();
+		Double fr = Components.frontRight.getOutputCurrent();
+		Double bl = Components.backLeft.getOutputCurrent();
+		Double br = Components.backRight.getOutputCurrent();
+		
+		Double flv = Components.frontLeft.getMotorOutputVoltage();
+		Double frv = Components.frontRight.getMotorOutputVoltage();
+		Double blv = Components.backLeft.getMotorOutputVoltage();
+		Double brv = Components.backRight.getMotorOutputVoltage();
+
+		if (timer.get() < 10) {
+			Components.driveStick.setpY(1);
+		}else {
+			Components.driveStick.setpY(0);
+		}
 		
 		
+		write.setmessage(0,fl.toString() );
+		write.setmessage(1,fr.toString() );
+		write.setmessage(2,bl.toString() );
+		write.setmessage(3,br.toString() );
+		write.setmessage(5,flv.toString() );
+		write.setmessage(6,frv.toString() );
+		write.setmessage(7,blv.toString() );
+		write.setmessage(8,brv.toString() );
 		
+		
+		if(timer.get() % 0.25 == 0) {
+			write.updatedash();
+		}
 		
 	}
 }
