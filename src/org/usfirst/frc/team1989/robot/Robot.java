@@ -78,7 +78,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	
 	
 	
-	
+	// test here
 	public void autoCartesianTime(double time,double speedX, double speedY ) {
 		if(state == 0) {
 			actionFlag = true;
@@ -106,7 +106,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	}
 	
 	
-	
+	//test here
 	public void autoCartesianRange(double inches,  double speedX,double speedY, Ultrasonic rf) {
 			if (state == 0) {
 				actionFlag = false;
@@ -131,7 +131,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 				integral = 0;
 			}
 	}
-
+	//test here
 	public void turnToAngle(double angle) {
 		if (state == 0 ) {
 			actionFlag = true;

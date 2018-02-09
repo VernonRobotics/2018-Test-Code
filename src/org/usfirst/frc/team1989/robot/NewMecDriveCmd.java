@@ -17,7 +17,7 @@ public class NewMecDriveCmd implements cmd{
 	CANTalon1989 driveBackRight;
 	ADXRS450_Gyro gyro;
 	
-	double kP = 0.03;
+	double kP = 0.0;
 	double kI = 0.0;
 	double kD = 0.0;
 	
