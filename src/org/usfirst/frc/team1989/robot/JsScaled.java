@@ -12,6 +12,8 @@ public class JsScaled extends Joystick {
     public boolean[] buttons = new boolean[15];
     public double cycleTime; //to be determined needs testing
     Timer pwmTimer;
+    Timer rampTimer = new Timer();
+    
     
     public JsScaled(int port, double low, double deadzone) {
 	this(port);
@@ -76,9 +78,11 @@ public class JsScaled extends Joystick {
     	pTwist = twist;
     }
     
+   
+    
     
     public void killVStick() {
-    	pY = pX = pTwist = 0.0;
+    	pX = pY = pTwist = 0.0;
     }
 
     // Scales Analog Joystick value in exponentially
@@ -100,7 +104,39 @@ public class JsScaled extends Joystick {
 
 	return v;
     }
-
+ 
+    int rampState = 0;
+    double speed = 0;
+   double  speedChange;
+    public double speedRamp(double currentSpeed, double newSpeed, double rampTime) {
+    	if (rampState ==0) {
+    		speedChange = newSpeed - currentSpeed;
+    		rampTimer.stop();
+    		rampTimer.reset();
+    		rampTimer.start();
+    		rampState = 1;
+    		speed = speedChange/4;
+    	} else if(rampState == 1) {
+	    	if (rampTimer.get() > rampTime/4) {
+	    		speed += speedChange/4;
+	    		rampTimer.reset();
+	    	}
+    		if(speed >= newSpeed) {
+    			rampState = 2;
+    		}
+    		
+    	} else if (rampState == 2) {
+    		rampTimer.stop();
+    		rampTimer.reset();
+    		rampState = 0;
+    	}
+    	
+    	
+    	
+    	
+    	return speed;
+    }
+    
     
     public double pwmDrive(double jsReading){  //method for modulating power sent to motors
     	

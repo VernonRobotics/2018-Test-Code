@@ -24,7 +24,8 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	Double angle;
 	Double inches;
 	writemessage write= new writemessage();
-	static NewMecDriveCmd mDrive = new NewMecDriveCmd(Components.frontLeft,Components.frontRight,Components.backLeft,Components.backRight,Components.driveStick,Components.gyro, false);
+	NewMecDriveCmd mDrive = new NewMecDriveCmd(Components.frontLeft,Components.backLeft,Components.frontRight,Components.backRight,Components.driveStick,Components.gyro, false);
+	
 	// Used for vertical Motion method
 	boolean motionActive;
 	double startDistance;
@@ -62,8 +63,10 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	 */
 	@Override
 	public void autonomousInit() {
-		
-		
+		timer.stop();
+		timer.reset();
+		timer.start();
+		actionFlag = true;
 	}
 
 	
@@ -81,7 +84,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	// test here
 	public void autoCartesianTime(double time,double speedX, double speedY ) {
 		if(state == 0) {
-			actionFlag = true;
+			//actionFlag = true;
 			timer.stop();
 			timer.reset();
 			timer.start();
@@ -134,7 +137,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	//test here
 	public void turnToAngle(double angle) {
 		if (state == 0 ) {
-			actionFlag = true;
+			//actionFlag = true;
 			state =1;
 		}else if(state ==1) {
 			if (Math.abs(Components.gyro.getAngle()) < Math.abs(angle) ) {
@@ -167,9 +170,13 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 			SharedStuff.cmdlist.get(i).autonomousPeriodic();
 		}
 		
-		
-		
+		if(actionFlag) {
+			turnToAngle(90);
+		}
 	}
+		
+		
+	
 
 	/**
 	 * This function is called periodically during operator control.
@@ -186,6 +193,26 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		write.setmessage(0,angle.toString());
 	//	write.setmessage(1, inches.toString());
 		write.updatedash();
+		
+		if(Components.driveStick.getRawButton(9) == true) {
+			Components.armsLeft.set(1);
+			Components.armsRight.set(-1);
+		}else {
+			Components.armsLeft.set(0);
+		}
+		
+		if(Components.driveStick.getRawButton(10)== true) {
+			Components.armsLeft.set(-1);
+			Components.armsRight.set(1);
+		}else {
+			Components.armsRight.set(0);
+		}
+		
+		if(Components.driveStick.getRawButton(7)) {
+			Components.gyro.reset();
+		}
+		
+		
 	}
 
 	/*

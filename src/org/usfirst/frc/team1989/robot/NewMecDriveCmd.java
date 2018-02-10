@@ -17,7 +17,7 @@ public class NewMecDriveCmd implements cmd{
 	CANTalon1989 driveBackRight;
 	ADXRS450_Gyro gyro;
 	
-	double kP = 0.0;
+	double kP = 0.01;
 	double kI = 0.0;
 	double kD = 0.0;
 	
@@ -90,7 +90,7 @@ public class NewMecDriveCmd implements cmd{
 	
 		
 		
-		mecDrive.driveCartesian(driveStick.pX, driveStick.pY, driveStick.pTwist);
+		mecDrive.driveCartesian(driveStick.pX, -driveStick.pY, driveStick.pTwist);
 		
 		
 		
@@ -134,7 +134,7 @@ public class NewMecDriveCmd implements cmd{
 		// TODO Auto-generated method stub
 		
 		
-			mecDrive.driveCartesian(driveStick.sgetX(),driveStick.sgetY(), driveStick.sgetTwist());
+			mecDrive.driveCartesian(-driveStick.sgetX(),driveStick.sgetY(), -driveStick.sgetTwist(), gyro.getAngle());
 	
 		
 		
