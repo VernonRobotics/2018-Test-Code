@@ -7,36 +7,45 @@
 
 package org.usfirst.frc.team1989.robot;
 
+import org.usfirst.frc.team1989.robot.AutoRoutines.StartLeftSwitchLeft;
+
+import edu.wpi.first.wpilibj.DriverStation;
+
 //Front Left:6
 //Front Right:3
 //Back Left:7
 //Back Right: 9
 
-
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
- public class Robot extends IterativeRobot {
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+public class Robot extends IterativeRobot {
 	Double angle;
 	Double inches;
-	writemessage write= new writemessage();
-	NewMecDriveCmd mDrive = new NewMecDriveCmd(Components.frontLeft,Components.backLeft,Components.frontRight,Components.backRight,Components.driveStick,Components.gyro);
-//	ArmControl arms = new ArmControl(Components.armsLeft,Components.armsRight,Components.uStick);
-	//TowerControl tower = new TowerControl(Components.towerLeft, Components.towerRight, Components.uStick);
-	//AutoCommands auto = new AutoCommands(Components.driveStick,Components.uStick,mDrive,arms,tower,Components.gyro,
-	//		Components.timer);
+
+	// ArmControl arms = new
+	// ArmControl(Components.armsLeft,Components.armsRight,Components.uStick);
+	// TowerControl tower = new TowerControl(Components.towerLeft,
+	// Components.towerRight, Components.uStick);
+	// AutoCommands auto = new
+	// AutoCommands(Components.driveStick,Components.uStick,mDrive,arms,tower,Components.gyro,
+	// Components.timer);
 	// Used for vertical Motion method
-	boolean motionActive; 
+	boolean motionActive;
 	double startDistance;
 	boolean actionFlag = false;
 	double integral = 0;
 	double error = 0;
 	int autoState = 0;
-	//CameraControl cam = new CameraControl()
+	String gameData;
+
+	// CameraControl cam = new CameraControl()
 	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
+	 * This function is run when the robot is first started up and should be used
+	 * for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
@@ -44,100 +53,67 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		Components.frontRight.setInverted(true);
 		Components.backLeft.setInverted(true);
 		Components.armsRight.setInverted(true);
-		
-		
-		SharedStuff.cmdlist.add(mDrive);
-	//	SharedStuff.cmdlist.add(arms);
-		SharedStuff.cmdlist.add(write);
-		//r1.setAutomaticMode(true);
+
+		SharedStuff.cmdlist.add(Components.mDrive);
+		// SharedStuff.cmdlist.add(arms);
+		SharedStuff.cmdlist.add(Components.write);
+		// r1.setAutomaticMode(true);
 	}
-	
-	
 
 	/**
 	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString line to get the auto name from the text box below the Gyro
+	 * between different autonomous modes using the dashboard. The sendable chooser
+	 * code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
+	 * remove all of the chooser code and uncomment the getString line to get the
+	 * auto name from the text box below the Gyro
 	 *
-	 * <p>You can add additional auto modes by adding additional comparisons to
-	 * the switch structure below with additional strings. If using the
-	 * SendableChooser make sure to add them to the chooser code above as well.
+	 * <p>
+	 * You can add additional auto modes by adding additional comparisons to the
+	 * switch structure below with additional strings. If using the SendableChooser
+	 * make sure to add them to the chooser code above as well.
 	 */
 	@Override
 	public void autonomousInit() {
 		Components.timer.stop();
 		Components.timer.reset();
 		Components.timer.start();
-		
-		
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+
 	}
 
-	
-	
-	/*Autonomous Methods
-	 * all of these methods are used by checking an action which is turned on by the different functions
-	 * when the function starts the flag is checked which doesn't uncheck until the end of the function
-	
-	*/
+	/*
+	 * Autonomous Methods all of these methods are used by checking an action which
+	 * is turned on by the different functions when the function starts the flag is
+	 * checked which doesn't uncheck until the end of the function
+	 * 
+	 */
 	int state = 0;
-	
-	
-	
-	
-	// test here
-	
-	
-	
-	
-	
-	
+
 	/**
 	 * This function is called periodically during autonomous.
 	 */
-	
+
 	@Override
 	public void autonomousPeriodic() {
-	
+
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).autonomousPeriodic();
 		}
-		/*if (autoState == 0) {
-			if(actionFlag == true) {
-			//	autoCartesianTime(2.5,0,.5);
-			}else {
-				autoState =1;
-				timer.stop();
-				timer.reset();
-				timer.start();
-			}
-			
-		}else if(autoState == 1) {
-			if (timer.get()>1) {
-				timer.stop();
-				timer.reset();
-				autoState = 2;
-				actionFlag = true;
-			}
-		} else if(autoState == 2) {
-			if(actionFlag ==true) {
-				//turnToAngle(90);
-			}else {
-				
-			}
-		}
-<<<<<<< HEAD
-		
-		
-		*/
+		/*
+		 * if (autoState == 0) { if(actionFlag == true) { //
+		 * autoCartesianTime(2.5,0,.5); }else { autoState =1; timer.stop();
+		 * timer.reset(); timer.start(); }
+		 * 
+		 * }else if(autoState == 1) { if (timer.get()>1) { timer.stop(); timer.reset();
+		 * autoState = 2; actionFlag = true; } } else if(autoState == 2) { if(actionFlag
+		 * ==true) { //turnToAngle(90); }else {
+		 * 
+		 * } }
+		 * 
+		 * 
+		 * 
+		 */
 	}
-		
-		
-	
-=======
-	}	
->>>>>>> 37943e9487581337f88a0fed91ef1c7b1568e34e
 
 	/**
 	 * This function is called periodically during operator control.
@@ -147,62 +123,41 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).teleopPeriodic();
 		}
-		
+
 		angle = Components.gyro.getAngle();
-		//inches = r1.getRangeInches();
-		
-		write.setmessage(0,angle.toString());
-	//	write.setmessage(1, inches.toString());
-		write.updatedash();
-		
-		if(Components.driveStick.getRawButton(7)) {
+		// inches = r1.getRangeInches();
+
+		Components.write.setmessage(0, angle.toString());
+		// write.setmessage(1, inches.toString());
+		Components.write.updatedash();
+
+		if (Components.driveStick.getRawButton(7)) {
 			Components.towerLeft.set(0.8);
 		} else {
 			Components.towerLeft.set(0);
 		}
-		
-		if(Components.driveStick.getRawButton(8)) {
+
+		if (Components.driveStick.getRawButton(8)) {
 			Components.towerRight.set(0.8);
 		} else {
 			Components.towerRight.set(0);
 		}
-		
-		if(Components.driveStick.getRawButton(1)) {
+
+		if (Components.driveStick.getRawButton(1)) {
 			Components.gyro.reset();
 		}
-		
-		
+
 	}
 
 	/*
 	 * Disable all RangeFinders
 	 */
 
-	
-<<<<<<< HEAD
-	/*
-	 * Disable all Drive Motors
-	 */
-	public void killDriveMotors() {
-		Components.frontLeft.set(0);
-		Components.backLeft.set(0);
-		Components.frontRight.set(0);
-		Components.backRight.set(0);
-	}
-	/*
-	 * verticalMotionActive defined at top.
-	 */
-	
-=======
->>>>>>> 37943e9487581337f88a0fed91ef1c7b1568e34e
-	
-	
-	
 	public void testInit() {
 		motionActive = false;
 		startDistance = 0;
 	}
-	
+
 	/**
 	 * This function is called periodically during test mode.
 	 */
@@ -211,44 +166,58 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).teleopPeriodic();
 		}
-		
-		
-		
-		
-		
-	}
-	public void motorOutputTest() {
-		
-		Double fl = Components.frontLeft.getOutputCurrent();
-		Double fr = Components.frontRight.getOutputCurrent();
-		Double bl = Components.backLeft.getOutputCurrent();
-		Double br = Components.backRight.getOutputCurrent();
-		
-		Double flv = Components.frontLeft.getMotorOutputVoltage();
-		Double frv = Components.frontRight.getMotorOutputVoltage();
-		Double blv = Components.backLeft.getMotorOutputVoltage();
-		Double brv = Components.backRight.getMotorOutputVoltage();
 
-		if (Components.timer.get() < 10) {
-			Components.driveStick.setpY(1);
-		}else {
-			Components.driveStick.setpY(0);
+		/*
+		 * Button 0: Left Button 1: Center Button 2: Right Button 3: True = Scale, False
+		 * = Switch
+		 * 
+		 * None of the above = drive straight
+		 */
+		if (SmartDashboard.getBoolean("DB/Button 0", true)) {
+			if (SmartDashboard.getBoolean("DB/Button 3", true)) {
+				if (gameData.charAt(1) == 'L') {
+					// StartLeftScaleLeft.run();
+				} else {
+					// StartLeftScaleRight.run();
+				}
+			} else {
+				if (gameData.charAt(0) == 'L') {
+					StartLeftSwitchLeft.run();
+				} else {
+					// StartLeftSwitchRight.run();
+				}
+			}
+
+		} else if (SmartDashboard.getBoolean("DB/Button 1", true)) {
+			if (SmartDashboard.getBoolean("DB/Button 3", true)) {
+				if (gameData.charAt(1) == 'L') {
+					// StartCenterScaleLeft.run();
+				} else {
+					// StartCenterScaleRight.run();
+				}
+			} else {
+				if (gameData.charAt(0) == 'L') {
+					// StartCenterSwitchLeft.run();
+				} else {
+					// StartCenterSwitchRight.run();
+				}
+			}
+		} else if (SmartDashboard.getBoolean("DB/Button 2", true)) {
+			if (SmartDashboard.getBoolean("DB/Button 3", true)) {
+				if (gameData.charAt(1) == 'L') {
+					// StartRightScaleLeft.run();
+				} else {
+					// StartRightScaleRight.run();
+				}
+			} else {
+				if (gameData.charAt(0) == 'L') {
+					// StartRightSwitchLeft.run();
+				} else {
+					// StartRightSwitchRight.run();
+				}
+			}
+		} else {
+			// DriveForward.run();
 		}
-		
-		
-		write.setmessage(0,fl.toString() );
-		write.setmessage(1,fr.toString() );
-		write.setmessage(2,bl.toString() );
-		write.setmessage(3,br.toString() );
-		write.setmessage(5,flv.toString() );
-		write.setmessage(6,frv.toString() );
-		write.setmessage(7,blv.toString() );
-		write.setmessage(8,brv.toString() );
-		
-		
-		if(Components.timer.get() % 0.25 == 0) {
-			write.updatedash();
-		}
-		
 	}
 }
