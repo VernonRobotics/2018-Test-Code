@@ -25,6 +25,22 @@ public final class Components {
 	//static Ultrasonic r1 = new Ultrasonic(0,1);
 	//static Ultrasonic r2 = new Ultrasonic(0,2);
 	//static Ultrasonic r3 = new Ultrasonic(0,3);
+	
+	
+	/*
+	 * Disable all Drive Motors
+	 */
+	public static void killDriveMotors() {
+		frontLeft.set(0);
+		backLeft.set(0);
+		frontRight.set(0);
+		backRight.set(0);
+	}
+	
+	/*
+	 * Disable all rangefinders.
+	 */
+	
 	public static void killRangeFinders() {
 		//Components.r1.setEnabled(false);
 		//Components.r2.setEnabled(false);

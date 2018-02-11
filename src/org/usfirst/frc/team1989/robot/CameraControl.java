@@ -82,13 +82,11 @@ public class CameraControl implements cmd {
 		
 	}
 
-	@Override
 	public void testInit() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void testPeriodic() {
 		// TODO Auto-generated method stub
 		
