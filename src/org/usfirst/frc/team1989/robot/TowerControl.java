@@ -26,12 +26,14 @@ public class TowerControl implements cmd {
 	
 	
 	//constructor
-	public TowerControl(CANTalon1989 rightMotor, CANTalon1989 leftMotor, JsScaled uStick) {
+	public TowerControl(CANTalon1989 leftMotor, CANTalon1989 rightMotor, JsScaled uStick) {
 		this.rightMotor = rightMotor;
 		this.leftMotor = leftMotor;
 	
 		this.uStick = uStick;
 	}
+	
+	//public TowerControl(CANTalon1989 leftMotor, CANTalon1989 rightMotor, DigitalInput )
 	//class methods
 	
 	

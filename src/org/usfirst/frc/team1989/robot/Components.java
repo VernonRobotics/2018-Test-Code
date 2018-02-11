@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1989.robot;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
@@ -18,6 +19,8 @@ public final class Components {
 	static JsScaled driveStick = new JsScaled(0);
 	static JsScaled uStick = new JsScaled(1);
 	static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+	//static DigitalInput switchSwitch = new DigitalInput(0);
+	//static DigitalInput lowSwitch = new DigitalInput(1);
 	static Timer timer = new Timer();
 	//static Ultrasonic r1 = new Ultrasonic(0,1);
 	//static Ultrasonic r2 = new Ultrasonic(0,2);
