@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team1989.robot;
 
+import org.usfirst.frc.team1989.robot.AutoRoutines.StartLeftSwitchLeft;
+
 //Front Left:6
 //Front Right:3
 //Back Left:7
@@ -20,11 +22,10 @@ import edu.wpi.first.wpilibj.Ultrasonic;
  public class Robot extends IterativeRobot {
 	Double angle;
 	Double inches;
-	writemessage write= new writemessage();
-	NewMecDriveCmd mDrive = new NewMecDriveCmd(Components.frontLeft,Components.backLeft,Components.frontRight,Components.backRight,Components.driveStick,Components.gyro);
-//	ArmControl arms = new ArmControl(Components.armsLeft,Components.armsRight,Components.uStick);
-	//TowerControl tower = new TowerControl(Components.towerLeft, Components.towerRight, Components.uStick);
-	//AutoCommands auto = new AutoCommands(Components.driveStick,Components.uStick,mDrive,arms,tower,Components.gyro,
+		
+	// ArmControl arms = new ArmControl(Components.armsLeft,Components.armsRight,Components.uStick);
+	// TowerControl tower = new TowerControl(Components.towerLeft, Components.towerRight, Components.uStick);
+	// AutoCommands auto = new AutoCommands(Components.driveStick,Components.uStick,mDrive,arms,tower,Components.gyro,
 	//		Components.timer);
 	// Used for vertical Motion method
 	boolean motionActive; 
@@ -33,6 +34,8 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	double integral = 0;
 	double error = 0;
 	int autoState = 0;
+	
+
 	//CameraControl cam = new CameraControl()
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -46,9 +49,9 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		Components.armsRight.setInverted(true);
 		
 		
-		SharedStuff.cmdlist.add(mDrive);
+		SharedStuff.cmdlist.add(Components.mDrive);
 	//	SharedStuff.cmdlist.add(arms);
-		SharedStuff.cmdlist.add(write);
+		SharedStuff.cmdlist.add(Components.write);
 		//r1.setAutomaticMode(true);
 	}
 	
@@ -82,16 +85,6 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	
 	*/
 	int state = 0;
-	
-	
-	
-	
-	// test here
-	
-	
-	
-	
-	
 	
 	/**
 	 * This function is called periodically during autonomous.
@@ -127,7 +120,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 				
 			}
 		}
-<<<<<<< HEAD
+
 		
 		
 		*/
@@ -135,9 +128,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		
 		
 	
-=======
-	}	
->>>>>>> 37943e9487581337f88a0fed91ef1c7b1568e34e
+
 
 	/**
 	 * This function is called periodically during operator control.
@@ -151,9 +142,9 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		angle = Components.gyro.getAngle();
 		//inches = r1.getRangeInches();
 		
-		write.setmessage(0,angle.toString());
+		Components.write.setmessage(0,angle.toString());
 	//	write.setmessage(1, inches.toString());
-		write.updatedash();
+		Components.write.updatedash();
 		
 		if(Components.driveStick.getRawButton(7)) {
 			Components.towerLeft.set(0.8);
@@ -178,26 +169,6 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	 * Disable all RangeFinders
 	 */
 
-	
-<<<<<<< HEAD
-	/*
-	 * Disable all Drive Motors
-	 */
-	public void killDriveMotors() {
-		Components.frontLeft.set(0);
-		Components.backLeft.set(0);
-		Components.frontRight.set(0);
-		Components.backRight.set(0);
-	}
-	/*
-	 * verticalMotionActive defined at top.
-	 */
-	
-=======
->>>>>>> 37943e9487581337f88a0fed91ef1c7b1568e34e
-	
-	
-	
 	public void testInit() {
 		motionActive = false;
 		startDistance = 0;
@@ -212,43 +183,12 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 			SharedStuff.cmdlist.get(i).teleopPeriodic();
 		}
 		
+		// Autonomous Commands
+		StartLeftSwitchLeft.run();
 		
 		
 		
 		
 	}
-	public void motorOutputTest() {
-		
-		Double fl = Components.frontLeft.getOutputCurrent();
-		Double fr = Components.frontRight.getOutputCurrent();
-		Double bl = Components.backLeft.getOutputCurrent();
-		Double br = Components.backRight.getOutputCurrent();
-		
-		Double flv = Components.frontLeft.getMotorOutputVoltage();
-		Double frv = Components.frontRight.getMotorOutputVoltage();
-		Double blv = Components.backLeft.getMotorOutputVoltage();
-		Double brv = Components.backRight.getMotorOutputVoltage();
-
-		if (Components.timer.get() < 10) {
-			Components.driveStick.setpY(1);
-		}else {
-			Components.driveStick.setpY(0);
-		}
-		
-		
-		write.setmessage(0,fl.toString() );
-		write.setmessage(1,fr.toString() );
-		write.setmessage(2,bl.toString() );
-		write.setmessage(3,br.toString() );
-		write.setmessage(5,flv.toString() );
-		write.setmessage(6,frv.toString() );
-		write.setmessage(7,blv.toString() );
-		write.setmessage(8,brv.toString() );
-		
-		
-		if(Components.timer.get() % 0.25 == 0) {
-			write.updatedash();
-		}
-		
-	}
+	
 }

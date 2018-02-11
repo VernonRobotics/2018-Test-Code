@@ -1,62 +1,45 @@
 package org.usfirst.frc.team1989.robot;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.Timer;
+
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 public class AutoCommands{
-	JsScaled driveStick;
-	JsScaled uStick;
-	Timer timer;
-	ADXRS450_Gyro gyro;
-	NewMecDriveCmd mDrive;
-	ArmControl arms;
-	TowerControl tower;
 	
 	
-	int actionState = 0;//to be used to differentiate between different states in an individual command
-	double integral=0;
+	
+	static int actionState = 0;//to be used to differentiate between different states in an individual command
+	static double integral=0;
 	double error=0;
-	boolean actionFlag=false;
+	static boolean actionFlag=false;
 	int autoState=0;//to be used to differentiate between different commands in a preset auto
 	
+	TowerControl tower;//to be moved to components after physical completion
+	ArmControl arms;//to be moved to components after physical completion
 	
-	
-	public AutoCommands(JsScaled driveStick, JsScaled uStick, NewMecDriveCmd mDrive, ArmControl arms,
-			TowerControl tower,  ADXRS450_Gyro gyro, Timer timer) {
-		this.driveStick = driveStick;
-		this.uStick =  uStick;
-		this.mDrive = mDrive;
-		this.arms = arms;
-		this.tower = tower;
-		this.gyro = gyro;
-		this.timer = timer;
-		
-	}
 	
 	
 	
 	// test here
-		public void autoCartesianTime(double time,double speedX, double speedY ) {
+		public static void autoCartesianTime(double time,double speedX, double speedY ) {
 			if(actionState == 0) {
 				//actionFlag = true;
-				timer.stop();
-				timer.reset();
-				timer.start();
+				Components.timer.stop();
+				Components.timer.reset();
+				Components.timer.start();
 				actionState = 1;
 			}else if(actionState ==1) {
-				if(timer.get() < time) {
-					driveStick.setpY(speedY);
-					driveStick.setpX(speedX);
-					integral += gyro.getAngle()*0.02;
-					driveStick.setpTwist(-gyro.getAngle()*mDrive.kP+integral*mDrive.kI);
+				if(Components.timer.get() < time) {
+					Components.driveStick.setpY(speedY);
+					Components.driveStick.setpX(speedX);
+					integral += Components.gyro.getAngle()*0.02;
+					Components.driveStick.setpTwist(-Components.gyro.getAngle()*Components.mDrive.kP+integral*Components.mDrive.kI);
 				}else {
 					actionState =2;
 				} 
 			}else if(actionState ==2) {				
-				driveStick.killVStick();
-				timer.stop();
-				timer.reset();
+				Components.driveStick.killVStick();
+				Components.timer.stop();
+				Components.timer.reset();
 				actionState = 0;
 				actionFlag = false;
 				integral = 0;
@@ -74,15 +57,15 @@ public class AutoCommands{
 					
 				} else if(actionState == 1) {
 					if(rf.getRangeInches()< inches) {
-						driveStick.setpY(speedY);
-						driveStick.setpX(speedX);
+						Components.driveStick.setpY(speedY);
+						Components.driveStick.setpX(speedX);
 						integral += Components.gyro.getAngle()*0.02;
-						driveStick.setpTwist(-gyro.getAngle()*mDrive.kP+integral*mDrive.kI);
+						Components.driveStick.setpTwist(-Components.gyro.getAngle()*Components.mDrive.kP+integral*Components.mDrive.kI);
 					}else {
 						actionState =2;
 					}
 				}else if(actionState ==2) {
-					driveStick.killVStick();
+					Components.driveStick.killVStick();
 					Components.killRangeFinders();
 					actionState = 0;
 					actionFlag = false;
@@ -95,17 +78,17 @@ public class AutoCommands{
 				//actionFlag = true;
 				actionState =1;
 			}else if(actionState ==1) {
-				if (Math.abs(gyro.getAngle()) < Math.abs(angle) ) {
-					error = angle - gyro.getAngle();
+				if (Math.abs(Components.gyro.getAngle()) < Math.abs(angle) ) {
+					error = angle - Components.gyro.getAngle();
 					integral += error * 0.02;
-					driveStick.setpTwist(error*mDrive.kP+integral*mDrive.kI);
+					Components.driveStick.setpTwist(error*Components.mDrive.kP+integral*Components.mDrive.kI);
 				} else {
 					actionState = 2;
 				}
 			} else if(actionState ==2) {
 				error = 0;
 				integral = 0;
-				driveStick.killVStick();
+				Components.driveStick.killVStick();
 				actionState = 0;
 				actionFlag = false;
 			}
@@ -119,19 +102,38 @@ public class AutoCommands{
 					tower.towerPresetControl();
 				}else {
 					actionState = 2;
-					timer.stop();
-					timer.reset();
-					timer.start();
+					Components.timer.stop();
+					Components.timer.reset();
+					Components.timer.start();
 				}
 			} else if(actionState == 2) {
-				if(timer.get() < 2) {
+				if(Components.timer.get() < 2) {
 					arms.boxOut();
 				}else {
 					arms.boxStop();
-					timer.stop();
-					timer.reset();
+					Components.timer.stop();
+					Components.timer.reset();
 					actionState = 0;
+					actionFlag = false;
 				}
+			}
+		}
+		
+		public void delay(double time) {
+			if(actionState == 0) {
+				Components.timer.stop();
+				Components.timer.reset();
+				Components.timer.start();
+				actionState = 1;
+			}else if(actionState == 1) {
+				if(Components.timer.get() < time) {
+					actionState = 2;
+				}
+			} else if(actionState == 2) {
+				Components.timer.stop();
+				Components.timer.reset();
+				actionState = 0;
+				actionFlag = false;
 			}
 		}
 		
