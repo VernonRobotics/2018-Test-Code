@@ -17,7 +17,7 @@ public class NewMecDriveCmd implements cmd{
 	CANTalon1989 driveBackRight;
 	ADXRS450_Gyro gyro;
 	
-	double kP = 0.01;
+	double kP = 0.00975;
 	double kI = 0.0;
 	double kD = 0.0;
 	
@@ -41,7 +41,7 @@ public class NewMecDriveCmd implements cmd{
 
 	//constructor for regular CANTalon1989
 	public NewMecDriveCmd(CANTalon1989 driveFrontLeft, CANTalon1989 driveBackLeft, CANTalon1989 driveFrontRight, CANTalon1989 driveBackRight,
-			JsScaled driveStick, ADXRS450_Gyro gyro, boolean isPID) {
+			JsScaled driveStick, ADXRS450_Gyro gyro) {
 		this.driveFrontLeft = driveFrontLeft;
 		this.driveFrontRight = driveFrontRight;
 		this.driveBackLeft = driveBackLeft;
@@ -49,7 +49,7 @@ public class NewMecDriveCmd implements cmd{
 		mecDrive = new MecanumDrive(driveFrontLeft,driveBackLeft,driveFrontRight, driveBackRight);
 		this.driveStick = driveStick;
 		this.gyro = gyro;
-		this.isPID = isPID;
+		
 		}
 	
 	
@@ -90,7 +90,7 @@ public class NewMecDriveCmd implements cmd{
 	
 		
 		
-		mecDrive.driveCartesian(driveStick.pX, -driveStick.pY, driveStick.pTwist);
+		mecDrive.driveCartesian(-driveStick.pX, -driveStick.pY, -driveStick.pTwist);
 		
 		
 		

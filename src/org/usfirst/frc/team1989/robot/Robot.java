@@ -24,14 +24,16 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	Double angle;
 	Double inches;
 	writemessage write= new writemessage();
-	NewMecDriveCmd mDrive = new NewMecDriveCmd(Components.frontLeft,Components.backLeft,Components.frontRight,Components.backRight,Components.driveStick,Components.gyro, false);
-	
+	NewMecDriveCmd mDrive = new NewMecDriveCmd(Components.frontLeft,Components.backLeft,Components.frontRight,Components.backRight,Components.driveStick,Components.gyro);
+	ArmControl arms = new ArmControl(Components.armsLeft,Components.armsRight,Components.uStick);
+	TowerControl tower = new TowerControl(Components.towerLeft, Components.towerRight, Components.uStick);
 	// Used for vertical Motion method
-	boolean motionActive;
+	boolean motionActive; 
 	double startDistance;
 	boolean actionFlag = false;
 	double integral = 0;
 	double error = 0;
+	int autoState = 0;
 	//CameraControl cam = new CameraControl()
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -42,8 +44,10 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		Components.frontLeft.setInverted(true);
 		Components.frontRight.setInverted(true);
 		Components.backLeft.setInverted(true);
+		Components.armsRight.setInverted(true);
 		
 		SharedStuff.cmdlist.add(mDrive);
+		SharedStuff.cmdlist.add(arms);
 		SharedStuff.cmdlist.add(write);
 		//r1.setAutomaticMode(true);
 	}
@@ -67,6 +71,8 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		timer.reset();
 		timer.start();
 		actionFlag = true;
+		autoState = 0;
+		
 	}
 
 	
@@ -163,16 +169,40 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	/**
 	 * This function is called periodically during autonomous.
 	 */
+	
 	@Override
 	public void autonomousPeriodic() {
 	
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).autonomousPeriodic();
 		}
-		
-		if(actionFlag) {
-			turnToAngle(90);
+		if (autoState == 0) {
+			if(actionFlag == true) {
+				autoCartesianTime(2.5,0,.5);
+			}else {
+				autoState =1;
+				timer.stop();
+				timer.reset();
+				timer.start();
+			}
+			
+		}else if(autoState == 1) {
+			if (timer.get()>1) {
+				timer.stop();
+				timer.reset();
+				autoState = 2;
+				actionFlag = true;
+			}
+		} else if(autoState == 2) {
+			if(actionFlag ==true) {
+				turnToAngle(90);
+			}else {
+				
+			}
 		}
+		
+		
+		
 	}
 		
 		
@@ -194,19 +224,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	//	write.setmessage(1, inches.toString());
 		write.updatedash();
 		
-		if(Components.driveStick.getRawButton(9) == true) {
-			Components.armsLeft.set(1);
-			Components.armsRight.set(-1);
-		}else {
-			Components.armsLeft.set(0);
-		}
 		
-		if(Components.driveStick.getRawButton(10)== true) {
-			Components.armsLeft.set(-1);
-			Components.armsRight.set(1);
-		}else {
-			Components.armsRight.set(0);
-		}
 		
 		if(Components.driveStick.getRawButton(7)) {
 			Components.gyro.reset();
@@ -276,9 +294,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		}
 	}
 	
-	public void turnAround(double angle) {
-		
-	}
+	
 	
 	public void testInit() {
 		motionActive = false;

@@ -10,8 +10,8 @@ public class TowerControl implements cmd {
 	CANTalon1989 leftMotor;
 	ArmControl arms;
 	JsScaled uStick;
-	DigitalInput switchSwitch = new DigitalInput(1);
-	DigitalInput lowSwitch = new DigitalInput(2);
+	DigitalInput switchSwitch;
+	DigitalInput lowSwitch;
 	Counter counter = new Counter(switchSwitch);
 	int towerState = 0;
 	double towerScaleTime = 0.75;

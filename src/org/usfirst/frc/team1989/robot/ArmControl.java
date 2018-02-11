@@ -16,12 +16,12 @@ public class ArmControl implements cmd {
 	
 	//Class Methods
 	public void boxIn() {
-		leftMotor.set(-0.5);
-		rightMotor.set(-0.5);
+		leftMotor.set(1);
+		rightMotor.set(1);
 	}
 	public void boxOut() {
-		leftMotor.set(0.5);
-		rightMotor.set(0.5);
+		leftMotor.set(-1);
+		rightMotor.set(-1);
 	}
 	public void boxStop() {
 		leftMotor.set(0);
