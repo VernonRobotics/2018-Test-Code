@@ -101,7 +101,7 @@ public class NewMecDriveCmd implements cmd{
 
 
 
-	@Override
+
 	public void testInit() {
 		// TODO Auto-generated method stub
 		
@@ -109,7 +109,7 @@ public class NewMecDriveCmd implements cmd{
 
 
 
-	@Override
+
 	public void testPeriodic() {
 		// TODO Auto-generated method stub
 		

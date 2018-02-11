@@ -1,5 +1,10 @@
-package org.usfirst.frc.team1989.robot;
+package org.usfirst.frc.team1989.robot.Deprecated;
 import edu.wpi.first.wpilibj.*;
+
+import org.usfirst.frc.team1989.robot.CANTalon1989;
+import org.usfirst.frc.team1989.robot.JsScaled;
+import org.usfirst.frc.team1989.robot.cmd;
+
 import com.ctre.*;
 import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;

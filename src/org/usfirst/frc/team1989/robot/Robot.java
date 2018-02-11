@@ -13,10 +13,8 @@ package org.usfirst.frc.team1989.robot;
 //Back Right: 9
 
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Servo;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
  public class Robot extends IterativeRobot {
@@ -200,13 +198,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 				
 			}
 		}
-		
-		
-		
-	}
-		
-		
-	
+	}	
 
 	/**
 	 * This function is called periodically during operator control.
@@ -238,61 +230,6 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	 */
 
 	
-	/*
-	 * Disable all Drive Motors
-	 */
-	public void killDriveMotors() {
-		Components.frontLeft.set(0);
-		Components.backLeft.set(0);
-		Components.frontRight.set(0);
-		Components.backRight.set(0);
-	}
-	/*
-	 * verticalMotionActive defined at top.
-	 */
-	public void moveVertical(double distance, double speed, Ultrasonic rangeFinder) {
-				
-		if(motionActive == false) {
-			Components.killRangeFinders();
-			rangeFinder.setEnabled(true);
-			startDistance = rangeFinder.getRangeInches();
-			motionActive = true;
-		}
-		
-		double currentDistance = rangeFinder.getRangeInches();
-		if(currentDistance - startDistance < distance) {
-			Components.frontLeft.set(-speed);
-			Components.backLeft.set(-speed);
-			Components.frontRight.set(speed);
-			Components.backRight.set(speed);
-		} else {
-			killDriveMotors();
-			rangeFinder.setEnabled(false);
-			motionActive = false;
-		}
-	}
-	
-	public void moveHorizontal(double distance, double speed, Ultrasonic rangeFinder) {
-		
-		if(motionActive == false) {
-			Components.killRangeFinders();
-			rangeFinder.setEnabled(true);
-			startDistance = rangeFinder.getRangeInches();
-			motionActive = true;
-		}
-		
-		double currentDistance = rangeFinder.getRangeInches();
-		if(currentDistance - startDistance < distance) {
-			Components.frontLeft.set(-speed);
-			Components.backLeft.set(speed);
-			Components.frontRight.set(speed);
-			Components.backRight.set(-speed);
-		} else {
-			killDriveMotors();
-			rangeFinder.setEnabled(false);
-			motionActive = false;
-		}
-	}
 	
 	
 	

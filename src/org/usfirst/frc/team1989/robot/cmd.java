@@ -14,8 +14,8 @@ public interface cmd {
 	 */
     public void autonomousInit();
     public void autonomousPeriodic() ;
-    public void testInit();
-    public void testPeriodic();
+    /*public void testInit();
+    public void testPeriodic();*/
     public void teleopInit();
     public void teleopPeriodic() ;
 
