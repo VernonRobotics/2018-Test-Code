@@ -1,4 +1,8 @@
-package org.usfirst.frc.team1989.robot;
+package org.usfirst.frc.team1989.robot.Deprecated;
+
+import org.usfirst.frc.team1989.robot.CANTalon1989;
+import org.usfirst.frc.team1989.robot.JsScaled;
+import org.usfirst.frc.team1989.robot.cmd;
 
 import edu.wpi.first.wpilibj.RobotDrive;
 

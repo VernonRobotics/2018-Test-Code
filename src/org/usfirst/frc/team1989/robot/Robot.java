@@ -13,10 +13,8 @@ package org.usfirst.frc.team1989.robot;
 //Back Right: 9
 
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Servo;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
  public class Robot extends IterativeRobot {
@@ -129,6 +127,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 				
 			}
 		}
+<<<<<<< HEAD
 		
 		
 		*/
@@ -136,6 +135,9 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		
 		
 	
+=======
+	}	
+>>>>>>> 37943e9487581337f88a0fed91ef1c7b1568e34e
 
 	/**
 	 * This function is called periodically during operator control.
@@ -177,6 +179,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	 */
 
 	
+<<<<<<< HEAD
 	/*
 	 * Disable all Drive Motors
 	 */
@@ -190,6 +193,8 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	 * verticalMotionActive defined at top.
 	 */
 	
+=======
+>>>>>>> 37943e9487581337f88a0fed91ef1c7b1568e34e
 	
 	
 	
