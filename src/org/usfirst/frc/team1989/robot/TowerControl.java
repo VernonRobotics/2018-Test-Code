@@ -132,8 +132,19 @@ public class TowerControl implements cmd {
 		leftMotor.set(0);
 	}
 	
+	public void setMoveSwitch(boolean move) {
+		moveSwitch = move;
+	}
+	public boolean getMoveSwitch() {
+		return moveSwitch;
+	}
+	public void setMoveScale(boolean move) {
+		moveScale = move;
+	}
 	
-	
+	public boolean getMoveScale() {
+		return moveScale;
+	}
 
 	
 	

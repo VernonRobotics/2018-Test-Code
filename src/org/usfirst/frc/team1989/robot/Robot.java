@@ -18,13 +18,14 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
  public class Robot extends IterativeRobot {
-	Timer timer = new Timer();
 	Double angle;
 	Double inches;
 	writemessage write= new writemessage();
 	NewMecDriveCmd mDrive = new NewMecDriveCmd(Components.frontLeft,Components.backLeft,Components.frontRight,Components.backRight,Components.driveStick,Components.gyro);
-	ArmControl arms = new ArmControl(Components.armsLeft,Components.armsRight,Components.uStick);
-	TowerControl tower = new TowerControl(Components.towerLeft, Components.towerRight, Components.uStick);
+//	ArmControl arms = new ArmControl(Components.armsLeft,Components.armsRight,Components.uStick);
+	//TowerControl tower = new TowerControl(Components.towerLeft, Components.towerRight, Components.uStick);
+	//AutoCommands auto = new AutoCommands(Components.driveStick,Components.uStick,mDrive,arms,tower,Components.gyro,
+	//		Components.timer);
 	// Used for vertical Motion method
 	boolean motionActive; 
 	double startDistance;
@@ -44,8 +45,9 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		Components.backLeft.setInverted(true);
 		Components.armsRight.setInverted(true);
 		
+		
 		SharedStuff.cmdlist.add(mDrive);
-		SharedStuff.cmdlist.add(arms);
+	//	SharedStuff.cmdlist.add(arms);
 		SharedStuff.cmdlist.add(write);
 		//r1.setAutomaticMode(true);
 	}
@@ -65,11 +67,10 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	 */
 	@Override
 	public void autonomousInit() {
-		timer.stop();
-		timer.reset();
-		timer.start();
-		actionFlag = true;
-		autoState = 0;
+		Components.timer.stop();
+		Components.timer.reset();
+		Components.timer.start();
+		
 		
 	}
 
@@ -86,79 +87,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	
 	
 	// test here
-	public void autoCartesianTime(double time,double speedX, double speedY ) {
-		if(state == 0) {
-			//actionFlag = true;
-			timer.stop();
-			timer.reset();
-			timer.start();
-			state = 1;
-		}else if(state ==1) {
-			if(timer.get() < time) {
-				Components.driveStick.setpY(speedY);
-				Components.driveStick.setpX(speedX);
-				integral += Components.gyro.getAngle()*0.02;
-				Components.driveStick.setpTwist(-Components.gyro.getAngle()*mDrive.kP+integral*mDrive.kI);
-			}else {
-				state =2;
-			} 
-		}else if(state ==2) {				
-			Components.driveStick.killVStick();
-			timer.stop();
-			timer.reset();
-			state = 0;
-			actionFlag = false;
-			integral = 0;
-		}
-	}
 	
-	
-	//test here
-	public void autoCartesianRange(double inches,  double speedX,double speedY, Ultrasonic rf) {
-			if (state == 0) {
-				actionFlag = false;
-				Components.killRangeFinders();
-				rf.setEnabled(true);
-				state = 1;
-				
-			} else if(state == 1) {
-				if(rf.getRangeInches()< inches) {
-					Components.driveStick.setpY(speedY);
-					Components.driveStick.setpX(speedX);
-					 integral += Components.gyro.getAngle()*0.02;
-					Components.driveStick.setpTwist(-Components.gyro.getAngle()*mDrive.kP+integral*mDrive.kI);
-				}else {
-					state =2;
-				}
-			}else if(state ==2) {
-				Components.driveStick.killVStick();
-				Components.killRangeFinders();
-				state = 0;
-				actionFlag = false;
-				integral = 0;
-			}
-	}
-	//test here
-	public void turnToAngle(double angle) {
-		if (state == 0 ) {
-			//actionFlag = true;
-			state =1;
-		}else if(state ==1) {
-			if (Math.abs(Components.gyro.getAngle()) < Math.abs(angle) ) {
-				error = angle - Components.gyro.getAngle();
-				integral += error * 0.02;
-				Components.driveStick.setpTwist(error*mDrive.kP+integral*mDrive.kI);
-			} else {
-				state = 2;
-			}
-		} else if(state ==2) {
-			error = 0;
-			integral = 0;
-			Components.driveStick.killVStick();
-			state = 0;
-			actionFlag = false;
-		}
-	}
 	
 	
 	
@@ -174,9 +103,9 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).autonomousPeriodic();
 		}
-		if (autoState == 0) {
+		/*if (autoState == 0) {
 			if(actionFlag == true) {
-				autoCartesianTime(2.5,0,.5);
+			//	autoCartesianTime(2.5,0,.5);
 			}else {
 				autoState =1;
 				timer.stop();
@@ -193,12 +122,22 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 			}
 		} else if(autoState == 2) {
 			if(actionFlag ==true) {
-				turnToAngle(90);
+				//turnToAngle(90);
 			}else {
 				
 			}
 		}
+<<<<<<< HEAD
+		
+		
+		*/
+	}
+		
+		
+	
+=======
 	}	
+>>>>>>> 37943e9487581337f88a0fed91ef1c7b1568e34e
 
 	/**
 	 * This function is called periodically during operator control.
@@ -216,9 +155,19 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	//	write.setmessage(1, inches.toString());
 		write.updatedash();
 		
-		
-		
 		if(Components.driveStick.getRawButton(7)) {
+			Components.towerLeft.set(0.8);
+		} else {
+			Components.towerLeft.set(0);
+		}
+		
+		if(Components.driveStick.getRawButton(8)) {
+			Components.towerRight.set(0.8);
+		} else {
+			Components.towerRight.set(0);
+		}
+		
+		if(Components.driveStick.getRawButton(1)) {
 			Components.gyro.reset();
 		}
 		
@@ -230,6 +179,22 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	 */
 
 	
+<<<<<<< HEAD
+	/*
+	 * Disable all Drive Motors
+	 */
+	public void killDriveMotors() {
+		Components.frontLeft.set(0);
+		Components.backLeft.set(0);
+		Components.frontRight.set(0);
+		Components.backRight.set(0);
+	}
+	/*
+	 * verticalMotionActive defined at top.
+	 */
+	
+=======
+>>>>>>> 37943e9487581337f88a0fed91ef1c7b1568e34e
 	
 	
 	
@@ -264,7 +229,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		Double blv = Components.backLeft.getMotorOutputVoltage();
 		Double brv = Components.backRight.getMotorOutputVoltage();
 
-		if (timer.get() < 10) {
+		if (Components.timer.get() < 10) {
 			Components.driveStick.setpY(1);
 		}else {
 			Components.driveStick.setpY(0);
@@ -281,7 +246,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		write.setmessage(8,brv.toString() );
 		
 		
-		if(timer.get() % 0.25 == 0) {
+		if(Components.timer.get() % 0.25 == 0) {
 			write.updatedash();
 		}
 		
