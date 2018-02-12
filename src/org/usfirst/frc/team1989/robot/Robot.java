@@ -99,6 +99,10 @@ public class Robot extends IterativeRobot {
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).autonomousPeriodic();
 		}
+		
+		
+		StartLeftSwitchLeft.run();
+		
 		/*
 		 * if (autoState == 0) { if(actionFlag == true) { //
 		 * autoCartesianTime(2.5,0,.5); }else { autoState =1; timer.stop();
@@ -166,7 +170,8 @@ public class Robot extends IterativeRobot {
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).teleopPeriodic();
 		}
-
+		StartLeftSwitchLeft.run();
+		System.out.println("test");
 		/*
 		 * Button 0: Left Button 1: Center Button 2: Right Button 3: True = Scale, False
 		 * = Switch

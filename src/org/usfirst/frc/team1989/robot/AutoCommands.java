@@ -10,7 +10,7 @@ public class AutoCommands{
 	static int actionState = 0;//to be used to differentiate between different states in an individual command
 	static double integral=0;
 	double error=0;
-	static boolean actionFlag=false;
+	public static boolean actionFlag=false;
 	int autoState=0;//to be used to differentiate between different commands in a preset auto
 	
 	TowerControl tower;//to be moved to components after physical completion
@@ -22,7 +22,7 @@ public class AutoCommands{
 	// test here
 		public static void autoCartesianTime(double time,double speedX, double speedY ) {
 			if(actionState == 0) {
-				//actionFlag = true;
+				actionFlag = true;
 				Components.timer.stop();
 				Components.timer.reset();
 				Components.timer.start();
@@ -43,7 +43,9 @@ public class AutoCommands{
 				actionState = 0;
 				actionFlag = false;
 				integral = 0;
+				
 			}
+		
 		}
 		
 		
