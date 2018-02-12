@@ -8,7 +8,6 @@ public class StartLeftSwitchLeft {
 	static int autoState = 0;
 	public static void run() {
 		if(autoState == 0) {
-			System.out.println("go");
 			AutoCommands.autoCartesianTime(1.5,0,1);
 			if(AutoCommands.actionFlag== false) {
 				autoState++;
@@ -19,7 +18,7 @@ public class StartLeftSwitchLeft {
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
-		}
+		} 
 	
 			
 			

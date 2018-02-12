@@ -24,7 +24,7 @@ public final class Components {
 	//static DigitalInput switchSwitch = new DigitalInput(0);
 	//static DigitalInput lowSwitch = new DigitalInput(1);
 	static Timer timer = new Timer();
-	//static Ultrasonic r1 = new Ultrasonic(0,1);
+	public static Ultrasonic r1 = new Ultrasonic(0,1);
 	//static Ultrasonic r2 = new Ultrasonic(0,2);
 	//static Ultrasonic r3 = new Ultrasonic(0,3);
 	
