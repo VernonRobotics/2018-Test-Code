@@ -3,18 +3,18 @@ package org.usfirst.frc.team1989.robot;
 
 import edu.wpi.first.wpilibj.Ultrasonic;
 
-public class AutoCommands{
+public  class AutoCommands{
 	
 	
 	
 	static int actionState = 0;//to be used to differentiate between different states in an individual command
 	static double integral=0;
-	double error=0;
+	static double error=0;
 	public static boolean actionFlag=false;
 	int autoState=0;//to be used to differentiate between different commands in a preset auto
 	
-	TowerControl tower;//to be moved to components after physical completion
-	ArmControl arms;//to be moved to components after physical completion
+	static TowerControl tower;//to be moved to components after physical completion
+	static ArmControl arms;//to be moved to components after physical completion
 	
 	
 	
@@ -50,7 +50,7 @@ public class AutoCommands{
 		
 		
 		//test here
-		public void autoCartesianRange(double inches,  double speedX,double speedY, Ultrasonic rf) {
+		public static void autoCartesianRange(double inches,  double speedX,double speedY, Ultrasonic rf) {
 				if (actionState == 0) {
 					actionFlag = false;
 					Components.killRangeFinders();
@@ -75,7 +75,7 @@ public class AutoCommands{
 				}
 		}
 		//test here
-		public void turnToAngle(double angle) {
+		public static void turnToAngle(double angle) {
 			if (actionState == 0 ) {
 				//actionFlag = true;
 				actionState =1;
@@ -95,7 +95,7 @@ public class AutoCommands{
 				actionFlag = false;
 			}
 		}
-		public void boxOutputSwitch() {
+		public static void boxOutputSwitch() {
 			if(actionState == 0) {
 				actionState = 1;
 				tower.setMoveSwitch(true);
@@ -121,7 +121,7 @@ public class AutoCommands{
 			}
 		}
 		
-		public void delay(double time) {
+		public static void delay(double time) {
 			if(actionState == 0) {
 				Components.timer.stop();
 				Components.timer.reset();

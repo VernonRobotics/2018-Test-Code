@@ -135,10 +135,12 @@ public class Robot extends IterativeRobot {
 		// write.setmessage(1, inches.toString());
 		Components.write.updatedash();
 
-		if (Components.driveStick.getRawButton(7)) {
+		if (Components.driveStick.getRawButton(1)) {
 			Components.towerLeft.set(0.8);
+			Components.towerRight.set(0.8);
 		} else {
 			Components.towerLeft.set(0);
+			Components.towerRight.set(0);
 		}
 
 		if (Components.driveStick.getRawButton(8)) {
@@ -170,8 +172,8 @@ public class Robot extends IterativeRobot {
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).teleopPeriodic();
 		}
-		StartLeftSwitchLeft.run();
-		System.out.println("test");
+		//StartLeftSwitchLeft.run();
+		//System.out.println("test");
 		/*
 		 * Button 0: Left Button 1: Center Button 2: Right Button 3: True = Scale, False
 		 * = Switch
@@ -187,7 +189,7 @@ public class Robot extends IterativeRobot {
 				}
 			} else {
 				if (gameData.charAt(0) == 'L') {
-					StartLeftSwitchLeft.run();
+					//StartLeftSwitchLeft.run();
 				} else {
 					// StartLeftSwitchRight.run();
 				}
