@@ -9,6 +9,8 @@ package org.usfirst.frc.team1989.robot;
 
 import org.usfirst.frc.team1989.robot.AutoRoutines.StartLeftSwitchLeft;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj.DriverStation;
 
 //Front Left:6
@@ -24,7 +26,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot {
 	Double angle;
-	Double inches;
+	Double inches1;
+	Double inches2;
+	Double inches3;
 
 	// ArmControl arms = new
 	// ArmControl(Components.armsLeft,Components.armsRight,Components.uStick);
@@ -41,7 +45,7 @@ public class Robot extends IterativeRobot {
 	double error = 0;
 	int autoState = 0;
 	String gameData;
-
+	
 	// CameraControl cam = new CameraControl()
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -53,7 +57,9 @@ public class Robot extends IterativeRobot {
 		Components.frontRight.setInverted(true);
 		Components.backLeft.setInverted(true);
 		Components.armsRight.setInverted(true);
-
+		
+		Components.towerLeft.setNeutralMode(NeutralMode.Coast);
+		Components.towerRight.setNeutralMode(NeutralMode.Coast);
 		SharedStuff.cmdlist.add(Components.mDrive);
 		// SharedStuff.cmdlist.add(arms);
 		SharedStuff.cmdlist.add(Components.write);
@@ -123,37 +129,76 @@ public class Robot extends IterativeRobot {
 	 * This function is called periodically during operator control.
 	 */
 	@Override
+	public void teleopInit() {
+		Components.frontLeft.setNeutralMode(NeutralMode.Coast);
+		Components.frontRight.setNeutralMode(NeutralMode.Coast);
+		Components.backLeft.setNeutralMode(NeutralMode.Coast);
+		Components.backRight.setNeutralMode(NeutralMode.Coast);
+		Components.towerLeft.setNeutralMode(NeutralMode.Coast);
+		Components.towerRight.setNeutralMode(NeutralMode.Coast);
+
+		
+		
+		
+		Components.r1.setAutomaticMode(true);
+	}
+	
+	
+	@Override
 	public void teleopPeriodic() {
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).teleopPeriodic();
 		}
 
 		angle = Components.gyro.getAngle();
-		// inches = r1.getRangeInches();
+		inches1 = Components.r1.getRangeInches();
+		inches2 = Components.r2.getRangeInches();
+		inches3 = Components.r3.getRangeInches();
+	
+		
+		Components.write.setmessage(0, inches1.toString());
+		Components.write.setmessage(1, inches2.toString());
+		Components.write.setmessage(2, inches3.toString());
+		Components.write.setmessage(5, angle.toString());
+		Components.write.updatedash();
 
+
+/*
 		Components.write.setmessage(0, angle.toString());
 		// write.setmessage(1, inches.toString());
 		Components.write.updatedash();
-
-		if (Components.driveStick.getRawButton(1)) {
-			Components.towerLeft.set(0.8);
-			Components.towerRight.set(0.8);
+*/
+		if (Components.driveStick.getRawButton(7)) {
+			Components.towerLeft.set(0.5);
+			Components.towerRight.set(0.5);
 		} else {
 			Components.towerLeft.set(0);
 			Components.towerRight.set(0);
 		}
 
 		if (Components.driveStick.getRawButton(8)) {
-			Components.towerRight.set(0.8);
+			Components.towerLeft.set(-1);
+			Components.towerRight.set(-1);
 		} else {
+			Components.towerLeft.set(0);
+			Components.towerRight.set(0);
+		}
+		if (Components.driveStick.getRawButton(9)) {
+			Components.towerLeft.set(-0.3);
+			Components.towerRight.set(-0.3);
+		} else {
+			Components.towerLeft.set(0);
 			Components.towerRight.set(0);
 		}
 
 		if (Components.driveStick.getRawButton(1)) {
 			Components.gyro.reset();
 		}
-
 	}
+		
+		
+		
+	
 
 	/*
 	 * Disable all RangeFinders

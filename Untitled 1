@@ -19,3 +19,8 @@ Range Finders and Other Things:
 		
 Turning Around
 	Parameters: Angle (double)
+	
+Timer Values needed in 
+	StartCenterSwitchRight
+	StartCenterSwitchLeft
+	StartCenterScaleLeft

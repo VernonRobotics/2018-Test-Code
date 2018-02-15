@@ -24,9 +24,9 @@ public final class Components {
 	//static DigitalInput switchSwitch = new DigitalInput(0);
 	//static DigitalInput lowSwitch = new DigitalInput(1);
 	static Timer timer = new Timer();
-	public static Ultrasonic r1 = new Ultrasonic(0,1);
-	public static Ultrasonic r2 = new Ultrasonic(0,2);
-	public static Ultrasonic r3 = new Ultrasonic(0,3);
+	public static Ultrasonic r1 = new Ultrasonic(10,9);
+	public static Ultrasonic r2 = new Ultrasonic(8,7);
+	public static Ultrasonic r3 = new Ultrasonic(6,5);
 	
 	static NewMecDriveCmd mDrive = new NewMecDriveCmd(Components.frontLeft,Components.backLeft,Components.frontRight,Components.backRight,Components.driveStick,Components.gyro);
 	
