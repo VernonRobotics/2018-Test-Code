@@ -133,8 +133,25 @@ public class NewMecDriveCmd implements cmd{
 	public void teleopPeriodic() {
 		// TODO Auto-generated method stub
 		
-		
+		if(driveStick.getRawButton(1) == true) {
+			mecDrive.driveCartesian(-driveStick.sgetX()/2,driveStick.sgetY()/2, -driveStick.sgetTwist()/2, gyro.getAngle());
+	
+		}else if(driveStick.getRawButton(9) == true) {
+			mecDrive.driveCartesian(-0.5,driveStick.sgetY()/2, -driveStick.sgetTwist()/2, gyro.getAngle());
+
+		}else if(driveStick.getRawButton(10) == true) {
+			mecDrive.driveCartesian(0.5,driveStick.sgetY()/2, -driveStick.sgetTwist()/2, gyro.getAngle());
+
+		}
+		else {
 			mecDrive.driveCartesian(-driveStick.sgetX(),driveStick.sgetY(), -driveStick.sgetTwist(), gyro.getAngle());
+
+		}
+			
+		
+		
+		
+		
 	
 		
 		

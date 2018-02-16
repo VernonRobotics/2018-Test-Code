@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1989.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
@@ -10,9 +12,9 @@ public class TowerControl implements cmd {
 	CANTalon1989 leftMotor;
 	ArmControl arms;
 	JsScaled uStick;
-	DigitalInput switchSwitch;
-	DigitalInput lowSwitch;
-	Counter counter = new Counter(switchSwitch);
+	//DigitalInput switchSwitch;
+//	DigitalInput lowSwitch;
+//	Counter counter = new Counter(switchSwitch);
 	int towerState = 0;
 	double towerScaleTime = 0.75;
 	boolean moveSwitch = false;
@@ -38,6 +40,7 @@ public class TowerControl implements cmd {
 	
 	
 	public void towerPresetControl() {
+		/* keep commented until limit switches are plugged in
 		if (moveSwitch) {
 			if (!switchSwitch.get()) {
 				if (counter.get() % 2 == 0) {
@@ -68,6 +71,7 @@ public class TowerControl implements cmd {
 				moveSwitch = false;
 			}
 		}
+		*/
 	}
 	
 	
@@ -118,8 +122,8 @@ public class TowerControl implements cmd {
 				timer.reset();
 			}
 		}
-		
-	}*/
+	}*/	
+	
 	
 	public void towerControl(double speed){
 		rightMotor.set(speed);
@@ -155,7 +159,7 @@ public class TowerControl implements cmd {
 	@Override
 	public void autonomousInit() {
 		// TODO Auto-generated method stub
-		counter.reset();
+		//counter.reset();
 	}
 
 	@Override
@@ -177,13 +181,16 @@ public class TowerControl implements cmd {
 	@Override
 	public void teleopInit() {
 		// TODO Auto-generated method stub
-		counter.reset();
+		//counter.reset();
+		leftMotor.setNeutralMode(NeutralMode.Brake);
+		rightMotor.setNeutralMode(NeutralMode.Brake);
+		
 	}
 
 	@Override
 	public void teleopPeriodic() {
 		// TODO Auto-generated method stub
-		
+		/*
 		if(uStick.getRawButton(12)==true)
 			moveScale = true;
 			moveSwitch = false;
@@ -192,7 +199,7 @@ public class TowerControl implements cmd {
 			moveSwitch = true;
 			moveScale = false;
 		
-		towerPresetControl();
+		//towerPresetControl();
 	
 		
 		if(lowSwitch.get()) {
@@ -204,15 +211,9 @@ public class TowerControl implements cmd {
 				towerStop();
 			}
 		}else {
-			if(uStick.getY() > .15) {
-				towerControl(0.5);
-			} else if(uStick.getY() < -.15) {
-				towerControl(-0.5);
-			} else {
-				towerStop();
-			}
-		}
-		
+			towerControl(uStick.sgetY());
+		}*/
+		towerControl(-uStick.sgetY());
 	}
 	
 }

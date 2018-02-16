@@ -16,7 +16,12 @@ public  class AutoCommands{
 	static TowerControl tower;//to be moved to components after physical completion
 	static ArmControl arms;//to be moved to components after physical completion
 	
-	
+	/*
+	 * Autonomous Methods all of these methods are used by checking an action which
+	 * is turned on by the different functions when the function starts the flag is
+	 * checked which doesn't uncheck until the end of the function
+	 * 
+	 */
 	
 	
 	// test here

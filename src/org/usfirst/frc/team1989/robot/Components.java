@@ -29,7 +29,9 @@ public final class Components {
 	public static Ultrasonic r3 = new Ultrasonic(6,5);
 	
 	static NewMecDriveCmd mDrive = new NewMecDriveCmd(Components.frontLeft,Components.backLeft,Components.frontRight,Components.backRight,Components.driveStick,Components.gyro);
-	
+	static ArmControl arms = new ArmControl(Components.armsLeft,Components.armsRight,Components.uStick);
+	static TowerControl tower = new TowerControl(Components.towerLeft, Components.towerRight, Components.uStick);
+	//static CameraControl cam = new CameraControl()
 	/*
 	 * Disable all Drive Motors
 	 */

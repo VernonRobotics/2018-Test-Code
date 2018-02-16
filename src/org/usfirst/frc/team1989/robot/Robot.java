@@ -30,13 +30,8 @@ public class Robot extends IterativeRobot {
 	Double inches2;
 	Double inches3;
 
-	// ArmControl arms = new
-	// ArmControl(Components.armsLeft,Components.armsRight,Components.uStick);
-	// TowerControl tower = new TowerControl(Components.towerLeft,
-	// Components.towerRight, Components.uStick);
-	// AutoCommands auto = new
-	// AutoCommands(Components.driveStick,Components.uStick,mDrive,arms,tower,Components.gyro,
-	// Components.timer);
+
+	
 	// Used for vertical Motion method
 	boolean motionActive;
 	double startDistance;
@@ -46,7 +41,7 @@ public class Robot extends IterativeRobot {
 	int autoState = 0;
 	String gameData;
 	
-	// CameraControl cam = new CameraControl()
+
 	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.
@@ -57,13 +52,14 @@ public class Robot extends IterativeRobot {
 		Components.frontRight.setInverted(true);
 		Components.backLeft.setInverted(true);
 		Components.armsRight.setInverted(true);
+		Components.towerLeft.setNeutralMode(NeutralMode.Brake);
+		Components.towerRight.setNeutralMode(NeutralMode.Brake);
 		
-		Components.towerLeft.setNeutralMode(NeutralMode.Coast);
-		Components.towerRight.setNeutralMode(NeutralMode.Coast);
 		SharedStuff.cmdlist.add(Components.mDrive);
-		// SharedStuff.cmdlist.add(arms);
+		SharedStuff.cmdlist.add(Components.arms);
+		SharedStuff.cmdlist.add(Components.tower);
 		SharedStuff.cmdlist.add(Components.write);
-		// r1.setAutomaticMode(true);
+		Components.r1.setAutomaticMode(true);
 	}
 
 	/**
@@ -87,13 +83,7 @@ public class Robot extends IterativeRobot {
 
 	}
 
-	/*
-	 * Autonomous Methods all of these methods are used by checking an action which
-	 * is turned on by the different functions when the function starts the flag is
-	 * checked which doesn't uncheck until the end of the function
-	 * 
-	 */
-	int state = 0;
+
 
 	/**
 	 * This function is called periodically during autonomous.
@@ -107,22 +97,9 @@ public class Robot extends IterativeRobot {
 		}
 		
 		
-		StartLeftSwitchLeft.run();
 		
-		/*
-		 * if (autoState == 0) { if(actionFlag == true) { //
-		 * autoCartesianTime(2.5,0,.5); }else { autoState =1; timer.stop();
-		 * timer.reset(); timer.start(); }
-		 * 
-		 * }else if(autoState == 1) { if (timer.get()>1) { timer.stop(); timer.reset();
-		 * autoState = 2; actionFlag = true; } } else if(autoState == 2) { if(actionFlag
-		 * ==true) { //turnToAngle(90); }else {
-		 * 
-		 * } }
-		 * 
-		 * 
-		 * 
-		 */
+		
+		
 	}
 
 	/**
@@ -134,13 +111,12 @@ public class Robot extends IterativeRobot {
 		Components.frontRight.setNeutralMode(NeutralMode.Coast);
 		Components.backLeft.setNeutralMode(NeutralMode.Coast);
 		Components.backRight.setNeutralMode(NeutralMode.Coast);
-		Components.towerLeft.setNeutralMode(NeutralMode.Coast);
-		Components.towerRight.setNeutralMode(NeutralMode.Coast);
+		
 
 		
 		
 		
-		Components.r1.setAutomaticMode(true);
+		
 	}
 	
 	
@@ -168,29 +144,7 @@ public class Robot extends IterativeRobot {
 		// write.setmessage(1, inches.toString());
 		Components.write.updatedash();
 */
-		if (Components.driveStick.getRawButton(7)) {
-			Components.towerLeft.set(0.5);
-			Components.towerRight.set(0.5);
-		} else {
-			Components.towerLeft.set(0);
-			Components.towerRight.set(0);
-		}
-
-		if (Components.driveStick.getRawButton(8)) {
-			Components.towerLeft.set(-1);
-			Components.towerRight.set(-1);
-		} else {
-			Components.towerLeft.set(0);
-			Components.towerRight.set(0);
-		}
-		if (Components.driveStick.getRawButton(9)) {
-			Components.towerLeft.set(-0.3);
-			Components.towerRight.set(-0.3);
-		} else {
-			Components.towerLeft.set(0);
-			Components.towerRight.set(0);
-		}
-
+		
 		if (Components.driveStick.getRawButton(1)) {
 			Components.gyro.reset();
 		}
@@ -225,51 +179,6 @@ public class Robot extends IterativeRobot {
 		 * 
 		 * None of the above = drive straight
 		 */
-		if (SmartDashboard.getBoolean("DB/Button 0", true)) {
-			if (SmartDashboard.getBoolean("DB/Button 3", true)) {
-				if (gameData.charAt(1) == 'L') {
-					// StartLeftScaleLeft.run();
-				} else {
-					// StartLeftScaleRight.run();
-				}
-			} else {
-				if (gameData.charAt(0) == 'L') {
-					//StartLeftSwitchLeft.run();
-				} else {
-					// StartLeftSwitchRight.run();
-				}
-			}
-
-		} else if (SmartDashboard.getBoolean("DB/Button 1", true)) {
-			if (SmartDashboard.getBoolean("DB/Button 3", true)) {
-				if (gameData.charAt(1) == 'L') {
-					// StartCenterScaleLeft.run();
-				} else {
-					// StartCenterScaleRight.run();
-				}
-			} else {
-				if (gameData.charAt(0) == 'L') {
-					// StartCenterSwitchLeft.run();
-				} else {
-					// StartCenterSwitchRight.run();
-				}
-			}
-		} else if (SmartDashboard.getBoolean("DB/Button 2", true)) {
-			if (SmartDashboard.getBoolean("DB/Button 3", true)) {
-				if (gameData.charAt(1) == 'L') {
-					// StartRightScaleLeft.run();
-				} else {
-					// StartRightScaleRight.run();
-				}
-			} else {
-				if (gameData.charAt(0) == 'L') {
-					// StartRightSwitchLeft.run();
-				} else {
-					// StartRightSwitchRight.run();
-				}
-			}
-		} else {
-			// DriveForward.run(); today
-		}
+		
 	}
 }
