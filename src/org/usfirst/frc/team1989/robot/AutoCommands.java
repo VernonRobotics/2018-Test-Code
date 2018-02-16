@@ -109,11 +109,18 @@ public class AutoCommands{
 					tower.towerPresetControl();
 				}else {
 					actionState = 2;
+					}
+			} else if(actionState == 3) {
+				autoCartesianTime(0.25,0, 0.4);
+				if(actionFlag== false) {
+					actionFlag = true;
+					actionState++;
 					Components.timer.stop();
 					Components.timer.reset();
 					Components.timer.start();
 				}
-			} else if(actionState == 2) {
+			}
+			else if(actionState == 4) {
 				if(Components.timer.get() < 2) {
 					arms.boxOut();
 				}else {
