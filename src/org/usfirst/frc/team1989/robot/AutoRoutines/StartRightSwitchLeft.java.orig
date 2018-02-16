@@ -5,10 +5,17 @@ import org.usfirst.frc.team1989.robot.Components;
 
 public class StartRightSwitchLeft {
 	static int autoState = 0;
+<<<<<<< HEAD
 	static int x = 0;
 	public static void run() {
 		if(autoState == 0) {
 			AutoCommands.autoCartesianRange(AutoDistances.startToMidPath, 0, 0.5, Components.r1);
+=======
+	static int x=  0;
+	public static void run() {
+		if(autoState == 0) {
+			AutoCommands.autoCartesianRange(x, 0, 0.5, Components.r1);
+>>>>>>> 4e0ed07cb35bc13283f79c7a9a795c54a3b644fe
 			
 			if(AutoCommands.actionFlag== false) {
 				autoState++;
@@ -20,7 +27,11 @@ public class StartRightSwitchLeft {
 				autoState++;
 			}
 		} else if (autoState == 2) {
+<<<<<<< HEAD
 			AutoCommands.autoCartesianRange(AutoDistances.midPathCrossSwitch, -0.5, 0, Components.r3);
+=======
+			AutoCommands.turnToAngle(-90);
+>>>>>>> 4e0ed07cb35bc13283f79c7a9a795c54a3b644fe
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
@@ -30,7 +41,11 @@ public class StartRightSwitchLeft {
 				autoState++;
 			}
 		} else if (autoState == 4) {
+<<<<<<< HEAD
 			AutoCommands.autoCartesianRange(AutoDistances.midPathToSwitch, 0, -0.5, Components.r1);
+=======
+			AutoCommands.autoCartesianRange(x, 0, 0.5, Components.r1);
+>>>>>>> 4e0ed07cb35bc13283f79c7a9a795c54a3b644fe
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
@@ -38,6 +53,7 @@ public class StartRightSwitchLeft {
 			AutoCommands.delay(1);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
+<<<<<<< HEAD
 			} 
 		
 		} else if (autoState == 6) {
@@ -53,6 +69,10 @@ public class StartRightSwitchLeft {
 			} 
 		
 		} else if (autoState == 8) {
+=======
+			}
+		} else if (autoState == 6) {
+>>>>>>> 4e0ed07cb35bc13283f79c7a9a795c54a3b644fe
 			AutoCommands.boxOutputSwitch();
 			if(AutoCommands.actionFlag == false) {
 				autoState++;

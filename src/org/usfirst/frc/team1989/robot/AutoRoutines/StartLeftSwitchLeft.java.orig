@@ -3,13 +3,18 @@ package org.usfirst.frc.team1989.robot.AutoRoutines;
 import org.usfirst.frc.team1989.robot.AutoCommands;
 import org.usfirst.frc.team1989.robot.Components;
 
-public class StartRightSwitchRight {
+public class StartLeftSwitchLeft {
+
+
 	static int autoState = 0;
-	static int x=  0;
 	public static void run() {
 		if(autoState == 0) {
+<<<<<<< HEAD
 			AutoCommands.autoCartesianRange(AutoDistances.startToSwitch, 0, 0.5, Components.r1);
 			
+=======
+			AutoCommands.autoCartesianTime(1.5,0,1);
+>>>>>>> 4e0ed07cb35bc13283f79c7a9a795c54a3b644fe
 			if(AutoCommands.actionFlag== false) {
 				autoState++;
 			}
@@ -20,7 +25,7 @@ public class StartRightSwitchRight {
 				autoState++;
 			}
 		} else if (autoState == 2) {
-			AutoCommands.turnToAngle(-90);
+			AutoCommands.turnToAngle(90);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
@@ -34,8 +39,8 @@ public class StartRightSwitchRight {
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
-		}
-			
+		} 
+	
 			
 			
 			
@@ -47,4 +52,5 @@ public class StartRightSwitchRight {
 		
 		
 	}
+	
 }

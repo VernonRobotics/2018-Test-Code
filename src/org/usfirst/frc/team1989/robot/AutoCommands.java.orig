@@ -3,7 +3,7 @@ package org.usfirst.frc.team1989.robot;
 
 import edu.wpi.first.wpilibj.Ultrasonic;
 
-public class AutoCommands{
+public  class AutoCommands{
 	
 	
 	
@@ -15,6 +15,10 @@ public class AutoCommands{
 	
 	static TowerControl tower;//to be moved to components after physical completion
 	static ArmControl arms;//to be moved to components after physical completion
+<<<<<<< HEAD
+=======
+	
+>>>>>>> 4e0ed07cb35bc13283f79c7a9a795c54a3b644fe
 	
 	/*
 	 * Autonomous Methods all of these methods are used by checking an action which
