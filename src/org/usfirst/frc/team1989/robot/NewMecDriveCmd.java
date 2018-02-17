@@ -134,17 +134,17 @@ public class NewMecDriveCmd implements cmd{
 		// TODO Auto-generated method stub
 		
 		if(driveStick.getRawButton(1) == true) {
-			mecDrive.driveCartesian(-driveStick.sgetX()/2,driveStick.sgetY()/2, -driveStick.sgetTwist()/2, gyro.getAngle());
+			mecDrive.driveCartesian(-driveStick.sgetX()/2,driveStick.sgetY()/2, -driveStick.sgetTwist()/2);
 	
 		}else if(driveStick.getRawButton(9) == true) {
-			mecDrive.driveCartesian(-0.5,driveStick.sgetY()/2, -driveStick.sgetTwist()/2, gyro.getAngle());
+			mecDrive.driveCartesian(-0.5,driveStick.sgetY()/2, -driveStick.sgetTwist()/2);
 
 		}else if(driveStick.getRawButton(10) == true) {
-			mecDrive.driveCartesian(0.5,driveStick.sgetY()/2, -driveStick.sgetTwist()/2, gyro.getAngle());
+			mecDrive.driveCartesian(0.5,driveStick.sgetY()/2, -driveStick.sgetTwist()/2);
 
 		}
 		else {
-			mecDrive.driveCartesian(-driveStick.sgetX(),driveStick.sgetY(), -driveStick.sgetTwist(), gyro.getAngle());
+			mecDrive.driveCartesian(-driveStick.getX(),driveStick.getY(), -driveStick.sgetTwist());
 
 		}
 			

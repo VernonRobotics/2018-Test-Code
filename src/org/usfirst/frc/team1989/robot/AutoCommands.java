@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1989.robot;
 
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 public class AutoCommands{
@@ -12,9 +13,9 @@ public class AutoCommands{
 	static double error=0;
 	public static boolean actionFlag=false;
 	int autoState=0;//to be used to differentiate between different commands in a preset auto
+	static Timer rampTime = new Timer();
+	 
 	
-	static TowerControl tower;//to be moved to components after physical completion
-	static ArmControl arms;//to be moved to components after physical completion
 	
 	/*
 	 * Autonomous Methods all of these methods are used by checking an action which
@@ -34,8 +35,8 @@ public class AutoCommands{
 				actionState = 1;
 			}else if(actionState ==1) {
 				if(Components.timer.get() < time) {
-					Components.driveStick.setpY(speedY);
-					Components.driveStick.setpX(speedX);
+					Components.driveStick.setpY(rampSpeedTime(time,speedY));
+					Components.driveStick.setpX(rampSpeedTime(time,speedX));
 					integral += Components.gyro.getAngle()*0.02;
 					Components.driveStick.setpTwist(-Components.gyro.getAngle()*Components.mDrive.kP+integral*Components.mDrive.kI);
 				}else {
@@ -100,13 +101,13 @@ public class AutoCommands{
 				actionFlag = false;
 			}
 		}
-		public static void boxOutputSwitch() {
+		public static void boxOutputScale() {
 			if(actionState == 0) {
 				actionState = 1;
-				tower.setMoveSwitch(true);
+				Components.tower.setMoveScale(true);
 			} else if(actionState == 1) {
-				if(tower.getMoveSwitch()) {
-					tower.towerPresetControl();
+				if(Components.tower.getMoveScale()) {
+					Components.tower.towerPresetControl();
 				}else {
 					actionState = 2;
 					}
@@ -122,9 +123,42 @@ public class AutoCommands{
 			}
 			else if(actionState == 4) {
 				if(Components.timer.get() < 2) {
-					arms.boxOut();
+					Components.arms.boxOut();
 				}else {
-					arms.boxStop();
+					Components.arms.boxStop();
+					Components.timer.stop();
+					Components.timer.reset();
+					actionState = 0;
+					actionFlag = false;
+				}
+			}
+		}
+		
+		public static void boxOutputSwitch() {
+			if(actionState == 0) {
+				actionState = 1;
+				Components.tower.setMoveSwitch(true);
+			} else if(actionState == 1) {
+				if(Components.tower.getMoveSwitch()) {
+					Components.tower.towerPresetControl();
+				}else {
+					actionState = 2;
+					}
+			} else if(actionState == 3) {
+				autoCartesianTime(0.25,0, 0.4);
+				if(actionFlag== false) {
+					actionFlag = true;
+					actionState++;
+					Components.timer.stop();
+					Components.timer.reset();
+					Components.timer.start();
+				}
+			}
+			else if(actionState == 4) {
+				if(Components.timer.get() < 2) {
+					Components.arms.boxOut();
+				}else {
+					Components.arms.boxStop();
 					Components.timer.stop();
 					Components.timer.reset();
 					actionState = 0;
@@ -150,8 +184,49 @@ public class AutoCommands{
 				actionFlag = false;
 			}
 		}
+		static int temp = 0;
+		static int x = 1;
+		static double currentSpeed = 0;
+	public static double rampSpeedTime(double time, double speed) {
+		if(time > 2) {
+			if(temp == 0) {
+				rampTime.stop();
+				rampTime.reset();
+				rampTime.start(); 
+			} else if (temp == 1) {
+				if (rampTime.get()/x>0.25) {
+					currentSpeed += speed/4;
+					x++;
+				}
+				if(currentSpeed >= speed) {
+					currentSpeed = speed;
+					temp++;
+				}
+			} else if(temp == 2) {
+				if(rampTime.get()-1>time ) {
+					x =1;
+					temp++;
+				}
+			}else if (temp == 3) {
+				if (rampTime.get()>time-1+(0.25*x)) {
+					currentSpeed -= speed/4;
+					x++;
+				}
+				if(rampTime.get() >= time) {
+					currentSpeed = 0;
+					temp = 0;
+					x =1;
+				}
+			}
+		}else {
+			currentSpeed = speed;
+		}
 		
 		
+		
+		
+		return currentSpeed;
+	}
 		
 		
 }

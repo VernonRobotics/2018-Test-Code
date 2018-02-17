@@ -52,8 +52,8 @@ public class Robot extends IterativeRobot {
 		Components.frontRight.setInverted(true);
 		Components.backLeft.setInverted(true);
 		Components.armsRight.setInverted(true);
-		Components.towerLeft.setNeutralMode(NeutralMode.Brake);
-		Components.towerRight.setNeutralMode(NeutralMode.Brake);
+		Components.towerLeft.setNeutralMode(NeutralMode.Coast);
+		Components.towerRight.setNeutralMode(NeutralMode.Coast);
 		
 		SharedStuff.cmdlist.add(Components.mDrive);
 		SharedStuff.cmdlist.add(Components.arms);
@@ -107,10 +107,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopInit() {
-		Components.frontLeft.setNeutralMode(NeutralMode.Coast);
-		Components.frontRight.setNeutralMode(NeutralMode.Coast);
-		Components.backLeft.setNeutralMode(NeutralMode.Coast);
-		Components.backRight.setNeutralMode(NeutralMode.Coast);
+		Components.frontLeft.setNeutralMode(NeutralMode.Brake);
+		Components.frontRight.setNeutralMode(NeutralMode.Brake);
+		Components.backLeft.setNeutralMode(NeutralMode.Brake);
+		Components.backRight.setNeutralMode(NeutralMode.Brake);
 		
 
 		
@@ -145,7 +145,7 @@ public class Robot extends IterativeRobot {
 		Components.write.updatedash();
 */
 		
-		if (Components.driveStick.getRawButton(1)) {
+		if (Components.driveStick.getRawButton(7)) {
 			Components.gyro.reset();
 		}
 	}
