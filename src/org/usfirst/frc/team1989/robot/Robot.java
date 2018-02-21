@@ -86,6 +86,7 @@ public class Robot extends IterativeRobot {
 		Components.timer.reset();
 		Components.timer.start();
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		Components.r1.setAutomaticMode(true);
 
 	}
 

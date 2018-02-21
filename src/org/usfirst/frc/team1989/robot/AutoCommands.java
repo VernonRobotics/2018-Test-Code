@@ -80,30 +80,50 @@ public class AutoCommands{
 		}
 		
 		
-		//test here
+		/*
+		 * autoCartesiaRange(double inches,  double speedX,double speedY, Ultrasonic rf)
+		 * 
+		 * This method is used to move in one direction (x or y) a set distance based on input from one of three rangefinders.
+		 * Rangefinder used should determine which of the directions you are moving.
+		 * Variable actionFlag is used by autonomous routines.
+		 * Variable actionState is used to maintain which step method is currently executing
+		 * 
+		 * @param inches The amount of distance you wish to travel
+		 * @param speedX The speed you want to move in the x direction
+		 * @param speedY The speed you want to move in the y direction
+		 * @param rf The rangefinder you wish to use to determine your distance from the start location 
+		 */
 		public static void autoCartesianRange(double inches,  double speedX,double speedY, Ultrasonic rf) {
-				if (actionState == 0) {
-					actionFlag = false;
-					rf.setAutomaticMode(true);
-					actionState = 1;
-					
-				} else if(actionState == 1) {
-					if(rf.getRangeInches()< inches) {
-						Components.driveStick.setpY(speedY);
-						Components.driveStick.setpX(speedX);
-						integral += Components.gyro.getAngle()*0.02;
-						Components.driveStick.setpTwist(-Components.gyro.getAngle()*Components.mDrive.kP+integral*Components.mDrive.kI);
-					}else {
-						actionState =2;
-					}
-				}else if(actionState ==2) {
-					Components.driveStick.setpY(0);
-					Components.driveStick.setpX(0);
-					
-					actionState = 0;
-					actionFlag = false;
-					integral = 0;
+				
+			// Begin autonomous
+			switch(actionState) {
+			
+			case 0:
+				actionFlag = true;
+				
+				// automatic mode should allow rangefinder to pull values without conflicting with each other.
+				actionState++;
+				break;
+			case 1:
+				// If you have not yet gone as far as you want, move.
+				if(rf.getRangeInches() < inches) {
+					Components.driveStick.setpY(speedY);
+					Components.driveStick.setpX(speedX);
+					integral += Components.gyro.getAngle()*0.02;
+					Components.driveStick.setpTwist(-Components.gyro.getAngle()*Components.mDrive.kP+integral*Components.mDrive.kI);
+				}else {
+					actionState++;
 				}
+				break;
+			case 2:
+				Components.driveStick.setpY(0);
+				Components.driveStick.setpX(0);
+				
+				actionState = 0;
+				actionFlag = false;
+				integral = 0;
+				break;
+			}
 		}
 		//test here
 		public static void turnToAngle(double angle) {
