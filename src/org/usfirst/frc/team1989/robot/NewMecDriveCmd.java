@@ -127,8 +127,26 @@ public class NewMecDriveCmd implements cmd{
 		driveFrontRight.setNeutralMode(NeutralMode.Brake);
 	}
 
-
-
+	int strafeStraight = 0;
+	public void strafeLeft() {
+		if(strafeStraight == 0) {
+			gyro.reset();
+			strafeStraight = 1;
+		}else if(strafeStraight == 1){
+			mecDrive.driveCartesian(0.5,driveStick.sgetY()/2, -driveStick.sgetTwist()/2, -gyro.getAngle()*0.0099);
+		}
+		
+		
+	}
+	
+	public void strafeRight() {
+		if(strafeStraight == 0) {
+			gyro.reset();
+			strafeStraight = 1;
+		}else if(strafeStraight == 1){
+			mecDrive.driveCartesian(-0.5,driveStick.sgetY()/2, -driveStick.sgetTwist()/2, -gyro.getAngle()*0.0099);
+		}
+	}
 	@Override
 	public void teleopPeriodic() {
 		// TODO Auto-generated method stub
@@ -137,15 +155,14 @@ public class NewMecDriveCmd implements cmd{
 			mecDrive.driveCartesian(-driveStick.sgetX()/2,driveStick.sgetY()/2, -driveStick.sgetTwist()/2);
 	
 		}else if(driveStick.getRawButton(9) == true) {
-			mecDrive.driveCartesian(-0.5,driveStick.sgetY()/2, -driveStick.sgetTwist()/2);
-
+			strafeLeft();
 		}else if(driveStick.getRawButton(10) == true) {
-			mecDrive.driveCartesian(0.5,driveStick.sgetY()/2, -driveStick.sgetTwist()/2);
+			strafeRight();
 
 		}
 		else {
 			mecDrive.driveCartesian(-driveStick.getX(),driveStick.getY(), -driveStick.sgetTwist());
-
+			strafeStraight = 0;
 		}
 			
 		

@@ -14,7 +14,7 @@ public class AutoCommands{
 	public static boolean actionFlag=false;
 	int autoState=0;//to be used to differentiate between different commands in a preset auto
 	static Timer rampTime = new Timer();
-	 
+	static double liftTime = 0.5;
 	
 	
 	/*
@@ -26,6 +26,31 @@ public class AutoCommands{
 	
 	
 	// test here
+		
+		public static void towerStart() {
+			if(actionState == 0) {
+				actionFlag = true;
+				Components.timer.stop();
+				Components.timer.reset();
+				Components.timer.start();
+				actionState = 1;
+			} else if(actionState == 1) {
+				if(Components.timer.get() < liftTime ) {
+					Components.tower.towerControl(0.25);
+				} else {
+					actionState = 2;
+				}
+			} else if(actionState == 2) {
+				Components.tower.towerStop();
+				Components.timer.stop();
+				Components.timer.reset();
+				actionState = 0;
+				actionFlag = false;
+			}
+		}
+		
+		
+		
 		public static void autoCartesianTime(double time,double speedX, double speedY ) {
 			if(actionState == 0) {
 				actionFlag = true;
@@ -59,8 +84,7 @@ public class AutoCommands{
 		public static void autoCartesianRange(double inches,  double speedX,double speedY, Ultrasonic rf) {
 				if (actionState == 0) {
 					actionFlag = false;
-					Components.killRangeFinders();
-					rf.setEnabled(true);
+					rf.setAutomaticMode(true);
 					actionState = 1;
 					
 				} else if(actionState == 1) {
@@ -73,8 +97,9 @@ public class AutoCommands{
 						actionState =2;
 					}
 				}else if(actionState ==2) {
-					Components.driveStick.killVStick();
-					Components.killRangeFinders();
+					Components.driveStick.setpY(0);
+					Components.driveStick.setpX(0);
+					
 					actionState = 0;
 					actionFlag = false;
 					integral = 0;

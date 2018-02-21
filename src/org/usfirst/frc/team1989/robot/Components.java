@@ -19,10 +19,10 @@ public final class Components {
 	static JsScaled driveStick = new JsScaled(0);
 	static JsScaled uStick = new JsScaled(1);
 	static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+	
 	static writemessage write= new writemessage();
 	
-	//static DigitalInput switchSwitch = new DigitalInput(0);
-	//static DigitalInput lowSwitch = new DigitalInput(1);
+	
 	static Timer timer = new Timer();
 	public static Ultrasonic r1 = new Ultrasonic(9,8);
 	public static Ultrasonic r2 = new Ultrasonic(7,6);
@@ -31,7 +31,7 @@ public final class Components {
 	static NewMecDriveCmd mDrive = new NewMecDriveCmd(Components.frontLeft,Components.backLeft,Components.frontRight,Components.backRight,Components.driveStick,Components.gyro);
 	static ArmControl arms = new ArmControl(Components.armsLeft,Components.armsRight,Components.uStick);
 	static TowerControl tower = new TowerControl(Components.towerLeft, Components.towerRight, Components.uStick);
-	//static CameraControl cam = new CameraControl()
+	static CameraControl cam = new CameraControl(servo, uStick);
 	/*
 	 * Disable all Drive Motors
 	 */

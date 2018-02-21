@@ -29,7 +29,7 @@ public class ArmControl implements cmd {
 	}
 	
 	public void boxSpin() {
-		leftMotor.set(-1);
+		leftMotor.set(1);
 	}
 	//Cmd List Methods
 	@Override

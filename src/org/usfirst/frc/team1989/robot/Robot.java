@@ -9,8 +9,10 @@ package org.usfirst.frc.team1989.robot;
 
 import org.usfirst.frc.team1989.robot.AutoRoutines.StartLeftSwitchLeft;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 
 //Front Left:6
@@ -29,7 +31,8 @@ public class Robot extends IterativeRobot {
 	Double inches1;
 	Double inches2;
 	Double inches3;
-
+	Boolean flimit;
+	Boolean rlimit;
 
 	
 	// Used for vertical Motion method
@@ -52,13 +55,16 @@ public class Robot extends IterativeRobot {
 		Components.frontRight.setInverted(true);
 		Components.backLeft.setInverted(true);
 		Components.armsRight.setInverted(true);
-		Components.towerLeft.setNeutralMode(NeutralMode.Coast);
-		Components.towerRight.setNeutralMode(NeutralMode.Coast);
+		Components.towerLeft.setNeutralMode(NeutralMode.Brake);
+		Components.towerRight.setNeutralMode(NeutralMode.Brake);
+		Components.towerLeft.set(ControlMode.Follower, 5);
+		CameraServer.getInstance().startAutomaticCapture();
 		
 		SharedStuff.cmdlist.add(Components.mDrive);
 		SharedStuff.cmdlist.add(Components.arms);
 		SharedStuff.cmdlist.add(Components.tower);
 		SharedStuff.cmdlist.add(Components.write);
+		SharedStuff.cmdlist.add(Components.cam);
 		Components.r1.setAutomaticMode(true);
 	}
 
@@ -96,7 +102,7 @@ public class Robot extends IterativeRobot {
 			SharedStuff.cmdlist.get(i).autonomousPeriodic();
 		}
 		
-		
+		AutoCommands.autoCartesianRange(100, 0, 0.4, Components.r3);
 		
 		
 		
@@ -111,6 +117,8 @@ public class Robot extends IterativeRobot {
 		Components.frontRight.setNeutralMode(NeutralMode.Brake);
 		Components.backLeft.setNeutralMode(NeutralMode.Brake);
 		Components.backRight.setNeutralMode(NeutralMode.Brake);
+		Components.towerLeft.setNeutralMode(NeutralMode.Brake);
+		Components.towerRight.setNeutralMode(NeutralMode.Brake);
 		
 
 		
@@ -127,15 +135,15 @@ public class Robot extends IterativeRobot {
 		}
 
 		angle = Components.gyro.getAngle();
-		inches1 = Components.r1.getRangeInches();
-		inches2 = Components.r2.getRangeInches();
-		inches3 = Components.r3.getRangeInches();
-	
 		
-		Components.write.setmessage(0, inches1.toString());
+		inches2 = Components.r2.getRangeInches();
+		
+		rlimit = Components.towerRight.getSensorCollection().isRevLimitSwitchClosed();
+		flimit = Components.towerRight.getSensorCollection().isFwdLimitSwitchClosed();
+		
 		Components.write.setmessage(1, inches2.toString());
-		Components.write.setmessage(2, inches3.toString());
-		Components.write.setmessage(5, angle.toString());
+		Components.write.setmessage(2, flimit.toString());
+		Components.write.setmessage(3, rlimit.toString());
 		Components.write.updatedash();
 
 

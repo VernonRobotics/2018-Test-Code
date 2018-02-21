@@ -127,7 +127,7 @@ public class TowerControl implements cmd {
 	
 	public void towerControl(double speed){
 		rightMotor.set(speed);
-		leftMotor.set(speed);
+		
 	}
 	
 	
