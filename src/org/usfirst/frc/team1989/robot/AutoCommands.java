@@ -61,6 +61,31 @@ public class AutoCommands {
 		}
 	}
 
+	public static void towerMove(double liftTime) {
+		switch (actionState) {
+		case 0:
+			actionFlag = true;
+			Components.timer.stop();
+			Components.timer.reset();
+			Components.timer.start();
+			actionState = 1;
+			break;
+		case 1:
+			if (Components.timer.get() < liftTime) {
+				Components.tower.towerControl(0.25);
+			} else {
+				actionState = 2;
+			}
+			break;
+		case 2:
+			Components.tower.towerStop();
+			Components.timer.stop();
+			Components.timer.reset();
+			actionState = 0;
+			actionFlag = false;
+			break;
+		}
+	}
 	
 	/*
 	 * autoCartesianTime(double time, double speedX, double speedY) {
@@ -186,6 +211,7 @@ public class AutoCommands {
 		}
 	}
 
+	
 	public static void boxOutputScale() {
 		if (actionState == 0) {
 			actionState = 1;
@@ -240,46 +266,17 @@ public class AutoCommands {
 		}
 	}
 
-	static int temp = 0;
-	static int x = 1;
-	static double currentSpeed = 0;
-
+	/*
+	 * double rampSpeedTime(double time, double speed)
+	 * 
+	 * @param time Amount of time to ramp.
+	 * @param speed How fast you want to move at the end of the ramp.
+	 * 
+	 */
+	
 	public static double rampSpeedTime(double time, double speed) {
-		if (time > 2) {
-			if (temp == 0) {
-				rampTime.stop();
-				rampTime.reset();
-				rampTime.start();
-			} else if (temp == 1) {
-				if (rampTime.get() / x > 0.25) {
-					currentSpeed += speed / 4;
-					x++;
-				}
-				if (currentSpeed >= speed) {
-					currentSpeed = speed;
-					temp++;
-				}
-			} else if (temp == 2) {
-				if (rampTime.get() - 1 > time) {
-					x = 1;
-					temp++;
-				}
-			} else if (temp == 3) {
-				if (rampTime.get() > time - 1 + (0.25 * x)) {
-					currentSpeed -= speed / 4;
-					x++;
-				}
-				if (rampTime.get() >= time) {
-					currentSpeed = 0;
-					temp = 0;
-					x = 1;
-				}
-			}
-		} else {
-			currentSpeed = speed;
-		}
-
-		return currentSpeed;
+		
+		return speed;
 	}
 
 }

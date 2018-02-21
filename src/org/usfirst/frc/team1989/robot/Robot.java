@@ -170,6 +170,7 @@ public class Robot extends IterativeRobot {
 	public void testInit() {
 		motionActive = false;
 		startDistance = 0;
+		
 	}
 
 	/**
