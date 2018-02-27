@@ -15,10 +15,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 
-//Front Left:6
-//Front Right:3
-//Back Left:7
-//Back Right: 9
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
@@ -35,13 +31,8 @@ public class Robot extends IterativeRobot {
 	Boolean rlimit;
 
 	
-	// Used for vertical Motion method
-	boolean motionActive;
-	double startDistance;
-	boolean actionFlag = false;
-	double integral = 0;
-	double error = 0;
-	int autoState = 0;
+	
+
 	String gameData;
 	
 
@@ -102,12 +93,62 @@ public class Robot extends IterativeRobot {
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).autonomousPeriodic();
 		}
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		//AutoCommands.autoCartesianRange(100, 0, 0.4, Components.r3);
+		if(gameData.length() > 0) {
 		
-		AutoCommands.autoCartesianRange(100, 0, 0.4, Components.r3);
+		if (SmartDashboard.getBoolean("DB/Button 0", true)) {
+						if (SmartDashboard.getBoolean("DB/Button 3", true)) {
+							if (gameData.charAt(1) == 'L') {
+								// StartLeftScaleLeft.run();
+							} else {
+								// StartLeftScaleRight.run();
+							}
+						} else {
+							if (gameData.charAt(0) == 'L') {
+								StartLeftSwitchLeft.run();
+							} else {
+								// StartLeftSwitchRight.run();
+							}
+						}
+			
+					} else if (SmartDashboard.getBoolean("DB/Button 1", true)) {
+						if (SmartDashboard.getBoolean("DB/Button 3", true)) {
+							if (gameData.charAt(1) == 'L') {
+								// StartCenterScaleLeft.run();
+							} else {
+							// StartCenterScaleRight.run();
+							}
+						} else {
+							if (gameData.charAt(0) == 'L') {
+								// StartCenterSwitchLeft.run();
+							} else {
+								// StartCenterSwitchRight.run();
+							}
+						}
+					} else if (SmartDashboard.getBoolean("DB/Button 2", true)) {
+						if (SmartDashboard.getBoolean("DB/Button 3", true)) {
+							if (gameData.charAt(1) == 'L') {
+								// StartRightScaleLeft.run();
+							} else {
+								// StartRightScaleRight.run();
+							}
+						} else {
+						if (gameData.charAt(0) == 'L') {
+								// StartRightSwitchLeft.run();
+						} else {
+								// StartRightSwitchRight.run();
+							}
+						}
+					} else {
+						// DriveForward.run();
+			 		}
+			}		
+		}
+			 
+
 		
-		
-		
-	}
+	
 
 	/**
 	 * This function is called periodically during operator control.
@@ -168,8 +209,6 @@ public class Robot extends IterativeRobot {
 	 */
 
 	public void testInit() {
-		motionActive = false;
-		startDistance = 0;
 		
 	}
 
