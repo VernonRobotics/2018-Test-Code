@@ -12,9 +12,6 @@ public class TowerControl implements cmd {
 	CANTalon1989 leftMotor;
 	ArmControl arms;
 	JsScaled uStick;
-	//DigitalInput switchSwitch;
-//	DigitalInput lowSwitch;
-//	Counter counter = new Counter(switchSwitch);
 	int towerState = 0;
 	double towerScaleTime = 0.75;
 	boolean moveSwitch = false;
@@ -35,94 +32,8 @@ public class TowerControl implements cmd {
 		this.uStick = uStick;
 	}
 	
-	//public TowerControl(CANTalon1989 leftMotor, CANTalon1989 rightMotor, DigitalInput )
-	//class methods
+
 	
-	
-	public void towerPresetControl() {
-		/* keep commented until limit switches are plugged in
-		if (moveSwitch) {
-			if (!switchSwitch.get()) {
-				if (counter.get() % 2 == 0) {
-					if(lowSwitch.get()) {
-						towerControl(minSpeed);
-					}else {
-						towerControl(0.5);
-					}		
-				}else {
-					towerControl(-0.5);
-				}
-			}
-			else {
-				towerStop();
-				moveSwitch = false;
-			}
-		}
-		else if(moveScale) {
-			if(!rightMotor.getSensorCollection().isFwdLimitSwitchClosed()) {
-				if(lowSwitch.get()) {
-					towerControl(minSpeed);
-				}
-				else {
-					towerControl(0.5);
-				}
-			}else {
-				towerStop();
-				moveSwitch = false;
-			}
-		}
-		*/
-	}
-	
-	
-	
-	
-	/*
-	public void moveStart() {
-		moveSwitch = true;
-	}
-	
-	public void 9motortowerControl() {
-		if (moveSwitch || moveScale) {
-			if(state == 0 ) {
-				state =1;
-				//boxArmUp();
-				
-			}
-			else if(state == 1) {
-				if (moveSwitch) {
-					if(switchSwitch.get()) {
-						//boxStop();
-					}
-				}
-				if(moveScale) {
-					towerToScale();
-					if(scaleSwitch.get()) {
-						//boxStop();
-					}
-				}
-			}
-		}
-	}
-	
-	
-	public void towerToScale() {
-		if (towerState == 0) {
-			towerState = 1;
-			timer.stop();
-			timer.reset();
-			timer.start();
-			towerUp();
-			
-		}
-		else if (towerState ==1 ){
-			if(timer.get() > towerScaleTime ) {
-				towerStop();
-				timer.stop();
-				timer.reset();
-			}
-		}
-	}*/	
 	
 	
 	public void towerControl(double speed){

@@ -208,12 +208,7 @@ public class AutoCommands {
 		}
 	}
 	
-	public static void boxOutputSwitch() {
-		
-	}
-	public static void boxOutputScale() {
-		
-	}
+	
 
 	/*
 	 * double rampSpeedTime(double time, double speed)

@@ -67,12 +67,6 @@ public class NewMecDriveCmd implements cmd{
 		driveFrontLeft.setNeutralMode(NeutralMode.Brake);
 		driveFrontRight.setNeutralMode(NeutralMode.Brake);
 		
-		if(isPID) {
-		//	pidFrontLeft.enable();
-			//pidFrontRight.enable();
-			//pidBackLeft.enable();
-			//pidBackRight.enable();
-		}
 		
 		
 		timer.stop();
