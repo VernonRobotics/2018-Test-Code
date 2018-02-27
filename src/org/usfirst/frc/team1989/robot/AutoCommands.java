@@ -22,7 +22,9 @@ public class AutoCommands {
 	public static boolean actionFlag = false;
 	int autoState = 0;// to be used to differentiate between different commands in a preset auto
 	static Timer rampTime = new Timer();
-	static double liftTime = 0.5;
+	static double switchTime = 0.5;
+	static double scaleTime = 2.5;
+	static double startTime = 1;
 
 	/*
 	 * boxOutputSwitch()
@@ -31,36 +33,7 @@ public class AutoCommands {
 	 * When complete, method will output the power cube to the switch game piece
 	 * 
 	 */
-	public static void boxOutputSwitch() {
-		
-	}
-
-	public static void towerStart() {
-		switch (actionState) {
-		case 0:
-			actionFlag = true;
-			Components.timer.stop();
-			Components.timer.reset();
-			Components.timer.start();
-			actionState = 1;
-			break;
-		case 1:
-			if (Components.timer.get() < liftTime) {
-				Components.tower.towerControl(0.25);
-			} else {
-				actionState = 2;
-			}
-			break;
-		case 2:
-			Components.tower.towerStop();
-			Components.timer.stop();
-			Components.timer.reset();
-			actionState = 0;
-			actionFlag = false;
-			break;
-		}
-	}
-
+	
 	public static void towerMove(double liftTime) {
 		switch (actionState) {
 		case 0:
@@ -189,7 +162,7 @@ public class AutoCommands {
 	public static void turnToAngle(double angle) {
 		switch (actionState) {
 		case 0:
-			// actionFlag = true;
+			actionFlag = true;
 			actionState = 1;
 			break;
 		case 1:
@@ -212,58 +185,34 @@ public class AutoCommands {
 	}
 
 	
-	public static void boxOutputScale() {
-		if (actionState == 0) {
-			actionState = 1;
-			Components.tower.setMoveScale(true);
-		} else if (actionState == 1) {
-			if (Components.tower.getMoveScale()) {
-				Components.tower.towerPresetControl();
-			} else {
-				actionState = 2;
-			}
-		} else if (actionState == 3) {
-			autoCartesianTime(0.25, 0, 0.4);
-			if (actionFlag == false) {
-				actionFlag = true;
-				actionState++;
-				Components.timer.stop();
-				Components.timer.reset();
-				Components.timer.start();
-			}
-		} else if (actionState == 4) {
-			if (Components.timer.get() < 2) {
-				Components.arms.boxOut();
-			} else {
-				Components.arms.boxStop();
-				Components.timer.stop();
-				Components.timer.reset();
-				actionState = 0;
-				actionFlag = false;
-			}
-		}
-	}
-
+	
 	public static void delay(double time) {
 		switch (actionState) {
 		case 0:
 			Components.timer.stop();
 			Components.timer.reset();
 			Components.timer.start();
-			actionState = 1;
+			actionState++;
 			break;
 		case 1:
 			if (Components.timer.get() < time) {
-				actionState = 2;
+				actionState++;
 			}
 			break;
 		case 2:
 			Components.timer.stop();
 			Components.timer.reset();
-			actionState = 0;
+			actionState=0;
 			actionFlag = false;
 			break;
 		}
+	}
+	
+	public static void boxOutputSwitch() {
+		
+	}
+	public static void boxOutputScale() {
+		
 	}
 
 	/*
