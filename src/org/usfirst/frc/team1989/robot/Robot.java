@@ -86,7 +86,7 @@ public class Robot extends IterativeRobot {
 	/**
 	 * This function is called periodically during autonomous.
 	 */
-
+	int startState = 0;
 	@Override
 	public void autonomousPeriodic() {
 
@@ -94,58 +94,65 @@ public class Robot extends IterativeRobot {
 			SharedStuff.cmdlist.get(i).autonomousPeriodic();
 		}
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		//AutoCommands.autoCartesianRange(100, 0, 0.4, Components.r3);
-		if(gameData.length() > 0) {
 		
-		if (SmartDashboard.getBoolean("DB/Button 0", true)) {
-						if (SmartDashboard.getBoolean("DB/Button 3", true)) {
-							if (gameData.charAt(1) == 'L') {
-								// StartLeftScaleLeft.run();
-							} else {
-								// StartLeftScaleRight.run();
-							}
-						} else {
-							if (gameData.charAt(0) == 'L') {
-								StartLeftSwitchLeft.run();
-							} else {
-								// StartLeftSwitchRight.run();
-							}
-						}
-			
-					} else if (SmartDashboard.getBoolean("DB/Button 1", true)) {
-						if (SmartDashboard.getBoolean("DB/Button 3", true)) {
-							if (gameData.charAt(1) == 'L') {
-								// StartCenterScaleLeft.run();
-							} else {
-							// StartCenterScaleRight.run();
-							}
-						} else {
-							if (gameData.charAt(0) == 'L') {
-								// StartCenterSwitchLeft.run();
-							} else {
-								// StartCenterSwitchRight.run();
-							}
-						}
-					} else if (SmartDashboard.getBoolean("DB/Button 2", true)) {
-						if (SmartDashboard.getBoolean("DB/Button 3", true)) {
-							if (gameData.charAt(1) == 'L') {
-								// StartRightScaleLeft.run();
-							} else {
-								// StartRightScaleRight.run();
-							}
-						} else {
-						if (gameData.charAt(0) == 'L') {
-								// StartRightSwitchLeft.run();
-						} else {
-								// StartRightSwitchRight.run();
-							}
-						}
-					} else {
-						// DriveForward.run();
-			 		}
-			}		
+		if (startState == 0 ) {
+			AutoCommands.towerMove(1);
+			if(AutoCommands.actionFlag == false) {
+				startState++;
+			}
 		}
-			 
+		if(startState == 1) {
+			if(gameData.length() > 0) {
+			
+				if (SmartDashboard.getBoolean("DB/Button 0", true)) {
+							if (SmartDashboard.getBoolean("DB/Button 3", true)) {
+								if (gameData.charAt(1) == 'L') {
+									// StartLeftScaleLeft.run();
+								} else {
+									// StartLeftScaleRight.run();
+								}
+							} else {
+								if (gameData.charAt(0) == 'L') {
+									StartLeftSwitchLeft.run();
+								} else {
+									// StartLeftSwitchRight.run();
+								}
+							}
+				
+						} else if (SmartDashboard.getBoolean("DB/Button 1", true)) {
+							if (SmartDashboard.getBoolean("DB/Button 3", true)) {
+								if (gameData.charAt(1) == 'L') {
+									// StartCenterScaleLeft.run();
+								} else {
+								// StartCenterScaleRight.run();
+								}
+							} else {
+								if (gameData.charAt(0) == 'L') {
+									// StartCenterSwitchLeft.run();
+								} else {
+									// StartCenterSwitchRight.run();
+								}
+							}
+						} else if (SmartDashboard.getBoolean("DB/Button 2", true)) {
+							if (SmartDashboard.getBoolean("DB/Button 3", true)) {
+								if (gameData.charAt(1) == 'L') {
+									// StartRightScaleLeft.run();
+								} else {
+									// StartRightScaleRight.run();
+								}
+							} else {
+							if (gameData.charAt(0) == 'L') {
+									// StartRightSwitchLeft.run();
+							} else {
+									// StartRightSwitchRight.run();
+								}
+							}
+						} else {
+							// DriveForward.run();
+				 		}
+				}		
+			}
+	}	 
 
 		
 	
@@ -182,18 +189,17 @@ public class Robot extends IterativeRobot {
 		
 		rlimit = Components.towerRight.getSensorCollection().isRevLimitSwitchClosed();
 		flimit = Components.towerRight.getSensorCollection().isFwdLimitSwitchClosed();
-		
+		Components.write.setmessage(0, angle.toString());
 		Components.write.setmessage(1, inches2.toString());
 		Components.write.setmessage(2, flimit.toString());
 		Components.write.setmessage(3, rlimit.toString());
 		Components.write.updatedash();
 
 
-/*
-		Components.write.setmessage(0, angle.toString());
-		// write.setmessage(1, inches.toString());
-		Components.write.updatedash();
-*/
+
+		
+		
+
 		
 		if (Components.driveStick.getRawButton(7)) {
 			Components.gyro.reset();
@@ -220,14 +226,7 @@ public class Robot extends IterativeRobot {
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).teleopPeriodic();
 		}
-		//StartLeftSwitchLeft.run();
-		//System.out.println("test");
-		/*
-		 * Button 0: Left Button 1: Center Button 2: Right Button 3: True = Scale, False
-		 * = Switch
-		 * 
-		 * None of the above = drive straight
-		 */
+		
 		
 	}
 }
