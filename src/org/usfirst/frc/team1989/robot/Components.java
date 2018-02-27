@@ -42,15 +42,8 @@ public final class Components {
 		backRight.set(0);
 	}
 	
-	/*
-	 * Disable all rangefinders.
-	 */
 	
-	public static void killRangeFinders() {
-		//Components.r1.setEnabled(false);
-		//Components.r2.setEnabled(false);
-		//Components.r3.setEnabled(false);
-	}
+	
 	
 public void motorOutputTest() {
 		
