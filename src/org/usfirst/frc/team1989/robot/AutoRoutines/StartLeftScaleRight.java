@@ -56,11 +56,23 @@ public class StartLeftScaleRight {
 				autoState++;
 			}
 		} else if (autoState == 8) {
-			AutoCommands.towerMove(AutoCommands.switchTime);
+			AutoCommands.towerMove(AutoCommands.scaleTime);
+			if(AutoCommands.actionFlag == false) {
+				autoState++;
+			}
+		} else if (autoState == 9) {
+			AutoCommands.autoCartesianTime(1,0,0.3);
+			if(AutoCommands.actionFlag == false) {
+				autoState++;
+			}
+		}  else if (autoState == 10) {
+			AutoCommands.boxOutput();
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
 		}
+		
+		
 			
 			
 			

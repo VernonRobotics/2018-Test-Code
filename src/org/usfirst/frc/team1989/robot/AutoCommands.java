@@ -59,6 +59,34 @@ public class AutoCommands {
 		}
 	}
 	
+	public static void boxOutput() {
+		switch (actionState) {
+		case 0: 
+			actionFlag = true;
+			Components.timer.stop();
+			Components.timer.reset();
+			Components.timer.start();
+			actionState = 1;
+			break;
+		case 1: 
+			if (Components.timer.get() < 1) {
+				Components.arms.boxOut();
+			} else {
+				actionState = 2;
+			}
+			break;
+		case 2:
+			Components.tower.towerStop();
+			Components.timer.stop();
+			Components.timer.reset();
+			actionState = 0;
+			actionFlag = false;
+			break; 
+			
+		}
+		
+	}
+	
 	/*
 	 * autoCartesianTime(double time, double speedX, double speedY) {
 	 * 
