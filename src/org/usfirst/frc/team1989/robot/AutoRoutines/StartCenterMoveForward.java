@@ -24,20 +24,13 @@ public class StartCenterMoveForward {
 				autoState++;
 			}
 		} else if (autoState == 2) {
-			AutoCommands.boxOutputSwitch();
+			AutoCommands.towerMove(autoState);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
 		}
 	
-			
-			
-			
-		
-		
-		
-		
-		
+
 		
 		
 	}

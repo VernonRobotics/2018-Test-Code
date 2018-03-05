@@ -30,7 +30,27 @@ public class StartRightSwitchRight {
 				autoState++;
 			}
 		} else if (autoState == 4) {
-			AutoCommands.boxOutputSwitch();
+			AutoCommands.towerMove(AutoCommands.scaleTime);
+			if(AutoCommands.actionFlag == false) {
+				autoState++;
+			}
+		} else if (autoState == 5) {
+			AutoCommands.delay(1);
+			if(AutoCommands.actionFlag == false) {
+				autoState++;
+			}
+		} else if (autoState == 6) {
+			AutoCommands.autoCartesianTime(1,0,0.3);
+			if(AutoCommands.actionFlag == false) {
+				autoState++;
+			}
+		}  else if (autoState == 7) {
+			AutoCommands.delay(1);
+			if(AutoCommands.actionFlag == false) {
+				autoState++;
+			}
+		} else if (autoState == 8) {
+			AutoCommands.boxOutput();
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
