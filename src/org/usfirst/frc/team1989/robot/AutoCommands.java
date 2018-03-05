@@ -22,9 +22,8 @@ public class AutoCommands {
 	public static boolean actionFlag = false;
 	int autoState = 0;// to be used to differentiate between different commands in a preset auto
 	static Timer rampTime = new Timer();
-	static double switchTime = 0.5;
-	static double scaleTime = 2.5;
-	static double startTime = 1;
+	public static double switchTime = 0.5;
+	public static double scaleTime = 2.5;
 
 	/*
 	 * boxOutputSwitch()

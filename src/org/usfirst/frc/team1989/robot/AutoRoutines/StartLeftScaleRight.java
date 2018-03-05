@@ -1,3 +1,4 @@
+
 package org.usfirst.frc.team1989.robot.AutoRoutines;
 
 import org.usfirst.frc.team1989.robot.AutoCommands;
@@ -55,7 +56,7 @@ public class StartLeftScaleRight {
 				autoState++;
 			}
 		} else if (autoState == 8) {
-			AutoCommands.boxOutputSwitch();
+			AutoCommands.towerMove(AutoCommands.switchTime);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}

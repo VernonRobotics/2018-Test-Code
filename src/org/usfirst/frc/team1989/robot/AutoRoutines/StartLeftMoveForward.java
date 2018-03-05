@@ -24,7 +24,7 @@ public class StartLeftMoveForward {
 				autoState++;
 			}
 		} else if (autoState == 2) {
-			AutoCommands.boxOutputSwitch();
+			AutoCommands.towerMove(AutoCommands.switchTime);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
