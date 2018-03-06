@@ -104,31 +104,21 @@ public class AutoCommands {
 			Components.timer.stop();
 			Components.timer.reset();
 			Components.timer.start();
-			System.out.println("0");
 			actionState = 1;
 			break;
 		case 1:
-			double realTime = Components.timer.get();
-			//System.out.println("1");
-			
-			System.out.println("Timer: " + realTime + ", Until: " + time);
-			
-			System.out.println((int)realTime < time);
+			double realTime = Components.timer.get();	
 			if (realTime < time) {
-				
-				System.out.println("Inside if: " + realTime);
 				Components.driveStick.setpY(speedY);
 				Components.driveStick.setpX(speedX);
 				integral += Components.gyro.getAngle() * 0.02;
 				Components.driveStick.setpTwist(
 						(-Components.gyro.getAngle() + currentAngle) * Components.mDrive.kP + integral * Components.mDrive.kI);
 			} else {
-				System.out.println("Else: " + realTime);
 				actionState = 2;
 			}
 			break;
 		case 2:
-			System.out.println("2");
 			Components.driveStick.killVStick();
 			Components.timer.stop();
 			Components.timer.reset();

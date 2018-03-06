@@ -28,9 +28,21 @@ public class ArmControl implements cmd {
 		rightMotor.set(0);
 	}
 	
-	public void boxSpin() {
+	public void boxSpinLeftIn() {
 		leftMotor.set(1);
 	}
+	
+	public void boxSpinLeftOut() {
+		leftMotor.set(-1);
+	}
+	
+	public void boxSpinRightIn() {
+		rightMotor.set(1);
+	}
+	public void boxSpinRightOut() {
+		rightMotor.set(-1);
+	}
+	
 	//Cmd List Methods
 	@Override
 	public void autonomousInit() {
@@ -65,13 +77,24 @@ public class ArmControl implements cmd {
 	@Override
 	public void teleopPeriodic() {
 		// TODO Auto-generated method stub
-		if(uStick.getRawButton(2)==true)
+		if(uStick.getRawButton(2))
 			boxIn();
-		else if(uStick.getRawButton(1)==true)
+		else if(uStick.getRawButton(1))
 			boxOut();
-		else if(uStick.getRawButton(3)==true) 
-			boxSpin();
+		else if(uStick.getRawButton(3)) 
+			boxSpinLeftIn();
+		else if(uStick.getRawButton(5))
+			boxSpinLeftOut();
+		else if(uStick.getRawButton(4))
+			boxSpinRightIn();
+		else if(uStick.getRawButton(6)) 
+			boxSpinRightOut();
 		else boxStop();
+		
+		
+		
+		
+		
 		
 	}
 	
