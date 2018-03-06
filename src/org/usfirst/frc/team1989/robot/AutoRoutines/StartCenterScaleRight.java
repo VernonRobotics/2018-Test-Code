@@ -53,8 +53,33 @@ public class StartCenterScaleRight {
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
+<<<<<<< HEAD
 		} else if (autoState == 8) {
 		//	AutoCommands.boxOutputSwitch();
+=======
+		}else if (autoState == 8) {
+			AutoCommands.towerMove(AutoCommands.scaleTime);
+			if(AutoCommands.actionFlag == false) {
+				autoState++;
+			}
+		} else if (autoState == 9) {
+			AutoCommands.delay(1);
+			if(AutoCommands.actionFlag == false) {
+				autoState++;
+			}
+		} else if (autoState == 10) {
+			AutoCommands.autoCartesianTime(1,0,0.3);
+			if(AutoCommands.actionFlag == false) {
+				autoState++;
+			}
+		}  else if (autoState == 11) {
+			AutoCommands.delay(1);
+			if(AutoCommands.actionFlag == false) {
+				autoState++;
+			}
+		} else if (autoState == 12) {
+			AutoCommands.boxOutput();
+>>>>>>> branch 'master' of https://github.com/VernonRobotics/2018-Test-Code.git
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
