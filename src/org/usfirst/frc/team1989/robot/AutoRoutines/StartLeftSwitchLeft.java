@@ -31,7 +31,7 @@ public class StartLeftSwitchLeft {
 				autoState++;
 			}
 		} else if (autoState == 4) {
-			AutoCommands.boxOutputSwitch();
+			//AutoCommands.boxOutputSwitch();
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}

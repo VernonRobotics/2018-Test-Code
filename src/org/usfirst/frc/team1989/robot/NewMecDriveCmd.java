@@ -106,7 +106,8 @@ public class NewMecDriveCmd implements cmd{
 
 	public void testPeriodic() {
 		// TODO Auto-generated method stub
-		
+		mecDrive.driveCartesian(-driveStick.pX, -driveStick.pY, -driveStick.pTwist);
+
 	}
 
 
@@ -122,9 +123,10 @@ public class NewMecDriveCmd implements cmd{
 	}
 
 	int strafeStraight = 0;
+	int angle = 0;
 	public void strafeLeft() {
 		if(strafeStraight == 0) {
-			gyro.reset();
+			
 			strafeStraight = 1;
 		}else if(strafeStraight == 1){
 			mecDrive.driveCartesian(0.5,driveStick.sgetY()/2, -driveStick.sgetTwist()/2, -gyro.getAngle()*0.0099);

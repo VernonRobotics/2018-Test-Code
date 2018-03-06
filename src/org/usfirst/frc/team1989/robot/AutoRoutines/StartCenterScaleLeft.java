@@ -55,7 +55,7 @@ public class StartCenterScaleLeft {
 				autoState++;
 			}
 		} else if (autoState == 8) {
-			AutoCommands.boxOutputSwitch();
+			//AutoCommands.boxOutputSwitch();
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}

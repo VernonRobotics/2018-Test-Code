@@ -53,7 +53,7 @@ public class StartRightSwitchLeft {
 			} 
 		
 		} else if (autoState == 8) {
-			AutoCommands.boxOutputSwitch();
+		//	AutoCommands.boxOutputSwitch();
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}

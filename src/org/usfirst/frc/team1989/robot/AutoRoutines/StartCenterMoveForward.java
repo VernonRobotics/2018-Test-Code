@@ -13,7 +13,7 @@ public class StartCenterMoveForward {
 	public static void run() {
 		if(autoState == 0) {
 			
-			AutoCommands.autoCartesianRange(AutoDistances.startToSwitchSide, 0, 0.5, Components.r1);
+			AutoCommands.towerMove(0.5);
 			if(AutoCommands.actionFlag== false) {
 				autoState++;
 			}
@@ -24,7 +24,7 @@ public class StartCenterMoveForward {
 				autoState++;
 			}
 		} else if (autoState == 2) {
-			AutoCommands.boxOutputSwitch();
+			//AutoCommands.boxOutputSwitch();
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}

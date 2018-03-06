@@ -15,10 +15,11 @@ import edu.wpi.first.wpilibj.Ultrasonic;
  * 
  */
 public class AutoCommands {
-
 	static int actionState = 0;// to be used to differentiate between different states in an individual command
 	static double integral = 0;
 	static double error = 0;
+	static double currentAngle = 0;
+	
 	public static boolean actionFlag = false;
 	int autoState = 0;// to be used to differentiate between different commands in a preset auto
 	static Timer rampTime = new Timer();
@@ -44,7 +45,7 @@ public class AutoCommands {
 			break;
 		case 1:
 			if (Components.timer.get() < liftTime) {
-				Components.tower.towerControl(0.25);
+				Components.tower.towerControl(0.5);
 			} else {
 				actionState = 2;
 			}
@@ -103,18 +104,31 @@ public class AutoCommands {
 			Components.timer.stop();
 			Components.timer.reset();
 			Components.timer.start();
+			System.out.println("0");
 			actionState = 1;
+			break;
 		case 1:
-			if (Components.timer.get() < time) {
-				Components.driveStick.setpY(rampSpeedTime(time, speedY));
-				Components.driveStick.setpX(rampSpeedTime(time, speedX));
+			double realTime = Components.timer.get();
+			//System.out.println("1");
+			
+			System.out.println("Timer: " + realTime + ", Until: " + time);
+			
+			System.out.println((int)realTime < time);
+			if (realTime < time) {
+				
+				System.out.println("Inside if: " + realTime);
+				Components.driveStick.setpY(speedY);
+				Components.driveStick.setpX(speedX);
 				integral += Components.gyro.getAngle() * 0.02;
 				Components.driveStick.setpTwist(
-						-Components.gyro.getAngle() * Components.mDrive.kP + integral * Components.mDrive.kI);
+						(-Components.gyro.getAngle() + currentAngle) * Components.mDrive.kP + integral * Components.mDrive.kI);
 			} else {
+				System.out.println("Else: " + realTime);
 				actionState = 2;
 			}
+			break;
 		case 2:
+			System.out.println("2");
 			Components.driveStick.killVStick();
 			Components.timer.stop();
 			Components.timer.reset();
@@ -158,12 +172,12 @@ public class AutoCommands {
 			break;
 		case 1:
 			// If you have not yet gone as far as you want, move.
-			if (rf.getRangeInches() < inches) {
+			if (rf.getRangeInches() < inches || rf.getRangeInches() > 600  ) {
 				Components.driveStick.setpY(speedY);
 				Components.driveStick.setpX(speedX);
 				integral += Components.gyro.getAngle() * 0.02;
 				Components.driveStick.setpTwist(
-						-Components.gyro.getAngle() * Components.mDrive.kP + integral * Components.mDrive.kI);
+						(-Components.gyro.getAngle() + currentAngle) * Components.mDrive.kP + integral * Components.mDrive.kI);
 			} else {
 				actionState++;
 			}
@@ -204,6 +218,7 @@ public class AutoCommands {
 		case 2:
 			error = 0;
 			integral = 0;
+			currentAngle = angle;
 			Components.driveStick.killVStick();
 			actionState = 0;
 			actionFlag = false;

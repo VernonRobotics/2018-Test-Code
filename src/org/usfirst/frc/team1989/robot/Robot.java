@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team1989.robot;
 
+import org.usfirst.frc.team1989.robot.AutoRoutines.AutoDistances;
+import org.usfirst.frc.team1989.robot.AutoRoutines.StartCenterMoveForward;
 import org.usfirst.frc.team1989.robot.AutoRoutines.StartLeftSwitchLeft;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -76,6 +78,8 @@ public class Robot extends IterativeRobot {
 		Components.timer.stop();
 		Components.timer.reset();
 		Components.timer.start();
+		AutoCommands.actionState = 0;
+		AutoCommands.actionFlag = false;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		Components.r1.setAutomaticMode(true);
 
@@ -89,18 +93,62 @@ public class Robot extends IterativeRobot {
 	int startState = 0;
 	@Override
 	public void autonomousPeriodic() {
-
+		
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).autonomousPeriodic();
+			
 		}
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		
+		//AutoCommands.autoCartesianRange(60, 0, 0.5, Components.r1);
+		
+			//StartCenterMoveForward.run();
+		
+		/*if(Components.timer.get() < 4) {
+			Components.driveStick.setpY(0.4);
+			
+		}else {
+			Components.driveStick.setpY(0);
+		}
+		*/
+		
+
 		
 		if (startState == 0 ) {
 			AutoCommands.towerMove(1);
 			if(AutoCommands.actionFlag == false) {
 				startState++;
 			}
+		} else if(startState == 1) {
+			AutoCommands.autoCartesianTime(4, 0, 0.4);
+			if(AutoCommands.actionFlag == false) {
+				startState++;
+			}
+		} else if(startState == 2) {
+			AutoCommands.turnToAngle(90);
+			if(AutoCommands.actionFlag == false) {
+				startState++;
+			}
+		} else if(startState == 3) {
+			AutoCommands.towerMove(3);
+			if(AutoCommands.actionFlag == false) {
+				startState++;
+			}
 		}
+		else if(startState == 4) {
+			//AutoCommands.autoCartesianTime(0.5,0.3,0);
+			if(AutoCommands.actionFlag == false) {
+				startState++;
+			}
+		}else if(startState == 5) {
+			AutoCommands.boxOutput();
+			if(AutoCommands.actionFlag == false) {
+				startState++;
+			}
+		}
+		
+		
+		/*
 		if(startState == 1) {
 			if(gameData.length() > 0) {
 			
@@ -151,7 +199,7 @@ public class Robot extends IterativeRobot {
 							// DriveForward.run();
 				 		}
 				}		
-			}
+			} */
 	}	 
 
 		
@@ -185,7 +233,7 @@ public class Robot extends IterativeRobot {
 
 		angle = Components.gyro.getAngle();
 		
-		inches2 = Components.r2.getRangeInches();
+		inches2 = Components.r1.getRangeInches();
 		
 		rlimit = Components.towerRight.getSensorCollection().isRevLimitSwitchClosed();
 		flimit = Components.towerRight.getSensorCollection().isFwdLimitSwitchClosed();
@@ -215,7 +263,17 @@ public class Robot extends IterativeRobot {
 	 */
 
 	public void testInit() {
+		Components.r1.setAutomaticMode(true);
+		Components.timer.stop();
+		Components.timer.reset();
+		/*Components.timer.start();*/
 		
+		Components.timer.stop();
+		Components.timer.reset();
+		AutoCommands.actionState = 0;
+		AutoCommands.actionFlag = false;
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		Components.r1.setAutomaticMode(true);
 	}
 
 	/**
@@ -223,10 +281,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+		StartCenterMoveForward.run();
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
-			SharedStuff.cmdlist.get(i).teleopPeriodic();
+			SharedStuff.cmdlist.get(i).testPeriodic();
 		}
+		//AutoCommands.autoCartesianRange(60, 0, 0.5, Components.r1);
 		
-		
+
 	}
 }

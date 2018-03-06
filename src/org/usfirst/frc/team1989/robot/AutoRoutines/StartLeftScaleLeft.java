@@ -55,7 +55,7 @@ if(autoState == 0) {
 				autoState++;
 			}
 		} else if (autoState == 8) {
-			AutoCommands.boxOutputSwitch();
+		//	AutoCommands.boxOutputSwitch();
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
