@@ -24,11 +24,11 @@ public class StartCenterMoveForward {
 				autoState++;
 			}
 		} else if (autoState == 2) {
-<<<<<<< HEAD
+
 			//AutoCommands.boxOutputSwitch();
-=======
+
 			AutoCommands.towerMove(autoState);
->>>>>>> branch 'master' of https://github.com/VernonRobotics/2018-Test-Code.git
+
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}

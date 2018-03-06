@@ -35,9 +35,8 @@ if(autoState == 0) {
 			}
 			
 		}  else if (autoState == 4) {
-<<<<<<< HEAD
+
 			//AutoCommands.boxOutputSwitch();
-=======
 			AutoCommands.towerMove(AutoCommands.scaleTime);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
@@ -59,7 +58,6 @@ if(autoState == 0) {
 			}
 		} else if (autoState == 8) {
 			AutoCommands.boxOutput();
->>>>>>> branch 'master' of https://github.com/VernonRobotics/2018-Test-Code.git
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}

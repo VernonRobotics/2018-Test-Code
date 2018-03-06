@@ -46,9 +46,9 @@ public class StartCenterSwitchLeft {
 				autoState++;
 			}
 		} else if (autoState == 6) {
-<<<<<<< HEAD
+
 		//	AutoCommands.boxOutputSwitch();
-=======
+
 			AutoCommands.towerMove(AutoCommands.scaleTime);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
@@ -70,7 +70,6 @@ public class StartCenterSwitchLeft {
 			}
 		} else if (autoState == 10) {
 			AutoCommands.boxOutput();
->>>>>>> branch 'master' of https://github.com/VernonRobotics/2018-Test-Code.git
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}

@@ -53,10 +53,10 @@ public class StartCenterScaleRight {
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
-<<<<<<< HEAD
+
 		} else if (autoState == 8) {
 		//	AutoCommands.boxOutputSwitch();
-=======
+
 		}else if (autoState == 8) {
 			AutoCommands.towerMove(AutoCommands.scaleTime);
 			if(AutoCommands.actionFlag == false) {
@@ -79,7 +79,7 @@ public class StartCenterScaleRight {
 			}
 		} else if (autoState == 12) {
 			AutoCommands.boxOutput();
->>>>>>> branch 'master' of https://github.com/VernonRobotics/2018-Test-Code.git
+
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
