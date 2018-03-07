@@ -7,8 +7,9 @@
 
 package org.usfirst.frc.team1989.robot;
 
-import org.usfirst.frc.team1989.robot.AutoRoutines.AutoDistances;
+import org.usfirst.frc.team1989.robot.AutoRoutines.*;
 import org.usfirst.frc.team1989.robot.AutoRoutines.StartCenterMoveForward;
+import org.usfirst.frc.team1989.robot.AutoRoutines.StartCenterSwitchLeft;
 import org.usfirst.frc.team1989.robot.AutoRoutines.StartLeftSwitchLeft;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -100,55 +101,14 @@ public class Robot extends IterativeRobot {
 		}
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
-		//AutoCommands.autoCartesianRange(60, 0, 0.5, Components.r1);
+	
 		
-			//StartCenterMoveForward.run();
-		
-		/*if(Components.timer.get() < 4) {
-			Components.driveStick.setpY(0.4);
-			
-		}else {
-			Components.driveStick.setpY(0);
-		}
-		*/
-		
-
-		
-		if (startState == 0 ) {
-			AutoCommands.towerMove(1);
-			if(AutoCommands.actionFlag == false) {
-				startState++;
-			}
-		} else if(startState == 1) {
-			AutoCommands.autoCartesianTime(4, 0, 0.4);
-			if(AutoCommands.actionFlag == false) {
-				startState++;
-			}
-		} else if(startState == 2) {
-			AutoCommands.turnToAngle(90);
-			if(AutoCommands.actionFlag == false) {
-				startState++;
-			}
-		} else if(startState == 3) {
-			AutoCommands.towerMove(3);
-			if(AutoCommands.actionFlag == false) {
-				startState++;
-			}
-		}
-		else if(startState == 4) {
-			//AutoCommands.autoCartesianTime(0.5,0.3,0);
-			if(AutoCommands.actionFlag == false) {
-				startState++;
-			}
-		}else if(startState == 5) {
-			AutoCommands.boxOutput();
-			if(AutoCommands.actionFlag == false) {
-				startState++;
-			}
-		}
+		StartRightSwitchRight.run();
 		
 		
 		/*
+		
+		
 		if(startState == 1) {
 			if(gameData.length() > 0) {
 			
@@ -195,8 +155,9 @@ public class Robot extends IterativeRobot {
 									// StartRightSwitchRight.run();
 								}
 							}
-						} else {
-							// DriveForward.run();
+						} 
+						else {
+							 //StartCenterMoveForward.run();
 				 		}
 				}		
 			} */
@@ -249,9 +210,7 @@ public class Robot extends IterativeRobot {
 		
 
 		
-		if (Components.driveStick.getRawButton(7)) {
-			Components.gyro.reset();
-		}
+		
 	}
 		
 		

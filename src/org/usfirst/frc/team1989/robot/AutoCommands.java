@@ -22,7 +22,7 @@ public class AutoCommands {
 	
 	public static boolean actionFlag = false;
 	int autoState = 0;// to be used to differentiate between different commands in a preset auto
-	static Timer rampTime = new Timer();
+	static Timer rampTimer = new Timer();
 	public static double switchTime = 0.5;
 	public static double scaleTime = 2.5;
 
@@ -45,7 +45,7 @@ public class AutoCommands {
 			break;
 		case 1:
 			if (Components.timer.get() < liftTime) {
-				Components.tower.towerControl(0.5);
+				Components.tower.towerControl(0.75);
 			} else {
 				actionState = 2;
 			}
@@ -224,6 +224,7 @@ public class AutoCommands {
 			Components.timer.stop();
 			Components.timer.reset();
 			Components.timer.start();
+			actionFlag = true;
 			actionState++;
 			break;
 		case 1:
@@ -249,8 +250,26 @@ public class AutoCommands {
 	 * @param speed How fast you want to move at the end of the ramp.
 	 * 
 	 */
+	static int rampState = 0;
 	
 	public static double rampSpeedTime(double time, double speed) {
+		double currentSpeed = 0 ;
+		switch(rampState) {
+		case 0:
+			rampTimer.stop();
+			rampTimer.reset();
+			rampTimer.start();
+			rampState++;
+			break;
+		case 1:
+			
+			break;
+		}
+		
+		
+		
+		
+		
 		
 		return speed;
 	}

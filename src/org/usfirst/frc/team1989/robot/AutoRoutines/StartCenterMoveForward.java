@@ -25,9 +25,8 @@ public class StartCenterMoveForward {
 			}
 		} else if (autoState == 2) {
 
-			//AutoCommands.boxOutputSwitch();
 
-			AutoCommands.towerMove(autoState);
+			AutoCommands.autoCartesianTime(4,0,0.5);
 
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
