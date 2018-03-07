@@ -103,7 +103,19 @@ public class Robot extends IterativeRobot {
 		
 	
 		
-		StartRightSwitchRight.run();
+		if(startState == 0) {
+			AutoCommands.autoCartesianTime(1.5, 0, 0.5);
+			if(AutoCommands.actionFlag == false) {
+				startState++;
+			}	
+		} else if(startState == 1) {
+			
+					AutoCommands.autoCartesianTime(1.5, 0, -0.5);
+					if(AutoCommands.actionFlag == false) {
+						startState++;
+					}	
+				}
+			
 		
 		
 		/*

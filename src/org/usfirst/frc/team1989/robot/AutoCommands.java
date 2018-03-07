@@ -122,6 +122,13 @@ public class AutoCommands {
 			Components.driveStick.killVStick();
 			Components.timer.stop();
 			Components.timer.reset();
+			delay(0.25);
+			if(actionFlag == false) {
+				actionState++;
+				actionFlag = true;
+			}
+			break;
+		case 3:	
 			actionState = 0;
 			actionFlag = false;
 			integral = 0;
@@ -210,6 +217,13 @@ public class AutoCommands {
 			integral = 0;
 			currentAngle = angle;
 			Components.driveStick.killVStick();
+			delay(0.25);
+			if(actionFlag == false) {
+				actionState++;
+				actionFlag = true;
+			}
+			break;
+		case 3:	
 			actionState = 0;
 			actionFlag = false;
 			break;
@@ -228,7 +242,7 @@ public class AutoCommands {
 			actionState++;
 			break;
 		case 1:
-			if (Components.timer.get() < time) {
+			if (Components.timer.get() > time) {
 				actionState++;
 			}
 			break;
