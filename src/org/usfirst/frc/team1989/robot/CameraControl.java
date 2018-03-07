@@ -3,7 +3,7 @@ package org.usfirst.frc.team1989.robot;
 import edu.wpi.first.wpilibj.Servo;
 
 public class CameraControl implements cmd {
-	//Attributes
+	
 	
 	//Joystick and Servo
 	JsScaled uStick;
