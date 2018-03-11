@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team1989.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 //Front Left:6
 //Front Right:3
 //Back Left:7
@@ -135,10 +137,10 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		
 		
 	
-=======
-	}	
->>>>>>> 37943e9487581337f88a0fed91ef1c7b1568e34e
-
+	public void teleopInit() {
+		Components.towerLeft.setNeutralMode(NeutralMode.Coast);
+		Components.towerRight.setNeutralMode(NeutralMode.Coast);
+	}
 	/**
 	 * This function is called periodically during operator control.
 	 */
@@ -155,15 +157,22 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	//	write.setmessage(1, inches.toString());
 		write.updatedash();
 		
-		if(Components.driveStick.getRawButton(7)) {
-			Components.towerLeft.set(0.8);
+		// Down
+		if(Components.driveStick.getRawButton(12)) {
+			Components.towerLeft.set(-0.2);
+			Components.towerRight.set(-0.2);
 		} else {
 			Components.towerLeft.set(0);
+			Components.towerRight.set(0);
 		}
+	
 		
-		if(Components.driveStick.getRawButton(8)) {
-			Components.towerRight.set(0.8);
+		// Up
+		if(Components.driveStick.getRawButton(10)) {
+			Components.towerLeft.set(0.6);
+			Components.towerRight.set(0.6);
 		} else {
+			Components.towerLeft.set(0);
 			Components.towerRight.set(0);
 		}
 		
@@ -179,22 +188,16 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	 */
 
 	
-<<<<<<< HEAD
+
 	/*
 	 * Disable all Drive Motors
 	 */
-	public void killDriveMotors() {
-		Components.frontLeft.set(0);
-		Components.backLeft.set(0);
-		Components.frontRight.set(0);
-		Components.backRight.set(0);
-	}
+	
 	/*
 	 * verticalMotionActive defined at top.
 	 */
 	
-=======
->>>>>>> 37943e9487581337f88a0fed91ef1c7b1568e34e
+
 	
 	
 	
