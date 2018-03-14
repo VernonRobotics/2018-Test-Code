@@ -12,7 +12,7 @@ public class StartCenterScaleLeft {
 	public static void run() {
 		if(autoState == 0) {
 			
-			AutoCommands.autoCartesianRange(AutoDistances.startToClosePath, 0, 0.5, Components.r1);
+			
 			if(AutoCommands.actionFlag== false) {
 				autoState++;
 			}
@@ -34,7 +34,6 @@ public class StartCenterScaleLeft {
 			}
 			
 		} else if (autoState == 4) {
-			AutoCommands.autoCartesianRange(AutoDistances.closePathToLeftScale, 0, 0.5, Components.r1);
 			
 			if(AutoCommands.actionFlag == false) {
 				autoState++;

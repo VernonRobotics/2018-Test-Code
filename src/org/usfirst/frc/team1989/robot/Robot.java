@@ -32,7 +32,7 @@ public class Robot extends IterativeRobot {
 	Double inches3;
 	Boolean flimit;
 	Boolean rlimit;
-
+	int autoState;
 	
 	
 
@@ -58,8 +58,7 @@ public class Robot extends IterativeRobot {
 		SharedStuff.cmdlist.add(Components.arms);
 		SharedStuff.cmdlist.add(Components.tower);
 		SharedStuff.cmdlist.add(Components.write);
-		SharedStuff.cmdlist.add(Components.cam);
-		Components.r1.setAutomaticMode(true);
+	//	SharedStuff.cmdlist.add(Components.cam);
 	}
 
 	/**
@@ -82,7 +81,7 @@ public class Robot extends IterativeRobot {
 		AutoCommands.actionState = 0;
 		AutoCommands.actionFlag = false;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		Components.r1.setAutomaticMode(true);
+		autoState = 0;
 
 	}
 
@@ -101,78 +100,24 @@ public class Robot extends IterativeRobot {
 		}
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
+		if(gameData.charAt(0) == 'L') {
+			StartCenterSwitchLeft.run(0.5);
+		} else if (gameData.charAt(0) == 'R') {
+			StartCenterSwitchRight.run(0.5);
+		}
+		
+		//DriveForward.run();
+			
+			
+			
+			
+			
+		
 	
-		
-		if(startState == 0) {
-			AutoCommands.autoCartesianTime(1.5, 0, 0.5);
-			if(AutoCommands.actionFlag == false) {
-				startState++;
-			}	
-		} else if(startState == 1) {
-			
-					AutoCommands.autoCartesianTime(1.5, 0, -0.5);
-					if(AutoCommands.actionFlag == false) {
-						startState++;
-					}	
-				}
 			
 		
 		
-		/*
-		
-		
-		if(startState == 1) {
-			if(gameData.length() > 0) {
-			
-				if (SmartDashboard.getBoolean("DB/Button 0", true)) {
-							if (SmartDashboard.getBoolean("DB/Button 3", true)) {
-								if (gameData.charAt(1) == 'L') {
-									// StartLeftScaleLeft.run();
-								} else {
-									// StartLeftScaleRight.run();
-								}
-							} else {
-								if (gameData.charAt(0) == 'L') {
-									StartLeftSwitchLeft.run();
-								} else {
-									// StartLeftSwitchRight.run();
-								}
-							}
-				
-						} else if (SmartDashboard.getBoolean("DB/Button 1", true)) {
-							if (SmartDashboard.getBoolean("DB/Button 3", true)) {
-								if (gameData.charAt(1) == 'L') {
-									// StartCenterScaleLeft.run();
-								} else {
-								// StartCenterScaleRight.run();
-								}
-							} else {
-								if (gameData.charAt(0) == 'L') {
-									// StartCenterSwitchLeft.run();
-								} else {
-									// StartCenterSwitchRight.run();
-								}
-							}
-						} else if (SmartDashboard.getBoolean("DB/Button 2", true)) {
-							if (SmartDashboard.getBoolean("DB/Button 3", true)) {
-								if (gameData.charAt(1) == 'L') {
-									// StartRightScaleLeft.run();
-								} else {
-									// StartRightScaleRight.run();
-								}
-							} else {
-							if (gameData.charAt(0) == 'L') {
-									// StartRightSwitchLeft.run();
-							} else {
-									// StartRightSwitchRight.run();
-								}
-							}
-						} 
-						else {
-							 //StartCenterMoveForward.run();
-				 		}
-				}		
-			} */
+	
 	}	 
 
 		
@@ -189,7 +134,7 @@ public class Robot extends IterativeRobot {
 		Components.backRight.setNeutralMode(NeutralMode.Brake);
 		Components.towerLeft.setNeutralMode(NeutralMode.Brake);
 		Components.towerRight.setNeutralMode(NeutralMode.Brake);
-		
+		CameraServer.getInstance().startAutomaticCapture();
 
 		
 		
@@ -206,14 +151,10 @@ public class Robot extends IterativeRobot {
 
 		angle = Components.gyro.getAngle();
 		
-		inches2 = Components.r1.getRangeInches();
 		
 		rlimit = Components.towerRight.getSensorCollection().isRevLimitSwitchClosed();
 		flimit = Components.towerRight.getSensorCollection().isFwdLimitSwitchClosed();
 		Components.write.setmessage(0, angle.toString());
-		Components.write.setmessage(1, inches2.toString());
-		Components.write.setmessage(2, flimit.toString());
-		Components.write.setmessage(3, rlimit.toString());
 		Components.write.updatedash();
 
 
@@ -234,7 +175,6 @@ public class Robot extends IterativeRobot {
 	 */
 
 	public void testInit() {
-		Components.r1.setAutomaticMode(true);
 		Components.timer.stop();
 		Components.timer.reset();
 		/*Components.timer.start();*/
@@ -244,7 +184,6 @@ public class Robot extends IterativeRobot {
 		AutoCommands.actionState = 0;
 		AutoCommands.actionFlag = false;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		Components.r1.setAutomaticMode(true);
 	}
 
 	/**
@@ -252,12 +191,67 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		StartCenterMoveForward.run();
+		StartCenterMoveForward.run(1, true);
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).testPeriodic();
 		}
 		//AutoCommands.autoCartesianRange(60, 0, 0.5, Components.r1);
 		
+		
 
 	}
-}
+}	/*
+
+
+if(startState == 1) {
+	if(gameData.length() > 0) {
+	
+		if (SmartDashboard.getBoolean("DB/Button 0", true)) {
+					if (SmartDashboard.getBoolean("DB/Button 3", true)) {
+						if (gameData.charAt(1) == 'L') {
+							// StartLeftScaleLeft.run();
+						} else {
+							// StartLeftScaleRight.run();
+						}
+					} else {
+						if (gameData.charAt(0) == 'L') {
+							StartLeftSwitchLeft.run();
+						} else {
+							// StartLeftSwitchRight.run();
+						}
+					}
+		
+				} else if (SmartDashboard.getBoolean("DB/Button 1", true)) {
+					if (SmartDashboard.getBoolean("DB/Button 3", true)) {
+						if (gameData.charAt(1) == 'L') {
+							// StartCenterScaleLeft.run();
+						} else {
+						// StartCenterScaleRight.run();
+						}
+					} else {
+						if (gameData.charAt(0) == 'L') {
+							// StartCenterSwitchLeft.run();
+						} else {
+							// StartCenterSwitchRight.run();
+						}
+					}
+				} else if (SmartDashboard.getBoolean("DB/Button 2", true)) {
+					if (SmartDashboard.getBoolean("DB/Button 3", true)) {
+						if (gameData.charAt(1) == 'L') {
+							// StartRightScaleLeft.run();
+						} else {
+							// StartRightScaleRight.run();
+						}
+					} else {
+					if (gameData.charAt(0) == 'L') {
+							// StartRightSwitchLeft.run();
+					} else {
+							// StartRightSwitchRight.run();
+						}
+					}
+				} 
+				else {
+					 //StartCenterMoveForward.run();
+		 		}
+		}		
+	} */

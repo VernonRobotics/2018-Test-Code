@@ -13,7 +13,6 @@ public class StartLeftMoveForward {
 	public static void run() {
 		if(autoState == 0) {
 			
-			AutoCommands.autoCartesianRange(AutoDistances.startToSwitchSide, 0, 0.5, Components.r1);
 			if(AutoCommands.actionFlag== false) {
 				autoState++;
 			}

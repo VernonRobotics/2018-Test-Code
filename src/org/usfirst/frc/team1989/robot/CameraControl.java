@@ -57,14 +57,14 @@ public class CameraControl implements cmd {
 	}
 	
 	public void cameraController() {
-		if (uStick.getPOV() == 0) {
+		/*if (uStick.getPOV() == 0) {
 			cameraPosition += 0.025;
 		}
 		else if (uStick.getPOV() == 180){
 			cameraPosition -= 0.025;
 		}
 		counterCheck();
-		servo.set(cameraPosition);
+		servo.set(cameraPosition);*/
 	}
 	
 	

@@ -11,7 +11,6 @@ public class StartCenterScaleRight {
 	public static void run() {
 		if(autoState == 0) {
 			
-			AutoCommands.autoCartesianRange(AutoDistances.startToSwitchSide, 0, 0.5, Components.r1);
 			if(AutoCommands.actionFlag== false) {
 				autoState++;
 			}
@@ -22,7 +21,6 @@ public class StartCenterScaleRight {
 				autoState++;
 			}
 		} else if (autoState == 2) {
-			AutoCommands.autoCartesianRange(AutoDistances.closePathToRightScale, 0.5, 0, Components.r3);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
@@ -33,7 +31,6 @@ public class StartCenterScaleRight {
 			}
 			
 		} else if (autoState == 4) {
-			AutoCommands.autoCartesianRange(AutoDistances.switchToRightScale, 0, 0.5, Components.r1);
 			
 			if(AutoCommands.actionFlag == false) {
 				autoState++;

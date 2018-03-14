@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
  * 
  * This class includes commands to be used in autonomous.
  * All commands use actionState in order to keep track of what step they are on.
- * All commands must manipulate actionFlag in order for the autonomouse routines to function
+ * All commands must manipulate actionFlag in order for the autonomous routines to function
  * 
  * @author Team 1989 Programmers
  * @version 1.0
@@ -33,6 +33,27 @@ public class AutoCommands {
 	 * When complete, method will output the power cube to the switch game piece
 	 * 
 	 */
+	
+	public static void moveTillShmack() {
+		switch(actionState) {
+		case 0:
+			actionFlag = true;
+			actionState++;
+		break;
+		case 1:
+			Components.driveStick.setpY(0.3);
+			Components.driveStick.setpTwist(
+					(-Components.gyro.getAngle() + currentAngle) * Components.mDrive.kP + integral * Components.mDrive.kI);
+
+			if(Components.frontLeft.getOutputCurrent() > 35 || Components.frontRight.getOutputCurrent()> 35) 
+				actionState++;
+		break;
+		case 2:
+			Components.driveStick.setpY(0);
+			Components.driveStick.setpTwist(0);
+			break;
+		}
+	}
 	
 	public static void towerMove(double liftTime) {
 		switch (actionState) {
@@ -98,7 +119,7 @@ public class AutoCommands {
 	 * @param speedY The speed at which the robot should move in the y direction.
 	 */
 	public static void autoCartesianTime(double time, double speedX, double speedY) {
-		switch (actionState) {
+		switch(actionState) {
 		case 0:
 			actionFlag = true;
 			Components.timer.stop();
@@ -107,10 +128,9 @@ public class AutoCommands {
 			actionState = 1;
 			break;
 		case 1:
-			double realTime = Components.timer.get();	
-			if (realTime < time) {
-				Components.driveStick.setpY(speedY);
-				Components.driveStick.setpX(speedX);
+			if (Components.timer.get() < time) {
+				Components.driveStick.setpY(rampSpeedTime(time,speedY));
+				Components.driveStick.setpX(rampSpeedTime(time,speedX));
 				integral += Components.gyro.getAngle() * 0.02;
 				Components.driveStick.setpTwist(
 						(-Components.gyro.getAngle() + currentAngle) * Components.mDrive.kP + integral * Components.mDrive.kI);
@@ -119,16 +139,10 @@ public class AutoCommands {
 			}
 			break;
 		case 2:
-			Components.driveStick.killVStick();
-			Components.timer.stop();
-			Components.timer.reset();
-			delay(0.25);
-			if(actionFlag == false) {
-				actionState++;
-				actionFlag = true;
-			}
-			break;
-		case 3:	
+			Components.driveStick.setpY(0);
+			Components.driveStick.setpX(0);
+			Components.driveStick.setpTwist(0);
+			
 			actionState = 0;
 			actionFlag = false;
 			integral = 0;
@@ -264,28 +278,33 @@ public class AutoCommands {
 	 * @param speed How fast you want to move at the end of the ramp.
 	 * 
 	 */
-	static int rampState = 0;
 	
 	public static double rampSpeedTime(double time, double speed) {
 		double currentSpeed = 0 ;
+		double ramp = speed/40;
+		int rampState;
+		
+		if(Components.timer.get() < 0.4) 
+			rampState = 0;
+		else if (Components.timer.get() > time - 0.4) 
+			rampState = 2;
+		else
+			rampState = 1;
 		switch(rampState) {
 		case 0:
-			rampTimer.stop();
-			rampTimer.reset();
-			rampTimer.start();
-			rampState++;
+			currentSpeed += ramp;
 			break;
 		case 1:
-			
+			currentSpeed = speed;
+			break;
+		
+		case 2:
+			currentSpeed -= ramp;
 			break;
 		}
 		
 		
-		
-		
-		
-		
-		return speed;
+		return currentSpeed;
 	}
 
 }

@@ -167,7 +167,7 @@ public class NewMecDriveCmd implements cmd{
 			strafeRight();
 		}
 		else {
-			mecDrive.driveCartesian(-driveStick.getX()*driveConstant,driveStick.getY()*driveConstant, -driveStick.sgetTwist()*driveConstant);
+			mecDrive.driveCartesian(-driveStick.getX()*driveConstant,driveStick.getY()*driveConstant, -driveStick.sgetTwist()*Math.abs(driveConstant));
 			strafeStraight = 0;
 		}
 			

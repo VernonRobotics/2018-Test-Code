@@ -7,16 +7,15 @@ public class StartCenterSwitchLeft {
 
 
 	static int autoState = 0;
-	public static void run() {
+	public static void run(double delay) {
 		if(autoState == 0) {
-			AutoCommands.delay(2);
+			AutoCommands.delay(delay);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}	
 		}
-		
 		else if (autoState == 1 ) {
-			AutoCommands.towerMove(1);
+			AutoCommands.towerMove(1.25);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
@@ -26,29 +25,31 @@ public class StartCenterSwitchLeft {
 				autoState++;
 			}
 		} else if(autoState == 3) {
-			AutoCommands.autoCartesianTime(2.75,-.8,0);
-			if(AutoCommands.actionFlag == false) {
-				autoState++;
-			}
-		} else if(autoState == 4) {
-			AutoCommands.autoCartesianTime(3.2, 0, 0.4);
-
+			AutoCommands.delay(1);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
 		}
-		else if(autoState == 5) {
-			AutoCommands.towerMove(3);
+		
+		else if(autoState == 4) {
+			AutoCommands.autoCartesianTime(2,-.6,0);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
-		}else if(autoState == 6) {
-			AutoCommands.turnToAngle(90);
+		}else if(autoState == 5) {
+			AutoCommands.delay(1);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
-		} else if(autoState == 7) {
-			AutoCommands.autoCartesianTime(1, 0, 0.5);
+		}
+		
+		else if(autoState == 6) {
+			//AutoCommands.towerMove(2);
+		
+				autoState++;
+		}
+		else if(autoState == 7) {
+			AutoCommands.autoCartesianTime(2.75, 0, 0.4);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}

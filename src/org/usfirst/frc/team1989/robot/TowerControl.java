@@ -92,7 +92,6 @@ public class TowerControl implements cmd {
 	@Override
 	public void teleopInit() {
 		// TODO Auto-generated method stub
-		//counter.reset();
 		leftMotor.setNeutralMode(NeutralMode.Brake);
 		rightMotor.setNeutralMode(NeutralMode.Brake);
 		
@@ -101,29 +100,7 @@ public class TowerControl implements cmd {
 	@Override
 	public void teleopPeriodic() {
 		// TODO Auto-generated method stub
-		/*
-		if(uStick.getRawButton(12)==true)
-			moveScale = true;
-			moveSwitch = false;
 		
-		if(uStick.getRawButton(11) == true)
-			moveSwitch = true;
-			moveScale = false;
-		
-		//towerPresetControl();
-	
-		
-		if(lowSwitch.get()) {
-			if(uStick.getY() > .15) {
-				towerControl(minSpeed);
-			} else if(uStick.getY() < -.15) {
-				towerControl(-minSpeed);
-			} else {
-				towerStop();
-			}
-		}else {
-			towerControl(uStick.sgetY());
-		}*/
 		towerControl(-uStick.sgetY());
 	}
 	

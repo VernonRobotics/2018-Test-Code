@@ -13,25 +13,23 @@ public final class Components {
 	static CANTalon1989 backRight = new CANTalon1989(9);
 	static CANTalon1989 armsLeft = new CANTalon1989(2);
 	static CANTalon1989 armsRight = new CANTalon1989(1);
-	static CANTalon1989 towerLeft = new CANTalon1989(4);
+	static CANTalon1989 towerLeft = new CANTalon1989(8);
 	static CANTalon1989 towerRight = new CANTalon1989(5);
-	static Servo servo = new Servo(0);
-	static JsScaled driveStick = new JsScaled(0);
+	//static Servo servo = new Servo(0);
+	public static JsScaled driveStick = new JsScaled(0);
 	static JsScaled uStick = new JsScaled(1);
 	static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 	
 	static writemessage write= new writemessage();
 	
 	
-	static Timer timer = new Timer();
-	public static Ultrasonic r1 = new Ultrasonic(9,8);
-	public static Ultrasonic r2 = new Ultrasonic(7,6);
-	public static Ultrasonic r3 = new Ultrasonic(5,4);
+	public static Timer timer = new Timer();
+	
 	
 	static NewMecDriveCmd mDrive = new NewMecDriveCmd(Components.frontLeft,Components.backLeft,Components.frontRight,Components.backRight,Components.driveStick,Components.gyro);
 	static ArmControl arms = new ArmControl(Components.armsLeft,Components.armsRight,Components.uStick);
 	static TowerControl tower = new TowerControl(Components.towerLeft, Components.towerRight, Components.uStick);
-	static CameraControl cam = new CameraControl(servo, uStick);
+	//static CameraControl cam = new CameraControl(servo, uStick);
 	/*
 	 * Disable all Drive Motors
 	 */

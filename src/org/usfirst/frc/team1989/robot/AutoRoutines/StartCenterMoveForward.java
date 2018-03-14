@@ -10,27 +10,26 @@ public class StartCenterMoveForward {
 	static int autoState = 0;
 	static int x = 0;
 	
-	public static void run() {
+	public static void run(int delay, boolean right) {
 		if(autoState == 0) {
 			
-			AutoCommands.towerMove(0.5);
+			AutoCommands.delay(delay);
 			if(AutoCommands.actionFlag== false) {
 				autoState++;
 			}
 			
-		} else if (autoState == 1) {
-			AutoCommands.delay(1);
-			if(AutoCommands.actionFlag == false) {
+		}  else if(autoState == 1) {
+			if(right) {
+				AutoCommands.autoCartesianTime(x, x, 0);
+			} else {
+				AutoCommands.autoCartesianTime(x, -x, 0);
+			}
+			if(AutoCommands.actionFlag== false) {
 				autoState++;
 			}
-		} else if (autoState == 2) {
-
-
-			AutoCommands.autoCartesianTime(4,0,0.5);
-
-			if(AutoCommands.actionFlag == false) {
-				autoState++;
-			}
+			
+		}  else if(autoState == 2) {
+			AutoCommands.autoCartesianTime(x,0,x);
 		}
 	
 

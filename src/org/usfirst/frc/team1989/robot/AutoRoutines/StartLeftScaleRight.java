@@ -12,19 +12,17 @@ public class StartLeftScaleRight {
 	
 	public static void run() {
 		if(autoState == 0) {
-			
-			AutoCommands.autoCartesianRange(AutoDistances.startToMidPath, 0, 0.5, Components.r1);
+			AutoCommands.autoCartesianTime(x, 0, 0.4);
 			if(AutoCommands.actionFlag== false) {
 				autoState++;
 			}
-			
 		} else if (autoState == 1) {
 			AutoCommands.delay(1);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
 		} else if (autoState == 2) {
-			AutoCommands.autoCartesianRange(AutoDistances.midPathCrossScale, 0.5, 0, Components.r3);
+			AutoCommands.autoCartesianTime(x, 0.4, 0);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
@@ -35,8 +33,7 @@ public class StartLeftScaleRight {
 			}
 			
 		} else if (autoState == 4) {
-			AutoCommands.autoCartesianRange(AutoDistances.midPathToScale, 0, 0.5, Components.r1);
-			
+			AutoCommands.autoCartesianTime(x, 0, 0.4);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
