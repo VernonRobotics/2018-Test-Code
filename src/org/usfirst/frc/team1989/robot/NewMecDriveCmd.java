@@ -67,12 +67,6 @@ public class NewMecDriveCmd implements cmd{
 		driveFrontLeft.setNeutralMode(NeutralMode.Brake);
 		driveFrontRight.setNeutralMode(NeutralMode.Brake);
 		
-		if(isPID) {
-		//	pidFrontLeft.enable();
-			//pidFrontRight.enable();
-			//pidBackLeft.enable();
-			//pidBackRight.enable();
-		}
 		
 		
 		timer.stop();
@@ -112,7 +106,8 @@ public class NewMecDriveCmd implements cmd{
 
 	public void testPeriodic() {
 		// TODO Auto-generated method stub
-		
+		mecDrive.driveCartesian(-driveStick.pX, -driveStick.pY, -driveStick.pTwist);
+
 	}
 
 
@@ -127,14 +122,59 @@ public class NewMecDriveCmd implements cmd{
 		driveFrontRight.setNeutralMode(NeutralMode.Brake);
 	}
 
-
-
+	int strafeStraight = 0;
+	double angle = 0;
+	double driveConstant = 1;
+	public void strafeLeft() {
+		if(strafeStraight == 0) {
+			angle = gyro.getAngle();
+			strafeStraight = 1;
+		}else if(strafeStraight == 1){
+			mecDrive.driveCartesian(0.5*driveConstant,driveConstant*driveStick.sgetY()/2, -driveConstant*driveStick.sgetTwist()/2, (angle-gyro.getAngle())*0.0099);
+		}
+		
+		
+	}
+	
+	public void strafeRight() {
+		if(strafeStraight == 0) {
+			angle = gyro.getAngle();
+			strafeStraight = 1;
+		}else if(strafeStraight == 1){
+			mecDrive.driveCartesian(-0.5*driveConstant,driveStick.sgetY()*driveConstant, -driveStick.sgetTwist()*driveConstant, (angle-gyro.getAngle())*0.0099);
+		}
+	}
+	
 	@Override
 	public void teleopPeriodic() {
 		// TODO Auto-generated method stub
 		
+		if (driveStick.getRawButton(1))
+			driveConstant = 0.5;
+		else 
+			driveConstant = 1;
 		
-			mecDrive.driveCartesian(-driveStick.sgetX(),driveStick.sgetY(), -driveStick.sgetTwist(), gyro.getAngle());
+		if(driveStick.getRawButton(2))
+			driveConstant *= -1;
+		
+		
+		
+		
+	
+		 if(driveStick.getRawButton(9) == true) {
+			strafeLeft();
+		}else if(driveStick.getRawButton(10) == true) {
+			strafeRight();
+		}
+		else {
+			mecDrive.driveCartesian(-driveStick.getX()*driveConstant,driveStick.getY()*driveConstant, -driveStick.sgetTwist()*driveConstant);
+			strafeStraight = 0;
+		}
+			
+		
+		
+		
+		
 	
 		
 		

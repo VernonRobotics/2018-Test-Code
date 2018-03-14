@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1989.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
@@ -10,9 +12,6 @@ public class TowerControl implements cmd {
 	CANTalon1989 leftMotor;
 	ArmControl arms;
 	JsScaled uStick;
-	DigitalInput switchSwitch;
-	DigitalInput lowSwitch;
-	Counter counter = new Counter(switchSwitch);
 	int towerState = 0;
 	double towerScaleTime = 0.75;
 	boolean moveSwitch = false;
@@ -33,97 +32,13 @@ public class TowerControl implements cmd {
 		this.uStick = uStick;
 	}
 	
-	//public TowerControl(CANTalon1989 leftMotor, CANTalon1989 rightMotor, DigitalInput )
-	//class methods
+
 	
 	
-	public void towerPresetControl() {
-		if (moveSwitch) {
-			if (!switchSwitch.get()) {
-				if (counter.get() % 2 == 0) {
-					if(lowSwitch.get()) {
-						towerControl(minSpeed);
-					}else {
-						towerControl(0.5);
-					}		
-				}else {
-					towerControl(-0.5);
-				}
-			}
-			else {
-				towerStop();
-				moveSwitch = false;
-			}
-		}
-		else if(moveScale) {
-			if(!rightMotor.getSensorCollection().isFwdLimitSwitchClosed()) {
-				if(lowSwitch.get()) {
-					towerControl(minSpeed);
-				}
-				else {
-					towerControl(0.5);
-				}
-			}else {
-				towerStop();
-				moveSwitch = false;
-			}
-		}
-	}
-	
-	
-	
-	
-	/*
-	public void moveStart() {
-		moveSwitch = true;
-	}
-	
-	public void 9motortowerControl() {
-		if (moveSwitch || moveScale) {
-			if(state == 0 ) {
-				state =1;
-				//boxArmUp();
-				
-			}
-			else if(state == 1) {
-				if (moveSwitch) {
-					if(switchSwitch.get()) {
-						//boxStop();
-					}
-				}
-				if(moveScale) {
-					towerToScale();
-					if(scaleSwitch.get()) {
-						//boxStop();
-					}
-				}
-			}
-		}
-	}
-	
-	
-	public void towerToScale() {
-		if (towerState == 0) {
-			towerState = 1;
-			timer.stop();
-			timer.reset();
-			timer.start();
-			towerUp();
-			
-		}
-		else if (towerState ==1 ){
-			if(timer.get() > towerScaleTime ) {
-				towerStop();
-				timer.stop();
-				timer.reset();
-			}
-		}
-		
-	}*/
 	
 	public void towerControl(double speed){
 		rightMotor.set(speed);
-		leftMotor.set(speed);
+		
 	}
 	
 	
@@ -155,7 +70,7 @@ public class TowerControl implements cmd {
 	@Override
 	public void autonomousInit() {
 		// TODO Auto-generated method stub
-		counter.reset();
+		//counter.reset();
 	}
 
 	@Override
@@ -177,13 +92,16 @@ public class TowerControl implements cmd {
 	@Override
 	public void teleopInit() {
 		// TODO Auto-generated method stub
-		counter.reset();
+		//counter.reset();
+		leftMotor.setNeutralMode(NeutralMode.Brake);
+		rightMotor.setNeutralMode(NeutralMode.Brake);
+		
 	}
 
 	@Override
 	public void teleopPeriodic() {
 		// TODO Auto-generated method stub
-		
+		/*
 		if(uStick.getRawButton(12)==true)
 			moveScale = true;
 			moveSwitch = false;
@@ -192,7 +110,7 @@ public class TowerControl implements cmd {
 			moveSwitch = true;
 			moveScale = false;
 		
-		towerPresetControl();
+		//towerPresetControl();
 	
 		
 		if(lowSwitch.get()) {
@@ -204,15 +122,9 @@ public class TowerControl implements cmd {
 				towerStop();
 			}
 		}else {
-			if(uStick.getY() > .15) {
-				towerControl(0.5);
-			} else if(uStick.getY() < -.15) {
-				towerControl(-0.5);
-			} else {
-				towerStop();
-			}
-		}
-		
+			towerControl(uStick.sgetY());
+		}*/
+		towerControl(-uStick.sgetY());
 	}
 	
 }

@@ -1,141 +1,291 @@
 package org.usfirst.frc.team1989.robot;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
+/*
+ * public class AutoCommands{}
+ * 
+ * This class includes commands to be used in autonomous.
+ * All commands use actionState in order to keep track of what step they are on.
+ * All commands must manipulate actionFlag in order for the autonomouse routines to function
+ * 
+ * @author Team 1989 Programmers
+ * @version 1.0
+ * @since February 20th, 2018
+ * 
+ */
+public class AutoCommands {
+	static int actionState = 0;// to be used to differentiate between different states in an individual command
+	static double integral = 0;
+	static double error = 0;
+	static double currentAngle = 0;
+	
+	public static boolean actionFlag = false;
+	int autoState = 0;// to be used to differentiate between different commands in a preset auto
+	static Timer rampTimer = new Timer();
+	public static double switchTime = 0.5;
+	public static double scaleTime = 2.5;
 
-public class AutoCommands{
-	JsScaled driveStick;
-	JsScaled uStick;
-	Timer timer;
-	ADXRS450_Gyro gyro;
-	NewMecDriveCmd mDrive;
-	ArmControl arms;
-	TowerControl tower;
+	/*
+	 * boxOutputSwitch()
+	 * 
+	 * Method is currently here for compliance within the autonomous routines.
+	 * When complete, method will output the power cube to the switch game piece
+	 * 
+	 */
 	
+	public static void towerMove(double liftTime) {
+		switch (actionState) {
+		case 0:
+			actionFlag = true;
+			Components.timer.stop();
+			Components.timer.reset();
+			Components.timer.start();
+			actionState = 1;
+			break;
+		case 1:
+			if (Components.timer.get() < liftTime) {
+				Components.tower.towerControl(0.75);
+			} else {
+				actionState = 2;
+			}
+			break;
+		case 2:
+			Components.tower.towerStop();
+			Components.timer.stop();
+			Components.timer.reset();
+			actionState = 0;
+			actionFlag = false;
+			break;
+		}
+	}
 	
-	int actionState = 0;//to be used to differentiate between different states in an individual command
-	double integral=0;
-	double error=0;
-	boolean actionFlag=false;
-	int autoState=0;//to be used to differentiate between different commands in a preset auto
-	
-	
-	
-	public AutoCommands(JsScaled driveStick, JsScaled uStick, NewMecDriveCmd mDrive, ArmControl arms,
-			TowerControl tower,  ADXRS450_Gyro gyro, Timer timer) {
-		this.driveStick = driveStick;
-		this.uStick =  uStick;
-		this.mDrive = mDrive;
-		this.arms = arms;
-		this.tower = tower;
-		this.gyro = gyro;
-		this.timer = timer;
+	public static void boxOutput() {
+		switch (actionState) {
+		case 0: 
+			actionFlag = true;
+			Components.timer.stop();
+			Components.timer.reset();
+			Components.timer.start();
+			actionState = 1;
+			break;
+		case 1: 
+			if (Components.timer.get() < 1) {
+				Components.arms.boxOut();
+			} else {
+				actionState = 2;
+			}
+			break;
+		case 2:
+			Components.tower.towerStop();
+			Components.timer.stop();
+			Components.timer.reset();
+			actionState = 0;
+			actionFlag = false;
+			break; 
+			
+		}
 		
 	}
 	
+	/*
+	 * autoCartesianTime(double time, double speedX, double speedY) {
+	 * 
+	 * Autonomous method which uses time and speed to navigate during autonomous.
+	 * 
+	 * @param time The time to run the robot in a specific direction.
+	 * @param speedX The speed at which the robot should move in the x direction.
+	 * @param speedY The speed at which the robot should move in the y direction.
+	 */
+	public static void autoCartesianTime(double time, double speedX, double speedY) {
+		switch (actionState) {
+		case 0:
+			actionFlag = true;
+			Components.timer.stop();
+			Components.timer.reset();
+			Components.timer.start();
+			actionState = 1;
+			break;
+		case 1:
+			double realTime = Components.timer.get();	
+			if (realTime < time) {
+				Components.driveStick.setpY(speedY);
+				Components.driveStick.setpX(speedX);
+				integral += Components.gyro.getAngle() * 0.02;
+				Components.driveStick.setpTwist(
+						(-Components.gyro.getAngle() + currentAngle) * Components.mDrive.kP + integral * Components.mDrive.kI);
+			} else {
+				actionState = 2;
+			}
+			break;
+		case 2:
+			Components.driveStick.killVStick();
+			Components.timer.stop();
+			Components.timer.reset();
+			delay(0.25);
+			if(actionFlag == false) {
+				actionState++;
+				actionFlag = true;
+			}
+			break;
+		case 3:	
+			actionState = 0;
+			actionFlag = false;
+			integral = 0;
+			break;
+		}
+
+	}
+
+	/*
+	 * autoCartesiaRange(double inches, double speedX,double speedY, Ultrasonic rf)
+	 * 
+	 * This method is used to move in one direction (x or y) a set distance based on
+	 * input from one of three rangefinders. Rangefinder used should determine which
+	 * of the directions you are moving. Variable actionFlag is used by autonomous
+	 * routines. Variable actionState is used to maintain which step method is
+	 * currently executing
+	 * 
+	 * @param inches The amount of distance you wish to travel
+	 * 
+	 * @param speedX The speed you want to move in the x direction
+	 * 
+	 * @param speedY The speed you want to move in the y direction
+	 * 
+	 * @param rf The rangefinder you wish to use to determine your distance from the
+	 * start location
+	 */
+	public static void autoCartesianRange(double inches, double speedX, double speedY, Ultrasonic rf) {
+
+		// Begin autonomous
+		switch (actionState) {
+
+		case 0:
+			actionFlag = true;
+
+			// automatic mode should allow rangefinder to pull values without conflicting
+			// with each other.
+			actionState++;
+			break;
+		case 1:
+			// If you have not yet gone as far as you want, move.
+			if (rf.getRangeInches() < inches || rf.getRangeInches() > 600  ) {
+				Components.driveStick.setpY(speedY);
+				Components.driveStick.setpX(speedX);
+				integral += Components.gyro.getAngle() * 0.02;
+				Components.driveStick.setpTwist(
+						(-Components.gyro.getAngle() + currentAngle) * Components.mDrive.kP + integral * Components.mDrive.kI);
+			} else {
+				actionState++;
+			}
+			break;
+		case 2:
+			Components.driveStick.setpY(0);
+			Components.driveStick.setpX(0);
+
+			actionState = 0;
+			actionFlag = false;
+			integral = 0;
+			break;
+		}
+	}
+
+	/*
+	 * turnToAngle(double angle)
+	 * 
+	 * This method makes use of a gyro to turn the robot to a specific angle.
+	 * 
+	 * @param angle The angle to turn the robot during autonomous.
+	 */
+	public static void turnToAngle(double angle) {
+		switch (actionState) {
+		case 0:
+			actionFlag = true;
+			actionState = 1;
+			break;
+		case 1:
+			if (Math.abs(Components.gyro.getAngle()) < Math.abs(angle)) {
+				error = angle - Components.gyro.getAngle();
+				integral += error * 0.02;
+				Components.driveStick.setpTwist(error * Components.mDrive.kP + integral * Components.mDrive.kI);
+			} else {
+				actionState = 2;
+			}
+			break;
+		case 2:
+			error = 0;
+			integral = 0;
+			currentAngle = angle;
+			Components.driveStick.killVStick();
+			delay(0.25);
+			if(actionFlag == false) {
+				actionState++;
+				actionFlag = true;
+			}
+			break;
+		case 3:	
+			actionState = 0;
+			actionFlag = false;
+			break;
+		}
+	}
+
 	
 	
-	// test here
-		public void autoCartesianTime(double time,double speedX, double speedY ) {
-			if(actionState == 0) {
-				//actionFlag = true;
-				timer.stop();
-				timer.reset();
-				timer.start();
-				actionState = 1;
-			}else if(actionState ==1) {
-				if(timer.get() < time) {
-					driveStick.setpY(speedY);
-					driveStick.setpX(speedX);
-					integral += gyro.getAngle()*0.02;
-					driveStick.setpTwist(-gyro.getAngle()*mDrive.kP+integral*mDrive.kI);
-				}else {
-					actionState =2;
-				} 
-			}else if(actionState ==2) {				
-				driveStick.killVStick();
-				timer.stop();
-				timer.reset();
-				actionState = 0;
-				actionFlag = false;
-				integral = 0;
+	public static void delay(double time) {
+		switch (actionState) {
+		case 0:
+			Components.timer.stop();
+			Components.timer.reset();
+			Components.timer.start();
+			actionFlag = true;
+			actionState++;
+			break;
+		case 1:
+			if (Components.timer.get() > time) {
+				actionState++;
 			}
+			break;
+		case 2:
+			Components.timer.stop();
+			Components.timer.reset();
+			actionState=0;
+			actionFlag = false;
+			break;
 		}
-		
-		
-		//test here
-		public void autoCartesianRange(double inches,  double speedX,double speedY, Ultrasonic rf) {
-				if (actionState == 0) {
-					actionFlag = false;
-					Components.killRangeFinders();
-					rf.setEnabled(true);
-					actionState = 1;
-					
-				} else if(actionState == 1) {
-					if(rf.getRangeInches()< inches) {
-						driveStick.setpY(speedY);
-						driveStick.setpX(speedX);
-						integral += Components.gyro.getAngle()*0.02;
-						driveStick.setpTwist(-gyro.getAngle()*mDrive.kP+integral*mDrive.kI);
-					}else {
-						actionState =2;
-					}
-				}else if(actionState ==2) {
-					driveStick.killVStick();
-					Components.killRangeFinders();
-					actionState = 0;
-					actionFlag = false;
-					integral = 0;
-				}
-		}
-		//test here
-		public void turnToAngle(double angle) {
-			if (actionState == 0 ) {
-				//actionFlag = true;
-				actionState =1;
-			}else if(actionState ==1) {
-				if (Math.abs(gyro.getAngle()) < Math.abs(angle) ) {
-					error = angle - gyro.getAngle();
-					integral += error * 0.02;
-					driveStick.setpTwist(error*mDrive.kP+integral*mDrive.kI);
-				} else {
-					actionState = 2;
-				}
-			} else if(actionState ==2) {
-				error = 0;
-				integral = 0;
-				driveStick.killVStick();
-				actionState = 0;
-				actionFlag = false;
-			}
-		}
-		public void boxOutputSwitch() {
-			if(actionState == 0) {
-				actionState = 1;
-				tower.setMoveSwitch(true);
-			} else if(actionState == 1) {
-				if(tower.getMoveSwitch()) {
-					tower.towerPresetControl();
-				}else {
-					actionState = 2;
-					timer.stop();
-					timer.reset();
-					timer.start();
-				}
-			} else if(actionState == 2) {
-				if(timer.get() < 2) {
-					arms.boxOut();
-				}else {
-					arms.boxStop();
-					timer.stop();
-					timer.reset();
-					actionState = 0;
-				}
-			}
+	}
+	
+	
+
+	/*
+	 * double rampSpeedTime(double time, double speed)
+	 * 
+	 * @param time Amount of time to ramp.
+	 * @param speed How fast you want to move at the end of the ramp.
+	 * 
+	 */
+	static int rampState = 0;
+	
+	public static double rampSpeedTime(double time, double speed) {
+		double currentSpeed = 0 ;
+		switch(rampState) {
+		case 0:
+			rampTimer.stop();
+			rampTimer.reset();
+			rampTimer.start();
+			rampState++;
+			break;
+		case 1:
+			
+			break;
 		}
 		
 		
 		
 		
+		
+		
+		return speed;
+	}
+
 }

@@ -7,6 +7,12 @@
 
 package org.usfirst.frc.team1989.robot;
 
+import org.usfirst.frc.team1989.robot.AutoRoutines.*;
+import org.usfirst.frc.team1989.robot.AutoRoutines.StartCenterMoveForward;
+import org.usfirst.frc.team1989.robot.AutoRoutines.StartCenterSwitchLeft;
+import org.usfirst.frc.team1989.robot.AutoRoutines.StartLeftSwitchLeft;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 //Front Left:6
@@ -19,23 +25,22 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
- public class Robot extends IterativeRobot {
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+public class Robot extends IterativeRobot {
 	Double angle;
-	Double inches;
-	writemessage write= new writemessage();
-	NewMecDriveCmd mDrive = new NewMecDriveCmd(Components.frontLeft,Components.backLeft,Components.frontRight,Components.backRight,Components.driveStick,Components.gyro);
-//	ArmControl arms = new ArmControl(Components.armsLeft,Components.armsRight,Components.uStick);
-	//TowerControl tower = new TowerControl(Components.towerLeft, Components.towerRight, Components.uStick);
-	//AutoCommands auto = new AutoCommands(Components.driveStick,Components.uStick,mDrive,arms,tower,Components.gyro,
-	//		Components.timer);
-	// Used for vertical Motion method
-	boolean motionActive; 
-	double startDistance;
-	boolean actionFlag = false;
-	double integral = 0;
-	double error = 0;
-	int autoState = 0;
-	//CameraControl cam = new CameraControl()
+	Double inches1;
+	Double inches2;
+	Double inches3;
+	Boolean flimit;
+	Boolean rlimit;
+
+	
+	
+
+	String gameData;
+	
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -46,12 +51,17 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		Components.frontRight.setInverted(true);
 		Components.backLeft.setInverted(true);
 		Components.armsRight.setInverted(true);
+		Components.towerLeft.setNeutralMode(NeutralMode.Brake);
+		Components.towerRight.setNeutralMode(NeutralMode.Brake);
+		Components.towerLeft.set(ControlMode.Follower, 5);
+		CameraServer.getInstance().startAutomaticCapture();
 		
-		
-		SharedStuff.cmdlist.add(mDrive);
-	//	SharedStuff.cmdlist.add(arms);
-		SharedStuff.cmdlist.add(write);
-		//r1.setAutomaticMode(true);
+		SharedStuff.cmdlist.add(Components.mDrive);
+		SharedStuff.cmdlist.add(Components.arms);
+		SharedStuff.cmdlist.add(Components.tower);
+		SharedStuff.cmdlist.add(Components.write);
+		SharedStuff.cmdlist.add(Components.cam);
+		Components.r1.setAutomaticMode(true);
 	}
 	
 	
@@ -72,8 +82,11 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 		Components.timer.stop();
 		Components.timer.reset();
 		Components.timer.start();
-		
-		
+		AutoCommands.actionState = 0;
+		AutoCommands.actionFlag = false;
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		Components.r1.setAutomaticMode(true);
+
 	}
 
 	
@@ -98,10 +111,10 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 	/**
 	 * This function is called periodically during autonomous.
 	 */
-	
+	int startState = 0;
 	@Override
 	public void autonomousPeriodic() {
-	
+		
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).autonomousPeriodic();
 		}
@@ -129,10 +142,26 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 				
 			}
 		}
-<<<<<<< HEAD
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		
+		if(gameData.charAt(0) == 'L') {
+			StartCenterSwitchLeft.run(0.5);
+		} else if (gameData.charAt(0) == 'R') {
+			StartCenterSwitchRight.run(0.5);
+		}
+		
+		//DriveForward.run();
+			
+			
+			
+			
+			
+		
+	
+			
 		
 		
-		*/
+	
 	}
 		
 		
