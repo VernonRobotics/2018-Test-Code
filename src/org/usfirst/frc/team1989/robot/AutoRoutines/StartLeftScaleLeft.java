@@ -16,12 +16,12 @@ public class StartLeftScaleLeft {
 			}
 			
 		} else if (autoState == 1) {
-			AutoCommands.towerMove(0.5);
+			AutoCommands.towerMove(1);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
 		} else if (autoState == 2) {
-			AutoCommands.autoCartesianTime(x, 0, 0.4);
+			AutoCommands.autoCartesianTime(3.85, 0, 0.6);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
@@ -35,38 +35,23 @@ public class StartLeftScaleLeft {
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
-		} else if (autoState == 5) {
-				autoState++;
-			
-		}  else if (autoState == 6) {
+		}   else if (autoState == 5) {
 			AutoCommands.towerMove(2);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
-		} else if (autoState == 7) {
-				autoState++;
-			
-		} else if (autoState == 8) {
-			AutoCommands.autoCartesianTime(x, 0.4, 0);
+		}else if (autoState == 7) {
+			AutoCommands.autoCartesianTime(0.5, 0, 0.3);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
-		} else if (autoState == 9) {
-			
-				autoState++;
-			
-		} else if (autoState == 10) {
+		}else if (autoState == 8) {
 			AutoCommands.boxOutput();
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
-		}  else if (autoState == 11) {
-			AutoCommands.delay(1);
-			if(AutoCommands.actionFlag == false) {
-				autoState++;
-			}
-		} else if (autoState == 12) {
-			AutoCommands.autoCartesianTime(x, -0.4, 0);
+		}  else if (autoState == 12) {
+			AutoCommands.autoCartesianTime(0.3, -0.4, 0);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}

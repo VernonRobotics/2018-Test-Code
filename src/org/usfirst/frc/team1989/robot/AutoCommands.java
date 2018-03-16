@@ -231,11 +231,6 @@ public class AutoCommands {
 			integral = 0;
 			currentAngle = angle;
 			Components.driveStick.killVStick();
-			delay(0.25);
-			if(actionFlag == false) {
-				actionState++;
-				actionFlag = true;
-			}
 			break;
 		case 3:	
 			actionState = 0;
@@ -278,9 +273,9 @@ public class AutoCommands {
 	 * @param speed How fast you want to move at the end of the ramp.
 	 * 
 	 */
-	
+	public static  double currentSpeed = 0 ;
 	public static double rampSpeedTime(double time, double speed) {
-		double currentSpeed = 0 ;
+		
 		double ramp = speed/40;
 		int rampState;
 		
@@ -293,6 +288,8 @@ public class AutoCommands {
 		switch(rampState) {
 		case 0:
 			currentSpeed += ramp;
+			if(currentSpeed > speed)
+				currentSpeed =speed;
 			break;
 		case 1:
 			currentSpeed = speed;
@@ -300,6 +297,8 @@ public class AutoCommands {
 		
 		case 2:
 			currentSpeed -= ramp;
+			if(currentSpeed < 0)
+				currentSpeed =0;
 			break;
 		}
 		

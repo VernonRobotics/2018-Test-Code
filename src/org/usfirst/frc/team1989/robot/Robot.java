@@ -51,7 +51,6 @@ public class Robot extends IterativeRobot {
 		Components.armsRight.setInverted(true);
 		Components.towerLeft.setNeutralMode(NeutralMode.Brake);
 		Components.towerRight.setNeutralMode(NeutralMode.Brake);
-		Components.towerLeft.set(ControlMode.Follower, 5);
 		CameraServer.getInstance().startAutomaticCapture();
 		
 		SharedStuff.cmdlist.add(Components.mDrive);
@@ -100,12 +99,12 @@ public class Robot extends IterativeRobot {
 		}
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
-		if(gameData.charAt(0) == 'L') {
+		/*if(gameData.charAt(0) == 'L') {
 			StartCenterSwitchLeft.run(0.5);
 		} else if (gameData.charAt(0) == 'R') {
 			StartCenterSwitchRight.run(0.5);
-		}
-		
+		}*/
+		StartLeftScaleLeft.run(0.5);
 		//DriveForward.run();
 			
 			
@@ -148,6 +147,7 @@ public class Robot extends IterativeRobot {
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).teleopPeriodic();
 		}
+
 
 		angle = Components.gyro.getAngle();
 		
