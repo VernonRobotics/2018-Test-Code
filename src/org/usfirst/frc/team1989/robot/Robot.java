@@ -51,6 +51,7 @@ public class Robot extends IterativeRobot {
 		Components.armsRight.setInverted(true);
 		Components.towerLeft.setNeutralMode(NeutralMode.Brake);
 		Components.towerRight.setNeutralMode(NeutralMode.Brake);
+		Components.towerLeft.set(ControlMode.Follower, 5);
 		CameraServer.getInstance().startAutomaticCapture();
 		
 		SharedStuff.cmdlist.add(Components.mDrive);
@@ -59,6 +60,8 @@ public class Robot extends IterativeRobot {
 		SharedStuff.cmdlist.add(Components.write);
 	//	SharedStuff.cmdlist.add(Components.cam);
 	}
+	
+	
 
 	/**
 	 * This autonomous (along with the chooser code above) shows how to select
@@ -99,12 +102,12 @@ public class Robot extends IterativeRobot {
 		}
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
-		/*if(gameData.charAt(0) == 'L') {
+		if(gameData.charAt(0) == 'L') {
 			StartCenterSwitchLeft.run(0.5);
 		} else if (gameData.charAt(0) == 'R') {
 			StartCenterSwitchRight.run(0.5);
-		}*/
-		StartLeftScaleLeft.run(0.5);
+		}
+		
 		//DriveForward.run();
 			
 			
@@ -114,6 +117,7 @@ public class Robot extends IterativeRobot {
 		
 	
 			
+		
 		
 		
 	
@@ -200,58 +204,4 @@ public class Robot extends IterativeRobot {
 		
 
 	}
-}	/*
-
-
-if(startState == 1) {
-	if(gameData.length() > 0) {
-	
-		if (SmartDashboard.getBoolean("DB/Button 0", true)) {
-					if (SmartDashboard.getBoolean("DB/Button 3", true)) {
-						if (gameData.charAt(1) == 'L') {
-							// StartLeftScaleLeft.run();
-						} else {
-							// StartLeftScaleRight.run();
-						}
-					} else {
-						if (gameData.charAt(0) == 'L') {
-							StartLeftSwitchLeft.run();
-						} else {
-							// StartLeftSwitchRight.run();
-						}
-					}
-		
-				} else if (SmartDashboard.getBoolean("DB/Button 1", true)) {
-					if (SmartDashboard.getBoolean("DB/Button 3", true)) {
-						if (gameData.charAt(1) == 'L') {
-							// StartCenterScaleLeft.run();
-						} else {
-						// StartCenterScaleRight.run();
-						}
-					} else {
-						if (gameData.charAt(0) == 'L') {
-							// StartCenterSwitchLeft.run();
-						} else {
-							// StartCenterSwitchRight.run();
-						}
-					}
-				} else if (SmartDashboard.getBoolean("DB/Button 2", true)) {
-					if (SmartDashboard.getBoolean("DB/Button 3", true)) {
-						if (gameData.charAt(1) == 'L') {
-							// StartRightScaleLeft.run();
-						} else {
-							// StartRightScaleRight.run();
-						}
-					} else {
-					if (gameData.charAt(0) == 'L') {
-							// StartRightSwitchLeft.run();
-					} else {
-							// StartRightSwitchRight.run();
-						}
-					}
-				} 
-				else {
-					 //StartCenterMoveForward.run();
-		 		}
-		}		
-	} */
+}
