@@ -11,7 +11,7 @@ public class DriveForward {
 		if (autoState == 0)  {
 			Components.timer.start();
 			autoState++;
-		} else if(autoState ==1 ) {
+		} else if(autoState == 1 ) {
 			Components.driveStick.setpY(0.5);
 			if(Components.timer.get() > 3) {
 				autoState++;
@@ -19,6 +19,9 @@ public class DriveForward {
 		} else if(autoState == 2) {
 			Components.driveStick.setpY(0);
 			Components.timer.stop();
+			autoState++;
+		} else if(autoState == 3) {
+			System.out.println("State 3");
 		}
 	}
 }

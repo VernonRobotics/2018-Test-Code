@@ -2,6 +2,7 @@ package org.usfirst.frc.team1989.robot;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
+
 /*
  * public class AutoCommands{}
  * 
@@ -19,7 +20,7 @@ public class AutoCommands {
 	static double integral = 0;
 	static double error = 0;
 	static double currentAngle = 0;
-	
+
 	public static boolean actionFlag = false;
 	int autoState = 0;// to be used to differentiate between different commands in a preset auto
 	static Timer rampTimer = new Timer();
@@ -29,33 +30,86 @@ public class AutoCommands {
 	/*
 	 * boxOutputSwitch()
 	 * 
-	 * Method is currently here for compliance within the autonomous routines.
-	 * When complete, method will output the power cube to the switch game piece
+	 * Method is currently here for compliance within the autonomous routines. When
+	 * complete, method will output the power cube to the switch game piece
 	 * 
 	 */
-	
+
 	public static void moveTillShmack() {
-		switch(actionState) {
+		switch (actionState) {
 		case 0:
 			actionFlag = true;
 			actionState++;
-		break;
+			break;
 		case 1:
 			Components.driveStick.setpY(0.3);
-			Components.driveStick.setpTwist(
-					(-Components.gyro.getAngle() + currentAngle) * Components.mDrive.kP + integral * Components.mDrive.kI);
+			Components.driveStick.setpTwist((-Components.gyro.getAngle() + currentAngle) * Components.mDrive.kP
+					+ integral * Components.mDrive.kI);
 
-			if(Components.frontLeft.getOutputCurrent() > 35 || Components.frontRight.getOutputCurrent()> 35) 
+			if (Components.frontLeft.getOutputCurrent() > 35 || Components.frontRight.getOutputCurrent() > 35)
 				actionState++;
-		break;
+			break;
 		case 2:
 			Components.driveStick.setpY(0);
 			Components.driveStick.setpTwist(0);
 			break;
 		}
 	}
-	
+
 	public static void towerMove(double liftTime) {
+		if (liftTime >= 0) {
+			switch (actionState) {
+			case 0:
+				actionFlag = true;
+				Components.timer.stop();
+				Components.timer.reset();
+				Components.timer.start();
+				actionState = 1;
+				break;
+			case 1:
+				if (Components.timer.get() < liftTime) {
+					Components.tower.towerControl(0.65);
+				} else {
+					actionState = 2;
+				}
+				break;
+			case 2:
+				Components.tower.towerStop();
+				Components.timer.stop();
+				Components.timer.reset();
+				actionState = 0;
+				actionFlag = false;
+				break;
+			}
+		} else {
+			switch (actionState) {
+			case 0:
+				actionFlag = true;
+				Components.timer.stop();
+				Components.timer.reset();
+				Components.timer.start();
+				actionState = 1;
+				break;
+			case 1:
+				if (Components.timer.get() < Math.abs(liftTime)) {
+					Components.tower.towerControl(-0.5);
+				} else {
+					actionState = 2;
+				}
+				break;
+			case 2:
+				Components.tower.towerStop();
+				Components.timer.stop();
+				Components.timer.reset();
+				actionState = 0;
+				actionFlag = false;
+				break;
+			}
+		}
+
+	}
+
+	public static void boxOutput() {
 		switch (actionState) {
 		case 0:
 			actionFlag = true;
@@ -65,32 +119,6 @@ public class AutoCommands {
 			actionState = 1;
 			break;
 		case 1:
-			if (Components.timer.get() < liftTime) {
-				Components.tower.towerControl(0.75);
-			} else {
-				actionState = 2;
-			}
-			break;
-		case 2:
-			Components.tower.towerStop();
-			Components.timer.stop();
-			Components.timer.reset();
-			actionState = 0;
-			actionFlag = false;
-			break;
-		}
-	}
-	
-	public static void boxOutput() {
-		switch (actionState) {
-		case 0: 
-			actionFlag = true;
-			Components.timer.stop();
-			Components.timer.reset();
-			Components.timer.start();
-			actionState = 1;
-			break;
-		case 1: 
 			if (Components.timer.get() < 1) {
 				Components.arms.boxOut();
 			} else {
@@ -103,23 +131,25 @@ public class AutoCommands {
 			Components.timer.reset();
 			actionState = 0;
 			actionFlag = false;
-			break; 
-			
+			break;
+
 		}
-		
+
 	}
-	
+
 	/*
 	 * autoCartesianTime(double time, double speedX, double speedY) {
 	 * 
 	 * Autonomous method which uses time and speed to navigate during autonomous.
 	 * 
 	 * @param time The time to run the robot in a specific direction.
+	 * 
 	 * @param speedX The speed at which the robot should move in the x direction.
+	 * 
 	 * @param speedY The speed at which the robot should move in the y direction.
 	 */
 	public static void autoCartesianTime(double time, double speedX, double speedY) {
-		switch(actionState) {
+		switch (actionState) {
 		case 0:
 			actionFlag = true;
 			Components.timer.stop();
@@ -129,11 +159,17 @@ public class AutoCommands {
 			break;
 		case 1:
 			if (Components.timer.get() < time) {
-				Components.driveStick.setpY(rampSpeedTime(time,speedY));
-				Components.driveStick.setpX(rampSpeedTime(time,speedX));
+				if (time > 1) {
+					Components.driveStick.setpY(rampSpeedTime(time, speedY));
+					Components.driveStick.setpX( speedX);
+				}
+				else {
+					Components.driveStick.setpY(speedY);
+					Components.driveStick.setpX(speedX);
+				}
 				integral += Components.gyro.getAngle() * 0.02;
-				Components.driveStick.setpTwist(
-						(-Components.gyro.getAngle() + currentAngle) * Components.mDrive.kP + integral * Components.mDrive.kI);
+				Components.driveStick.setpTwist((-Components.gyro.getAngle() + currentAngle) * Components.mDrive.kP
+						+ integral * Components.mDrive.kI);
 			} else {
 				actionState = 2;
 			}
@@ -142,7 +178,7 @@ public class AutoCommands {
 			Components.driveStick.setpY(0);
 			Components.driveStick.setpX(0);
 			Components.driveStick.setpTwist(0);
-			
+
 			actionState = 0;
 			actionFlag = false;
 			integral = 0;
@@ -183,12 +219,12 @@ public class AutoCommands {
 			break;
 		case 1:
 			// If you have not yet gone as far as you want, move.
-			if (rf.getRangeInches() < inches || rf.getRangeInches() > 600  ) {
+			if (rf.getRangeInches() < inches || rf.getRangeInches() > 600) {
 				Components.driveStick.setpY(speedY);
 				Components.driveStick.setpX(speedX);
 				integral += Components.gyro.getAngle() * 0.02;
-				Components.driveStick.setpTwist(
-						(-Components.gyro.getAngle() + currentAngle) * Components.mDrive.kP + integral * Components.mDrive.kI);
+				Components.driveStick.setpTwist((-Components.gyro.getAngle() + currentAngle) * Components.mDrive.kP
+						+ integral * Components.mDrive.kI);
 			} else {
 				actionState++;
 			}
@@ -232,15 +268,13 @@ public class AutoCommands {
 			currentAngle = angle;
 			Components.driveStick.killVStick();
 			break;
-		case 3:	
+		case 3:
 			actionState = 0;
 			actionFlag = false;
 			break;
 		}
 	}
 
-	
-	
 	public static void delay(double time) {
 		switch (actionState) {
 		case 0:
@@ -258,51 +292,71 @@ public class AutoCommands {
 		case 2:
 			Components.timer.stop();
 			Components.timer.reset();
-			actionState=0;
+			actionState = 0;
 			actionFlag = false;
 			break;
 		}
 	}
-	
-	
 
 	/*
 	 * double rampSpeedTime(double time, double speed)
 	 * 
 	 * @param time Amount of time to ramp.
+	 * 
 	 * @param speed How fast you want to move at the end of the ramp.
 	 * 
 	 */
-	public static  double currentSpeed = 0 ;
+	static double currentSpeed = 0;
+
 	public static double rampSpeedTime(double time, double speed) {
-		
-		double ramp = speed/40;
+
+		double ramp = speed / 40;
 		int rampState;
-		
-		if(Components.timer.get() < 0.4) 
+
+		if (Components.timer.get() < 0.4)
 			rampState = 0;
-		else if (Components.timer.get() > time - 0.4) 
+		else if (Components.timer.get() > time - 0.4)
 			rampState = 2;
 		else
 			rampState = 1;
-		switch(rampState) {
-		case 0:
-			currentSpeed += ramp;
-			if(currentSpeed > speed)
-				currentSpeed =speed;
-			break;
-		case 1:
-			currentSpeed = speed;
-			break;
-		
-		case 2:
-			currentSpeed -= ramp;
-			if(currentSpeed < 0)
-				currentSpeed =0;
-			break;
+
+		if (speed > 0) {
+			switch (rampState) {
+			case 0:
+				currentSpeed += ramp;
+				if (currentSpeed > speed)
+					currentSpeed = speed;
+				break;
+			case 1:
+				currentSpeed = speed;
+				break;
+
+			case 2:
+				currentSpeed -= ramp;
+				if (currentSpeed < 0)
+					currentSpeed = 0;
+				break;
+			}
+		} else {
+			switch (rampState) {
+			case 0:
+				currentSpeed -= ramp;
+				if (currentSpeed > speed)
+					currentSpeed = speed;
+				break;
+			case 1:
+				currentSpeed = speed;
+				break;
+
+			case 2:
+				currentSpeed += ramp;
+				if (currentSpeed < 0)
+					currentSpeed = 0;
+				break;
+			}
+
 		}
-		
-		
+
 		return currentSpeed;
 	}
 

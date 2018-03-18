@@ -9,75 +9,65 @@ public class StartRightScaleLeft {
 	static int autoState = 0;
 	static int x = 0;
 	
-	public static void run() {
+	public static void run(double delay) {
 		if(autoState == 0) {
-			
+			AutoCommands.delay(delay);
 			if(AutoCommands.actionFlag== false) {
 				autoState++;
 			}
 			
 		} else if (autoState == 1) {
-			AutoCommands.delay(1);
+			AutoCommands.towerMove(1);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
 		} else if (autoState == 2) {
+			AutoCommands.autoCartesianTime(3.85, 0, 0.6);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
 		} else if (autoState == 3) {
-			AutoCommands.delay(1);
+			AutoCommands.turnToAngle(-90);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
 			
 		} else if (autoState == 4) {
-			
+			AutoCommands.autoCartesianTime(2, 0, 0.5);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
 		} else if (autoState == 5) {
-			AutoCommands.delay(1);
+			AutoCommands.towerMove(2);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
 		}  else if (autoState == 6) {
-			AutoCommands.turnToAngle(90);
+			AutoCommands.turnToAngle(0);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
 		} else if (autoState == 7) {
-			AutoCommands.delay(1);
+			AutoCommands.autoCartesianTime(0.5, 0, 0.3);
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
 		} else if (autoState == 8) {
-			//AutoCommands.boxOutputSwitch();
-			AutoCommands.towerMove(AutoCommands.scaleTime);
-			if(AutoCommands.actionFlag == false) {
-				autoState++;
-			}
-		} else if (autoState == 9) {
-			AutoCommands.delay(1);
-			if(AutoCommands.actionFlag == false) {
-				autoState++;
-			}
-		} else if (autoState == 10) {
-			AutoCommands.autoCartesianTime(1,0,0.3);
-			if(AutoCommands.actionFlag == false) {
-				autoState++;
-			}
-		}  else if (autoState == 11) {
-			AutoCommands.delay(1);
-			if(AutoCommands.actionFlag == false) {
-				autoState++;
-			}
-		} else if (autoState == 12) {
 			AutoCommands.boxOutput();
 			if(AutoCommands.actionFlag == false) {
 				autoState++;
 			}
-		}
+		} else if (autoState == 9) {
+			AutoCommands.autoCartesianTime(0.5,0,-0.3);
+			if(AutoCommands.actionFlag == false) {
+				autoState++;
+			}
+		} else if (autoState == 10) {
+			AutoCommands.towerMove(-2.5);
+			if(AutoCommands.actionFlag == false) {
+				autoState++;
+			}
+		} 
 	
 			
 			

@@ -18,7 +18,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 
-
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -33,16 +32,14 @@ public class Robot extends IterativeRobot {
 	Boolean flimit;
 	Boolean rlimit;
 	int autoState;
-	
-	
 
 	String gameData;
-	
 
 	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.
 	 */
+	int autoChoice = 0;
 	@Override
 	public void robotInit() {
 		Components.frontLeft.setInverted(true);
@@ -53,15 +50,16 @@ public class Robot extends IterativeRobot {
 		Components.towerRight.setNeutralMode(NeutralMode.Brake);
 		Components.towerLeft.set(ControlMode.Follower, 5);
 		CameraServer.getInstance().startAutomaticCapture();
-		
+
 		SharedStuff.cmdlist.add(Components.mDrive);
 		SharedStuff.cmdlist.add(Components.arms);
 		SharedStuff.cmdlist.add(Components.tower);
 		SharedStuff.cmdlist.add(Components.write);
-	//	SharedStuff.cmdlist.add(Components.cam);
+		double buttonPick = SmartDashboard.getNumber("DB/Slider 1", 0);
+		if (buttonPick >= 1) {
+			autoChoice=1;}
+		// SharedStuff.cmdlist.add(Components.cam);
 	}
-	
-	
 
 	/**
 	 * This autonomous (along with the chooser code above) shows how to select
@@ -75,6 +73,24 @@ public class Robot extends IterativeRobot {
 	 * switch structure below with additional strings. If using the SendableChooser
 	 * make sure to add them to the chooser code above as well.
 	 */
+	
+
+	public void autoChoice() {
+		if (SmartDashboard.getBoolean("DB/Button 0", false)) {
+			autoChoice += 1;
+		}
+		if (SmartDashboard.getBoolean("DB/Button 1", false)) {
+			autoChoice += 2;
+		}
+		if (SmartDashboard.getBoolean("DB/Button 2", false)) {
+			autoChoice += 4;
+		}
+		if (SmartDashboard.getBoolean("DB/Button 4", false)) {
+			autoChoice += 8;
+		}
+
+	}
+
 	@Override
 	public void autonomousInit() {
 		Components.timer.stop();
@@ -84,47 +100,137 @@ public class Robot extends IterativeRobot {
 		AutoCommands.actionFlag = false;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		autoState = 0;
-
+		//autoChoice();
+		double button = SmartDashboard.getNumber("DB/Slider 1", 0);
+		if (button >= 1) {
+			autoChoice=1;
+			
+		}
+		// System.out.println("Button is Checked: " + button);
 	}
-
-
 
 	/**
 	 * This function is called periodically during autonomous.
 	 */
 	int startState = 0;
+
 	@Override
 	public void autonomousPeriodic() {
-		
+
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).autonomousPeriodic();
-			
+
 		}
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		
-		if(gameData.charAt(0) == 'L') {
-			StartCenterSwitchLeft.run(0.5);
-		} else if (gameData.charAt(0) == 'R') {
-			StartCenterSwitchRight.run(0.5);
+		if (autoChoice == 0) {
+			if (gameData.charAt(0) == 'L') {
+				StartCenterSwitchLeft.run(0.5);
+				//System.out.println("test switch left");
+			} else if (gameData.charAt(0) == 'R') {
+				StartCenterSwitchRight.run(0.5);
+				//System.out.println("test switch right");
+			}
+		} else if (autoChoice == 1) {
+			DriveForward.run();
+			//System.out.println("test drive forward");
 		}
 		
-		//DriveForward.run();
-			
-			
-			
-			
-			
-		
-	
-			
 		
 		
 		
-	
-	}	 
+		/*
+		
+		switch (autoChoice) {
+		case 0:
+			if (gameData.charAt(0) == 'L') {
+				StartCenterSwitchLeft.run(0.5);
+			} else if (gameData.charAt(0) == 'R') {
+				StartCenterSwitchRight.run(0.5);
+			}
+			break;
+		// Robot Starts Left
+		case 1:
+			if (gameData.charAt(1) == 'L') {
+				// StartLeftScaleLeft.run(0.5);
+			} else if (gameData.charAt(1) == 'R') {
+				// StartLeftScaleRight.run(0.5);
+			}
+			break;
+		// Robot Starts Right
+		case 2:
+			if (gameData.charAt(1) == 'L') {
+				// StartRightScaleLeft.run(0.5);
+			} else if (gameData.charAt(1) == 'R') {
+				//StartRightScaleRight.run(0.5);
+			}
+			break;
+		// Drive Forward Only
+		case 3:
+			DriveForward.run();
+			break;
+		// Likely only used in rare cases below here
+		case 4:
+			if (gameData.charAt(0) == 'L') {
+				// StartLeftSwitchLeft.run(0);
+			} else if (gameData.charAt(0) == 'R') {
+				DriveForward.run();
+			}
+			break;
+		case 5:
+			if (gameData.charAt(0) == 'R') {
+				// StartRightSwitchRight.run(0);
+			} else if (gameData.charAt(0) == 'L') {
+				DriveForward.run();
+			}
+			break;
+		// If all else fails, drive forward
+		default:
+			DriveForward.run();
+		}
 
-		
-	
+		/*
+		 * if(SmartDashboard.getString("DB/String 0",
+		 * "").equals("StartCenterSwitchLeft")){ System.out.println("working"); }
+		 */
+
+		/*
+		 * if(gameData.charAt(0) == 'L') { StartCenterSwitchLeft.run(0.5); } else if
+		 * (gameData.charAt(0) == 'R') { StartCenterSwitchRight.run(0.5); }
+		 * 
+		 * 
+		 * if(SmartDashboard.getBoolean("DB/Button 0", false)) { if
+		 * (SmartDashboard.getBoolean("DB/Button 3", false)) { if(gameData.charAt(1) ==
+		 * 'L') { //StartLeftScaleLeft.run(0.5);
+		 * System.out.println("StartLeftScaleLeft"); } else if (gameData.charAt(1) ==
+		 * 'R') { //StartLeftScaleRight.run(0.5);
+		 * System.out.println("StartLeftScaleRight");
+		 * 
+		 * } } else if(SmartDashboard.getBoolean("DB/Button 3", false)) {
+		 * //DriveForward.run(); System.out.println("DriveForward");
+		 * 
+		 * } }else if (SmartDashboard.getBoolean("DB/Button 1", false)) {
+		 * if(gameData.charAt(0) == 'L') { //StartCenterSwitchLeft.run(0.5);
+		 * System.out.println("StartCenterSwitchLeft");
+		 * 
+		 * } else if (gameData.charAt(0) == 'R') { //StartCenterSwitchRight.run(0.5);
+		 * System.out.println("StartCenterSwitchRight");
+		 * 
+		 * } } else if(SmartDashboard.getBoolean("DB/Button 2", false)) { if
+		 * (SmartDashboard.getBoolean("DB/Button 3", false)) { if(gameData.charAt(1) ==
+		 * 'L') { //StartRightScaleLeft.run(0.5);
+		 * System.out.println("StartRightScaleLeft");
+		 * 
+		 * } else if (gameData.charAt(1) == 'R') { //StartRightScaleRight.run(0.5);
+		 * System.out.println("StartRightScaleRight"); } } else
+		 * if(SmartDashboard.getBoolean("DB/Button 3", false)) { //DriveForward.run();
+		 * System.out.println("DriveForward"); } }
+		 * 
+		 * 
+		 * 
+		 */
+
+	}
 
 	/**
 	 * This function is called periodically during operator control.
@@ -139,40 +245,22 @@ public class Robot extends IterativeRobot {
 		Components.towerRight.setNeutralMode(NeutralMode.Brake);
 		CameraServer.getInstance().startAutomaticCapture();
 
-		
-		
-		
-		
 	}
-	
-	
+
 	@Override
 	public void teleopPeriodic() {
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).teleopPeriodic();
 		}
 
-
 		angle = Components.gyro.getAngle();
-		
-		
+
 		rlimit = Components.towerRight.getSensorCollection().isRevLimitSwitchClosed();
 		flimit = Components.towerRight.getSensorCollection().isFwdLimitSwitchClosed();
 		Components.write.setmessage(0, angle.toString());
 		Components.write.updatedash();
 
-
-
-		
-		
-
-		
-		
 	}
-		
-		
-		
-	
 
 	/*
 	 * Disable all RangeFinders
@@ -181,8 +269,8 @@ public class Robot extends IterativeRobot {
 	public void testInit() {
 		Components.timer.stop();
 		Components.timer.reset();
-		/*Components.timer.start();*/
-		
+		/* Components.timer.start(); */
+
 		Components.timer.stop();
 		Components.timer.reset();
 		AutoCommands.actionState = 0;
@@ -197,11 +285,9 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		StartCenterMoveForward.run(1, true);
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
-			SharedStuff.cmdlist.get(i).testPeriodic();
+			SharedStuff.cmdlist.get(i).teleopPeriodic();
 		}
-		//AutoCommands.autoCartesianRange(60, 0, 0.5, Components.r1);
-		
-		
+		// AutoCommands.autoCartesianRange(60, 0, 0.5, Components.r1);
 
 	}
 }
